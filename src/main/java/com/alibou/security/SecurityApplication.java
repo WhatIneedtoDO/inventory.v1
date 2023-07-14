@@ -17,7 +17,7 @@ public class SecurityApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityApplication.class, args);
 	}
-
+	//test
 	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
