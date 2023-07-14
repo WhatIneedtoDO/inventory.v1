@@ -15,11 +15,13 @@ public class AdminController {
     public String get() {
         return "GET:: admin controller";
     }
-    @PostMapping
+    @PostMapping("/addUser")
     @PreAuthorize("hasAuthority('admin:create')")
     @Hidden
-    public String post() {
-        return "POST:: admin controller";
+    public ResponseEntity<AuthenticationResponse> register(
+            @RequestBody RegisterRequest request
+    ) {
+        return ResponseEntity.ok(service.register(request));
     }
     @PutMapping
     @PreAuthorize("hasAuthority('admin:update')")
