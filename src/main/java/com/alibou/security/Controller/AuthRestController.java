@@ -2,13 +2,11 @@ package com.alibou.security.Controller;
 
 import com.alibou.security.auth.AuthenticationRequest;
 import com.alibou.security.auth.AuthenticationResponse;
-import com.alibou.security.auth.AuthenticationService;
-import com.alibou.security.auth.RegisterRequest;
+import com.alibou.security.Service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,7 +16,6 @@ import java.io.IOException;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthRestController {
-
   private final AuthenticationService service;
 
  /* @PostMapping("/register")
