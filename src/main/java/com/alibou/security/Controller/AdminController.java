@@ -40,6 +40,7 @@ public class AdminController {
     }
 
     @GetMapping("/Users")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UserDTO>> getUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
