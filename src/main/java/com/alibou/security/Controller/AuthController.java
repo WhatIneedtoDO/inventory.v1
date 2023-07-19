@@ -15,7 +15,7 @@ import java.io.IOException;
 //@Controller
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class AuthRestController {
+public class AuthController {
   private final AuthenticationService service;
 
  /* @PostMapping("/register")

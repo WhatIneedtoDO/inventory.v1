@@ -1,12 +1,10 @@
 package com.alibou.security.Controller;
 
 import com.alibou.security.DTO.UserDTO;
-import com.alibou.security.Entity.User;
 import com.alibou.security.Service.AuthenticationService;
 import com.alibou.security.Service.UserService;
 import com.alibou.security.auth.AuthenticationResponse;
 import com.alibou.security.auth.RegisterRequest;
-import com.alibou.security.user.UserRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

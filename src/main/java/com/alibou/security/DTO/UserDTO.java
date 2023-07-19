@@ -1,7 +1,7 @@
 package com.alibou.security.DTO;
 
 import com.alibou.security.Entity.User;
-import com.alibou.security.user.Role;
+import com.alibou.security.Entity.Enum.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

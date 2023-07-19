@@ -1,8 +1,9 @@
-package com.alibou.security.Service;
+package com.alibou.security.Service.Impl;
 
 import com.alibou.security.DTO.UserDTO;
 import com.alibou.security.Entity.User;
-import com.alibou.security.user.UserRepository;
+import com.alibou.security.Repository.UserRepository;
+import com.alibou.security.Service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,7 +1,6 @@
 package com.alibou.security.Entity;
 
-import com.alibou.security.token.Token;
-import com.alibou.security.user.Role;
+import com.alibou.security.Entity.Enum.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -1,10 +1,14 @@
-package com.alibou.security.token;
+package com.alibou.security.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.alibou.security.Entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
   @Query(value = """
