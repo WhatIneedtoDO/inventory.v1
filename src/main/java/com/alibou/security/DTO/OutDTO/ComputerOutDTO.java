@@ -37,8 +37,9 @@ public class ComputerOutDTO {
     private Date staydate;
     private Double price;
     private String comment;
-//после тестов удалить т.к. уже есть в компутер сервис
-    public static ComputerOutDTO fromComputerOut(Computer computer) {
+
+    //после тестов удалить т.к. уже есть в компутер сервис
+    /*  public static ComputerOutDTO fromComputerOut(Computer computer) {
         UserDTO userDTO = UserDTO.fromUser(computer.getUser());
         ProductionsDTO productionsDTO = ProductionsDTO.fromProductions(computer.getProduction());
         ModelDTO modelDTO = ModelDTO.fromModel(computer.getModel());
@@ -67,5 +68,5 @@ public class ComputerOutDTO {
                 .price(computer.getPrice())
                 .comment(computer.getComment())
                 .build();
-    }
+    }*/
 }

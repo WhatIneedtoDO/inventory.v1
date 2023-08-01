@@ -30,13 +30,11 @@ public class ComputerServiceImpl implements ComputerService {
     private LocationRepository locationRepository;
     private ItemTypeRepository itemTypeRepository;
     private CityRepository cityRepository;
-    private UserService uservice;
-    private EntityManager entityManager;
+
+
     @Autowired
     public ComputerServiceImpl(ComputerRepository computerRepository, UserRepository userRepository, ProductionRepository productionRepository,
-                               ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository,
-                               UserService uservice, EntityManager entityManager) {
-
+                               ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository) {
 
         this.productionRepository = productionRepository;
         this.computerRepository = computerRepository;
@@ -45,8 +43,7 @@ public class ComputerServiceImpl implements ComputerService {
         this.locationRepository = locationRepository;
         this.itemTypeRepository = itemTypeRepository;
         this.cityRepository = cityRepository;
-        this.uservice = uservice;
-        this.entityManager = entityManager;
+
     }
     @Override
     public List<ComputerOutDTO> getAllComputers() {
@@ -66,9 +63,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public List<ComputerOutDTO> getAllComputersWithDetails() {
         List<Computer> computers = computerRepository.findAllComputersWithDetails();
-        return computers.stream()
-                .map(ComputerOutDTO::fromComputerOut)
-                .collect(Collectors.toList());
+        return mapToDTOs(computers);
     }
 
 

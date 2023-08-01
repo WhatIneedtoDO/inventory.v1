@@ -22,5 +22,7 @@ public class ItemType {
         private String name;
         @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
         private List<Computer> computers;
+        @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
+        private List<Monitor> monitors;
 
 }

@@ -22,6 +22,7 @@ public class Productions {
     private String name;
     @OneToMany( mappedBy= "production",cascade = CascadeType.ALL)
     private List<Computer> computers;
-
+    @OneToMany( mappedBy= "production",cascade = CascadeType.ALL)
+    private List<Monitor> monitors;
 
 }

@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ComputerDTO {
 
-    //Computer
+    //ComputerDTO to Entity
     private Integer id;
     private Integer i_card;
     private String serialnumber;

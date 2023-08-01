@@ -23,4 +23,7 @@ public class Location {
     private Integer ekp;
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Computer> computers;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    private List<Monitor> monitors;
+
 }

@@ -46,6 +46,8 @@ public class User implements UserDetails {
   private List<Token> tokens;
   @OneToMany(mappedBy = "user")
   private List<Computer> computers;
+  @OneToMany(mappedBy = "user")
+  private List<Monitor> monitors;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -17,10 +17,9 @@ import java.util.List;
 @RequestMapping("/api/v1/Computers")
 public class ComputerController {
     private final ComputerService computerService;
-    private final UserService userService;
     @Autowired
-    public ComputerController(ComputerService computerService, UserService userService) {
-        this.userService = userService;
+    public ComputerController(ComputerService computerService) {
+
         this.computerService = computerService;
     }
 
