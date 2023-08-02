@@ -41,27 +41,4 @@ public class ComputerDTO {
     private Double price;
     private String comment;
 
-    public static ComputerDTO fromComputer(Computer computer) {
-        return ComputerDTO.builder()
-                .id(computer.getId())
-                .i_card(computer.getI_card())
-                .serialnumber(computer.getSerialnumber())
-                .i_number(computer.getI_number())
-                .production(computer.getProduction().getId())//id
-                .model(computer.getModel().getId())//id
-                .itemType(computer.getItemType().getId())//id
-                .ssd(computer.getSsd())
-                .ram(computer.getRam())
-                .bp(computer.getBp())
-                .year(computer.getYear())
-                .serv(computer.getServ())
-                .city(computer.getCity().getId())//id
-                .location(computer.getLocation().getId())//id
-                .room(computer.getRoom())
-                .userId(computer.getUser().getId())//id
-                .staydate(computer.getStaydate())
-                .price(computer.getPrice())
-                .comment(computer.getComment())
-                .build();
-    }
 }

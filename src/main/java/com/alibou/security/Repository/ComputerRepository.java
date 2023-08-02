@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface ComputerRepository extends JpaRepository<Computer,Integer> {
     Computer save(Computer computer);
-    @Query("SELECT c FROM Computer c " +
+    @Query("SELECT c , u.id, u.username, u.firstname, u.lastname FROM Computer c " +
             "JOIN FETCH c.production " +
             "JOIN FETCH c.model " +
             "JOIN FETCH c.itemType " +
             "JOIN FETCH c.city " +
             "JOIN FETCH c.location " +
-            "JOIN FETCH c.user")
+            "JOIN FETCH c.user u")
     List<Computer> findAllComputersWithDetails();
 }
