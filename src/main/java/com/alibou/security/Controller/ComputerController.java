@@ -2,9 +2,7 @@ package com.alibou.security.Controller;
 
 import com.alibou.security.DTO.ComputerDTO;
 import com.alibou.security.DTO.OutDTO.ComputerOutDTO;
-import com.alibou.security.DTO.UserDTO;
 import com.alibou.security.Service.ComputerService;
-import com.alibou.security.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
