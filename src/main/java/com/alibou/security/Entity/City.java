@@ -1,6 +1,7 @@
 package com.alibou.security.Entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,8 @@ import java.util.List;
 @Table(name = "city")
 public class City {
 
+
     @Id
-    @GeneratedValue
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
