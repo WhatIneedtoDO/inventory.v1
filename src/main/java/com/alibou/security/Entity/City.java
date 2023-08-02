@@ -13,16 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "productions")
-public class Productions {
+@Table(name = "city")
+public class City {
 
     @Id
     @GeneratedValue
     private Integer id;
     private String name;
-    @OneToMany( mappedBy= "production",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Computer> computers;
-    @OneToMany( mappedBy= "production",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Monitor> monitors;
+
 
 }

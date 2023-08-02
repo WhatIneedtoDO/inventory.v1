@@ -1,12 +1,7 @@
 package com.alibou.security.Entity;
 
-import com.alibou.security.Entity.Enum.RAM;
-import com.alibou.security.Entity.Enum.Role;
-import com.alibou.security.Entity.Enum.SSD;
 import com.alibou.security.Entity.Enum.Serviceability;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "computers")
-public class Computer {
-
+@Table(name = "monitors")
+public class Monitor {
     @Id
     @GeneratedValue
     private Integer id;
@@ -44,11 +38,7 @@ public class Computer {
     @JoinColumn(name = "item_type_id")
     @JsonIgnoreProperties({"computers","monitors"})
     private ItemType itemType;
-    @Enumerated(EnumType.STRING)
-    private SSD ssd;
-    @Enumerated(EnumType.STRING)
-    private RAM ram;
-    private Integer bp;
+    private Integer size;
     private Integer year;
     @Enumerated(EnumType.STRING)
     private Serviceability serv;
@@ -68,7 +58,4 @@ public class Computer {
     private Date staydate;
     private Double price;
     private String comment;
-
-
-
 }

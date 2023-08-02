@@ -1,6 +1,10 @@
 package com.alibou.security.Entity;
 
 import com.alibou.security.Entity.Enum.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,13 +35,19 @@ public class User implements UserDetails {
   private String firstname;
   private String lastname;
   private String username;
+  @JsonIgnoreProperties
   private String password;
 
   @Enumerated(EnumType.STRING)
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Role role;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+  @OneToMany(mappedBy = "user")
+  private List<Computer> computers;
+  @OneToMany(mappedBy = "user")
+  private List<Monitor> monitors;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

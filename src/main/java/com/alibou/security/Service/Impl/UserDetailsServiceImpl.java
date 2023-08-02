@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -22,6 +23,7 @@ public class UserDetailsServiceImpl implements UserService {
         return repository.save(user);
     }
 
+
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = repository.findAll();
@@ -34,6 +36,17 @@ public class UserDetailsServiceImpl implements UserService {
                         .role(user.getRole())
                         .build())
                 .collect(Collectors.toList());
+    }
+    @Override
+    public Optional<UserDTO> getUserById(Integer id) {
+        Optional<User> user = repository.findById(id);
+        return user.map(u -> UserDTO.builder()
+                .id(u.getId())
+                .firstname(u.getFirstname())
+                .lastname(u.getLastname())
+                .username(u.getUsername())
+                .build());
+
     }
 
 }

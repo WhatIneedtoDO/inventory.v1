@@ -21,4 +21,6 @@ public class Model {
     private String name;
     @OneToMany( mappedBy= "model",cascade = CascadeType.ALL)
     private List <Computer> computers;
+    @OneToMany( mappedBy= "model",cascade = CascadeType.ALL)
+    private List <Monitor> monitors;
 }
