@@ -13,5 +13,6 @@ public interface UserService {
  User saveUser(User user);
  List<UserDTO> getAllUsers();
  Optional<UserDTO> getUserById(Integer id);
+ Optional<UserDTO>getUserByUsername(String username);
 
 }
