@@ -1,0 +1,247 @@
+@import url("../fonts/stylesheet.css");
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+html{
+    background-color: rgb(238, 236, 236);
+}
+
+.page-authorization{
+    max-width: 1920px;
+    width: 100%;
+    height: 970px;
+    background-color: rgb(238, 236, 236);
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    background-image: url('../static/img/Background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-right: 15px;
+}
+
+.btn-dark{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(245, 245, 245, 0.5);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+    background-image: url('../static/img/lamp.svg');
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.btn-dark:hover{
+    transform: scale(0.95);
+}
+
+.logo{
+    max-width: 600px;
+    padding-left: 5%;
+}
+
+.authorization{
+    max-width: 550px;
+    width: 100%;
+    position: relative;
+    margin-right: 25%;
+    padding: 25px 45px;
+    overflow: hidden;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);	
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, .50);
+      /*размываем элемент*/
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.authorization_text{
+    font-style: normal;
+    font-weight: 900;
+    font-size: 50px;
+    line-height: 75px;
+    color: #000000;
+    text-align: center;
+}
+
+.authorization_input{
+    width: 100%;
+    height: 36px;
+    border: none;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 36px;
+    background: none;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    
+}
+
+.authorization_button{
+    border: none;
+    background: #4044ED;
+    font-family: inherit;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 36px;
+    width: 100%;
+    height: 65px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.25s ease-in-out;
+    
+}
+
+.authorization_button:hover{
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+    color: #ffffffb7;
+}
+
+.authorization_button:disabled{
+    background: #3e3f7a;
+    cursor:no-drop;
+}
+
+.authorization_error{
+    font-size: 18px;
+    color: red;
+    margin-top: -35px;
+    padding-bottom: 10px;
+    transition: 0.15s;
+    opacity: 0;
+}
+
+.authorization_error-active{
+    opacity: 1;
+}
+
+.authorization_error:hover{
+    transform: scale(1.15);
+    padding-left: 25px;
+}
+
+.authorization_input-error{
+    border-bottom: red solid 2px;
+}
+
+.form-hidden{
+    display: none;
+}
+
+.form-visible{
+    display: flex;
+}
+
+.dark-background{
+    background: #282537;
+    background: linear-gradient(to right, red, blue);}
+
+.dark-container{
+    background-color: #0000008d;
+    box-shadow: 2px 2px 5px 1px rgba(255, 0, 0, 0.5);
+    color: white;
+}
+
+.dark-text{
+    color: white;
+}
+
+.dark-input{
+    color: white;
+    border-bottom: 1px solid #f40000;
+}
+
+.dark-btn{
+    background-color: #2a2a2a8d;
+}
+.dark-btn:hover{
+    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.5);
+    transform: scale(0.98);
+}
+
+.dark-lamp{
+    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.5);
+    background-color: #2a2a2a;
+    background-image: url('../static/img/svg-edited.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.outer_wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .wrapper {
+    position: absolute;
+    height: calc(100vh - 100px);
+    width: 100%;
+    top: 0;
+  }
+  
+  .ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 150px;
+    background-color: rgb(1, 143, 96);
+  }
+
+  
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+  
+  polygon.eyes {
+    fill: rgb(0, 0, 0);
+  }
+  
+  polygon,
+  path {
+    fill: rgb(222, 222, 222);
+  }
+
+  
+
+
+@media (min-width: 320px) and (max-width: 1700px) {
+    .page-authorization{
+        flex-direction: column;
+        justify-content:center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .authorization{
+        max-width: 550px;
+        margin-right: 0;
+        margin-top: 50px;
+    }
+    .logo{
+        padding-left: 0;
+        max-width: 350px;
+        
+    }
+}
