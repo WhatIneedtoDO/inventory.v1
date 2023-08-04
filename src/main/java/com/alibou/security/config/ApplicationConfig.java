@@ -3,6 +3,7 @@ package com.alibou.security.config;
 import com.alibou.security.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @RequiredArgsConstructor
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.alibou.security.Repository")
+@ComponentScan(basePackages = "com.alibou.security.Service")
 public class ApplicationConfig {
 
   private final UserRepository repository;

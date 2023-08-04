@@ -6,8 +6,6 @@ import com.alibou.security.Entity.Computer;
 import com.alibou.security.Entity.User;
 import com.alibou.security.Repository.*;
 import com.alibou.security.Service.ComputerService;
-import com.alibou.security.Service.UserService;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
