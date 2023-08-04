@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class CityServiceImpl implements CityService {
-    private CityRepository cityRepository;
+    private  CityRepository cityRepository;
     @Autowired
     public CityServiceImpl(CityRepository cityRepository){
         this.cityRepository = cityRepository;

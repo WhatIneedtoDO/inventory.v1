@@ -19,6 +19,7 @@ public class City {
 
 
     @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
