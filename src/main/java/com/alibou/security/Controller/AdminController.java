@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -36,6 +37,14 @@ public class AdminController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Map.of(userDetails.getUsername(), userDetails.getAuthorities().toString()));
     }
+
+    @GetMapping("/Details")
+    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails){
+        String username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
 
     @GetMapping("/Users")
     @PreAuthorize("hasAuthority('admin:read')")
