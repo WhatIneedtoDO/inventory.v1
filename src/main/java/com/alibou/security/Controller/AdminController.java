@@ -38,15 +38,6 @@ public class AdminController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Map.of(userDetails.getUsername(),userDetails.getAuthorities().toString()));
     }
-    @GetMapping("/Us")
-    //@PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        Optional<UserDTO> user = userService.getUserByUsername(username);
-        return ResponseEntity.ok(user);
-    }
-
-
     @GetMapping("/Details")
     public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails){
         String username = userDetails.getUsername();

@@ -24,18 +24,6 @@ public class UserDetailsServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDTO> getUserByUsername(String username) {
-        Optional<User> user = repository.findByUsername(username);
-
-        return user.map(u->UserDTO.builder()
-                .id(u.getId())
-                .firstname(u.getFirstname())
-                .lastname(u.getLastname())
-                .role(u.getRole())
-                .build());
-    }
-
-    @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = repository.findAll();
         return users.stream()
