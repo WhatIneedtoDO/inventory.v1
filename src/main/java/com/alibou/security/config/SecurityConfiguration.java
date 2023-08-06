@@ -3,6 +3,7 @@ package com.alibou.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static com.alibou.security.Entity.Enum.Permission.ADMIN_CREATE;
 import static com.alibou.security.Entity.Enum.Permission.ADMIN_DELETE;
@@ -37,16 +43,39 @@ public class SecurityConfiguration {
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
   private final LogoutHandler logoutHandler;
-
+  @Bean
+  public WebMvcConfigurer CorsConfig(){
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("GET","POST","HEAD","PUT","DELETE","OPTIONS");
+      }
+    };
+  }
+  @Bean
+  public CorsFilter corsFilter(){
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.addAllowedOriginPattern("*");
+    config.addAllowedHeader("*");
+    config.addExposedHeader(HttpHeaders.AUTHORIZATION);
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**",config);
+    return new CorsFilter(source);
+  }
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
+        .cors()
+            .and()
         .csrf()
         .disable()
         .authorizeHttpRequests()
         .requestMatchers(
                 "/api/v1/auth/**",
-                "/**",
+                "/",
                 "/static/**",
                 "/static/public/scripts/**",
                 "/v2/api-docs",

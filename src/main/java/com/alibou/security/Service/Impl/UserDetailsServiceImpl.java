@@ -56,6 +56,17 @@ public class UserDetailsServiceImpl implements UserService {
                 .firstname(u.getFirstname())
                 .lastname(u.getLastname())
                 .username(u.getUsername())
+                .role(u.getRole())
+                .build());
+
+    }
+    public Optional<UserDTO> getUserByUsername(String username){
+        Optional<User> user = repository.findByUsername(username);
+        return user.map(u->UserDTO.builder()
+                .id(u.getId())
+                .firstname(u.getFirstname())
+                .lastname(u.getLastname())
+                .role(u.getRole())
                 .build());
 
     }

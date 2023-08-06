@@ -20,7 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/admin")
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;
     private final AuthenticationService service;
@@ -33,10 +33,19 @@ public class AdminController {
     @GetMapping("/U")
     @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<Map<String, String>> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Map.of(userDetails.getUsername(), userDetails.getAuthorities().toString()));
+                .body(Map.of(userDetails.getUsername(),userDetails.getAuthorities().toString()));
     }
+    @GetMapping("/Us")
+    //@PreAuthorize("hasAuthority('admin:read')")
+    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
 
     @GetMapping("/Details")
     public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails){
