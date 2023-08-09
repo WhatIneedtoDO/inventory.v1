@@ -1,10 +1,9 @@
 package com.alibou.security.DTO.OutDTO;
 
 import com.alibou.security.DTO.*;
-import com.alibou.security.Entity.*;
-import com.alibou.security.Entity.Enum.RAM;
-import com.alibou.security.Entity.Enum.SSD;
 import com.alibou.security.Entity.Enum.Serviceability;
+import com.alibou.security.Entity.MotherBModel;
+import com.alibou.security.Entity.MotherBProd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,9 +23,16 @@ public class ComputerOutDTO {
     private ProductionsDTO production;
     private ModelDTO model;
     private ItemTypeDTO itemType;
-    private SSD ssd;
-    private RAM ram;
+    private Integer ssd;
+    private Integer hdd;
+    private MotherBProdDTO motherBProd;
+    private MotherBModelDTO motherBModel;
+    private Integer slotsvalue;
+    private Integer slotsuse;
+    private Integer ramtype;
+    private Integer ram;
     private Integer bp;
+    private String cpu;
     private Integer year;
     private Serviceability serv;
     private CityDTO city;

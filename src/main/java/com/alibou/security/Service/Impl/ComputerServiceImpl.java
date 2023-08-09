@@ -28,11 +28,14 @@ public class ComputerServiceImpl implements ComputerService {
     private LocationRepository locationRepository;
     private ItemTypeRepository itemTypeRepository;
     private CityRepository cityRepository;
+    private MotherBProdRepos motherBProdRepos;
+    private MotherBModelRepos motherBModelRepos;
 
 
     @Autowired
     public ComputerServiceImpl(ComputerRepository computerRepository, UserRepository userRepository, ProductionRepository productionRepository,
-                               ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository) {
+                               ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository,
+                               MotherBProdRepos motherBProdRepos,MotherBModelRepos motherBModelRepos) {
 
         this.productionRepository = productionRepository;
         this.computerRepository = computerRepository;
@@ -41,14 +44,68 @@ public class ComputerServiceImpl implements ComputerService {
         this.locationRepository = locationRepository;
         this.itemTypeRepository = itemTypeRepository;
         this.cityRepository = cityRepository;
+        this.motherBModelRepos = motherBModelRepos;
+        this.motherBProdRepos = motherBProdRepos;
+    }
 
-    }
     @Override
-    public List<ComputerOutDTO> getAllComputers() {
-        List<Computer> computers = computerRepository.findAll();
-        return mapToDTOs(computers);
+    public ComputerDTO getComputerById(Integer computerId) {
+        Computer computer = computerRepository.findById(computerId)
+                .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
+        return mapToDTOWithId(computer);
     }
-//добавление компьютера только с ID в JSON объекте (вывод JSON объекта только с Id присоединенных столбцов )
+
+    @Override
+    public ComputerOutDTO getComputerOutById(Integer computerId) {
+        Computer computer = computerRepository.findById(computerId)
+                .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
+        return mapToDTO(computer);
+    }
+
+    @Override
+    public Computer updateComputer(Integer computerId, ComputerDTO computerDTO) {
+        Computer computer = computerRepository.findById(computerId)
+                .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
+        Integer userId = computerDTO.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
+        computer.setId(computerDTO.getId());
+        computer.setI_card(computerDTO.getI_card());
+        computer.setUser(user);
+        computer.setProduction(productionRepository.findById(computerDTO.getProduction())
+                .orElseThrow(()-> new EntityNotFoundException("Production not found")));
+        computer.setSerialnumber(computerDTO.getSerialnumber());
+        computer.setI_number(computerDTO.getI_number());
+        computer.setModel(modelRepository.findById(computerDTO.getModel())
+                .orElseThrow(() -> new EntityNotFoundException("Model not found")));
+        computer.setItemType(itemTypeRepository.findById(computerDTO.getItemType())
+                .orElseThrow(() -> new EntityNotFoundException("Item type not found")));
+        computer.setSsd(computerDTO.getSsd());
+        computer.setHdd(computerDTO.getHdd());
+        computer.setMotherbprod(motherBProdRepos.findById(computerDTO.getMotherBProd())
+                .orElseThrow(()-> new EntityNotFoundException("MotherBoard not found")));
+        computer.setMotherbmodel(motherBModelRepos.findById(computerDTO.getMotherBModel())
+                .orElseThrow(()->new EntityNotFoundException("Motherboard model not found")));
+        computer.setSlotsvalue(computerDTO.getSlotsvalue());
+        computer.setSlotsuse(computerDTO.getSlotsuse());
+        computer.setRamtype(computerDTO.getRamtype());
+        computer.setRam(computerDTO.getRam());
+        computer.setBp(computerDTO.getBp());
+        computer.setCpu(computerDTO.getCpu());
+        computer.setYear(computerDTO.getYear());
+        computer.setServ(computerDTO.getServ());
+        computer.setCity(cityRepository.findById(computerDTO.getCity())
+                .orElseThrow(() -> new EntityNotFoundException("City not found")));
+        computer.setLocation(locationRepository.findById(computerDTO.getLocation())
+                .orElseThrow(() -> new EntityNotFoundException("Location not found")));
+        computer.setRoom(computerDTO.getRoom());
+        computer.setStaydate(computerDTO.getStaydate());
+        computer.setPrice(computerDTO.getPrice());
+        computer.setComment(computerDTO.getComment());
+        return computerRepository.save(computer);
+    }
+
+    //добавление компьютера только с ID в JSON объекте (вывод JSON объекта только с Id присоединенных столбцов )
     @Override
     public ComputerDTO addComputer(ComputerDTO computerDTO) {
         Computer computer = mapToEntity(computerDTO);
@@ -56,6 +113,8 @@ public class ComputerServiceImpl implements ComputerService {
         Computer savedComputer = computerRepository.save(computer);
         return mapToDTOWithId(savedComputer);
     }
+
+
 
     //вывод JSON объекта с полноценными объектами вместо Id
     @Override
@@ -74,15 +133,26 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setId(computerDTO.getId());
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
+        computer.setProduction(productionRepository.findById(computerDTO.getProduction())
+                .orElseThrow(()-> new EntityNotFoundException("Production not found")));
         computer.setSerialnumber(computerDTO.getSerialnumber());
         computer.setI_number(computerDTO.getI_number());
         computer.setModel(modelRepository.findById(computerDTO.getModel())
                 .orElseThrow(() -> new EntityNotFoundException("Model not found")));
         computer.setItemType(itemTypeRepository.findById(computerDTO.getItemType())
-                .orElseThrow(() -> new EntityNotFoundException("ItemType not found")));
+                .orElseThrow(() -> new EntityNotFoundException("Item type not found")));
         computer.setSsd(computerDTO.getSsd());
+        computer.setHdd(computerDTO.getHdd());
+        computer.setMotherbprod(motherBProdRepos.findById(computerDTO.getMotherBProd())
+                .orElseThrow(()-> new EntityNotFoundException("MotherBoard not found")));
+        computer.setMotherbmodel(motherBModelRepos.findById(computerDTO.getMotherBModel())
+                .orElseThrow(()->new EntityNotFoundException("Motherboard model not found")));
+        computer.setSlotsvalue(computerDTO.getSlotsvalue());
+        computer.setSlotsuse(computerDTO.getSlotsuse());
+        computer.setRamtype(computerDTO.getRamtype());
         computer.setRam(computerDTO.getRam());
         computer.setBp(computerDTO.getBp());
+        computer.setCpu(computerDTO.getCpu());
         computer.setYear(computerDTO.getYear());
         computer.setServ(computerDTO.getServ());
         computer.setCity(cityRepository.findById(computerDTO.getCity())
@@ -90,8 +160,6 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setLocation(locationRepository.findById(computerDTO.getLocation())
                 .orElseThrow(() -> new EntityNotFoundException("Location not found")));
         computer.setRoom(computerDTO.getRoom());
-        computer.setProduction(productionRepository.findById(computerDTO.getProduction())
-                .orElseThrow(() -> new EntityNotFoundException("Production not found")));
         computer.setStaydate(computerDTO.getStaydate());
         computer.setPrice(computerDTO.getPrice());
         computer.setComment(computerDTO.getComment());
@@ -114,6 +182,8 @@ public class ComputerServiceImpl implements ComputerService {
         ItemTypeDTO itemTypeDTO = ItemTypeDTO.fromItemType(computer.getItemType());
         CityDTO cityDTO = CityDTO.fromCity(computer.getCity());
         LocationDTO locationDTO = LocationDTO.fromLocation(computer.getLocation());
+        MotherBModelDTO motherBModelDTO = MotherBModelDTO.fromMotherBModel(computer.getMotherbmodel());
+        MotherBProdDTO motherBProdDTO = MotherBProdDTO.fromMotherBProd(computer.getMotherbprod());
         return ComputerOutDTO
                 .builder()
                 .id(computer.getId())
@@ -123,9 +193,16 @@ public class ComputerServiceImpl implements ComputerService {
                 .production(productionsDTO)
                 .model(modelDTO)
                 .itemType(itemTypeDTO)
-                .ssd(computer.getSsd())
-                .ram(computer.getRam())
+                .ssd(computer.getSsd().getValue())
+                .hdd(computer.getHdd().getValue())
+                .motherBProd(motherBProdDTO)
+                .motherBModel(motherBModelDTO)
+                .slotsvalue(computer.getSlotsvalue())
+                .slotsuse(computer.getSlotsuse())
+                .ramtype(computer.getRamtype())
+                .ram(computer.getRam().getValue())
                 .bp(computer.getBp())
+                .cpu(computer.getCpu())
                 .year(computer.getYear())
                 .serv(computer.getServ())
                 .city(cityDTO)
@@ -150,8 +227,15 @@ public class ComputerServiceImpl implements ComputerService {
                 .model(computer.getModel().getId())
                 .itemType(computer.getItemType().getId())
                 .ssd(computer.getSsd())
+                .hdd(computer.getHdd())
+                .motherBProd(computer.getMotherbprod().getId())
+                .motherBModel(computer.getMotherbmodel().getId())
+                .slotsvalue(computer.getSlotsvalue())
+                .slotsuse(computer.getSlotsuse())
+                .ramtype(computer.getRamtype())
                 .ram(computer.getRam())
                 .bp(computer.getBp())
+                .cpu(computer.getCpu())
                 .year(computer.getYear())
                 .serv(computer.getServ())
                 .city(computer.getCity().getId())

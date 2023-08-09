@@ -1,6 +1,7 @@
 package com.alibou.security.DTO;
 
 import com.alibou.security.Entity.*;
+import com.alibou.security.Entity.Enum.HDD;
 import com.alibou.security.Entity.Enum.RAM;
 import com.alibou.security.Entity.Enum.SSD;
 import com.alibou.security.Entity.Enum.Serviceability;
@@ -28,8 +29,15 @@ public class ComputerDTO {
     private Integer model;
     private Integer itemType;
     private SSD ssd;
+    private HDD hdd;
+    private Integer motherBProd;
+    private Integer motherBModel;
+    private Integer slotsvalue;
+    private Integer slotsuse;
+    private Integer ramtype;
     private RAM ram;
     private Integer bp;
+    private String cpu;
     private Integer year;
     private Serviceability serv;
     private Integer city;

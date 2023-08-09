@@ -1,10 +1,9 @@
 package com.alibou.security.Repository;
 
-import com.alibou.security.Entity.City;
+import com.alibou.security.Entity.MotherBModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CityRepository extends JpaRepository<City,Integer> {
-
+public interface MotherBModelRepos extends JpaRepository<MotherBModel,Integer> {
 }
