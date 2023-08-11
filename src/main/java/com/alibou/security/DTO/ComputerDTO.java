@@ -37,7 +37,8 @@ public class ComputerDTO {
     private Integer ramtype;
     private RAM ram;
     private Integer bp;
-    private String cpu;
+    private Integer cpuproduction;
+    private Integer cpumodel;
     private Integer year;
     private Serviceability serv;
     private Integer city;

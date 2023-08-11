@@ -1,7 +1,11 @@
 package com.alibou.security.Controller;
 
+import com.alibou.security.DTO.CpuModelDTO;
+import com.alibou.security.DTO.CpuProductionDTO;
 import com.alibou.security.DTO.MotherBModelDTO;
 import com.alibou.security.DTO.MotherBProdDTO;
+import com.alibou.security.Service.CpuModelService;
+import com.alibou.security.Service.CpuProdService;
 import com.alibou.security.Service.MotherBModelService;
 import com.alibou.security.Service.MotherBProdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +23,15 @@ import java.util.List;
 public class PublicController {
     private final MotherBProdService motherBProdService;
     private final MotherBModelService motherBModelService;
+    private final CpuProdService cpuProdService;
+    private final CpuModelService cpuModelService;
     @Autowired
-    public PublicController(MotherBProdService motherBProdService,MotherBModelService motherBModelService){
+    public PublicController(MotherBProdService motherBProdService,MotherBModelService motherBModelService,
+                            CpuProdService cpuProdService,CpuModelService cpuModelService){
         this.motherBProdService = motherBProdService ;
         this.motherBModelService = motherBModelService;
+        this.cpuProdService = cpuProdService;
+        this.cpuModelService = cpuModelService;
     }
     @GetMapping("/MotherBoard/Productions")
     public ResponseEntity<List<MotherBProdDTO>> getAllProd(){
@@ -33,5 +42,17 @@ public class PublicController {
     public ResponseEntity<List<MotherBModelDTO>> getAllModel(){
         List<MotherBModelDTO> models = motherBModelService.getAllMotherBModels();
         return ResponseEntity.ok(models);
+    }
+    @GetMapping("/Cpu/Productions")
+    public ResponseEntity<List<CpuProductionDTO>> getAllCpuProd(){
+        List<CpuProductionDTO> cpuProductions =cpuProdService.getAllCpuProduction();
+        return ResponseEntity.ok(cpuProductions);
+    }
+
+
+    @GetMapping("/Cpu/Models")
+    public ResponseEntity<List<CpuModelDTO>> getAllCpuModels(){
+        List<CpuModelDTO> cpuModels = cpuModelService.getAllCpuModel();
+        return ResponseEntity.ok(cpuModels);
     }
 }

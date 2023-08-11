@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,12 +32,14 @@ public class ComputerServiceImpl implements ComputerService {
     private CityRepository cityRepository;
     private MotherBProdRepos motherBProdRepos;
     private MotherBModelRepos motherBModelRepos;
-
+    private CpuProdRepository cpuProdRepository;
+    private CpuModelRepository cpuModelRepository;
 
     @Autowired
     public ComputerServiceImpl(ComputerRepository computerRepository, UserRepository userRepository, ProductionRepository productionRepository,
                                ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository,
-                               MotherBProdRepos motherBProdRepos,MotherBModelRepos motherBModelRepos) {
+                               MotherBProdRepos motherBProdRepos,MotherBModelRepos motherBModelRepos, CpuProdRepository cpuProdRepository,
+                               CpuModelRepository cpuModelRepository) {
 
         this.productionRepository = productionRepository;
         this.computerRepository = computerRepository;
@@ -46,6 +50,8 @@ public class ComputerServiceImpl implements ComputerService {
         this.cityRepository = cityRepository;
         this.motherBModelRepos = motherBModelRepos;
         this.motherBProdRepos = motherBProdRepos;
+        this.cpuProdRepository = cpuProdRepository;
+        this.cpuModelRepository = cpuModelRepository;
     }
 
     @Override
@@ -69,7 +75,7 @@ public class ComputerServiceImpl implements ComputerService {
         Integer userId = computerDTO.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
-        computer.setId(computerDTO.getId());
+        computer.setId(computerId);
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
         computer.setProduction(productionRepository.findById(computerDTO.getProduction())
@@ -91,7 +97,10 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setRamtype(computerDTO.getRamtype());
         computer.setRam(computerDTO.getRam());
         computer.setBp(computerDTO.getBp());
-        computer.setCpu(computerDTO.getCpu());
+        computer.setCpuproduction(cpuProdRepository.findById(computerDTO.getProduction())
+                .orElseThrow(()-> new EntityNotFoundException("Cpu Production not found")));
+        computer.setCpumodel(cpuModelRepository.findById(computerDTO.getCpumodel())
+                .orElseThrow(()-> new EntityNotFoundException("Cpu Model not Found")));
         computer.setYear(computerDTO.getYear());
         computer.setServ(computerDTO.getServ());
         computer.setCity(cityRepository.findById(computerDTO.getCity())
@@ -152,7 +161,10 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setRamtype(computerDTO.getRamtype());
         computer.setRam(computerDTO.getRam());
         computer.setBp(computerDTO.getBp());
-        computer.setCpu(computerDTO.getCpu());
+        computer.setCpuproduction(cpuProdRepository.findById(computerDTO.getProduction())
+                .orElseThrow(()-> new EntityNotFoundException("Cpu Production not found")));
+        computer.setCpumodel(cpuModelRepository.findById(computerDTO.getCpumodel())
+                .orElseThrow(()-> new EntityNotFoundException("Cpu Model not Found")));
         computer.setYear(computerDTO.getYear());
         computer.setServ(computerDTO.getServ());
         computer.setCity(cityRepository.findById(computerDTO.getCity())
@@ -184,6 +196,8 @@ public class ComputerServiceImpl implements ComputerService {
         LocationDTO locationDTO = LocationDTO.fromLocation(computer.getLocation());
         MotherBModelDTO motherBModelDTO = MotherBModelDTO.fromMotherBModel(computer.getMotherbmodel());
         MotherBProdDTO motherBProdDTO = MotherBProdDTO.fromMotherBProd(computer.getMotherbprod());
+        CpuModelDTO cpuModelDTO = CpuModelDTO.fromCpuModel(computer.getCpumodel());
+        CpuProductionDTO cpuProductionDTO = CpuProductionDTO.fromCpuProduction(computer.getCpuproduction());
         return ComputerOutDTO
                 .builder()
                 .id(computer.getId())
@@ -202,7 +216,8 @@ public class ComputerServiceImpl implements ComputerService {
                 .ramtype(computer.getRamtype())
                 .ram(computer.getRam().getValue())
                 .bp(computer.getBp())
-                .cpu(computer.getCpu())
+                .cpuproduction(cpuProductionDTO)
+                .cpumodel(cpuModelDTO)
                 .year(computer.getYear())
                 .serv(computer.getServ())
                 .city(cityDTO)
@@ -235,7 +250,8 @@ public class ComputerServiceImpl implements ComputerService {
                 .ramtype(computer.getRamtype())
                 .ram(computer.getRam())
                 .bp(computer.getBp())
-                .cpu(computer.getCpu())
+                .cpuproduction(computer.getCpuproduction().getId())
+                .cpumodel(computer.getCpumodel().getId())
                 .year(computer.getYear())
                 .serv(computer.getServ())
                 .city(computer.getCity().getId())

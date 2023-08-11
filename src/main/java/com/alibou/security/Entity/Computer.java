@@ -58,7 +58,14 @@ public class Computer {
     @Enumerated(EnumType.STRING)
     private RAM ram;
     private Integer bp;
-    private String cpu;
+    @JsonIgnoreProperties({"computers"})
+    @ManyToOne
+    @JoinColumn(name = "cpuproduction_id")
+    private CpuProduction cpuproduction;
+    @JsonIgnoreProperties({"computers"})
+    @ManyToOne
+    @JoinColumn(name = "cpumodel_id")
+    private CpuModel cpumodel;
     private Integer year;
     @Enumerated(EnumType.STRING)
     private Serviceability serv;

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum HDD {
+    VALUENOTINSTALL(0),
     VALUE128(128),
     VALUE256(256),
     VALUE512(512),
