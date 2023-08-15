@@ -48,6 +48,8 @@ public class User implements UserDetails {
   private List<Computer> computers;
   @OneToMany(mappedBy = "user")
   private List<Monitor> monitors;
+  @OneToMany(mappedBy = "user")
+  private List<HistoryOfChanges> history;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
