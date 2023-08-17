@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,6 +76,8 @@ public class ComputerController {
             ComputerDTO originalComputerDTO = computerService.getComputerById(computerId);
             List<String> changes = new ArrayList<>();
 
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             Field[] fields = originalComputerDTO.getClass().getDeclaredFields();
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -82,7 +85,17 @@ public class ComputerController {
                     Object originalValue = field.get(originalComputerDTO);
                     Object newValue = field.get(computerDTO);
                     if (originalValue != null && !originalValue.equals(newValue)) {
-                        changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                        if (originalValue instanceof Date && newValue instanceof Date) {
+
+                            String originalDateStr = dateFormatter.format((Date) originalValue);
+                            String newDateStr = dateFormatter.format((Date) newValue);
+
+                            if (!originalDateStr.equals(newDateStr)) {
+                                changes.add(" В поле : " + field.getName() + ": изменено значение с " + originalDateStr + " на " + newDateStr);
+                            }
+                        } else {
+                            changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                        }
                     }
                 } catch (IllegalAccessException e) {
                 }
