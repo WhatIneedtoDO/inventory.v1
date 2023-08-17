@@ -32,6 +32,15 @@ public class SecurityApplication {
 					.build();
 			System.out.println("Admin token: " + service.register(admin).getAccessToken());
 
+			var danil = RegisterRequest.builder()
+					.firstname("danil")
+					.lastname("shevelev")
+					.username("danil")
+					.password("password111")
+					.role(ADMIN)
+					.build();
+			System.out.println("Admin token: " + service.register(danil).getAccessToken());
+
 			var manager = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")

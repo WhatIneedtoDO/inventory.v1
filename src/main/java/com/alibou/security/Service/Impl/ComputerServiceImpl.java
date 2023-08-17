@@ -139,7 +139,7 @@ public class ComputerServiceImpl implements ComputerService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
         Computer computer = new Computer();
-        computer.setId(computerDTO.getId());
+
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
         computer.setProduction(productionRepository.findById(computerDTO.getProduction())
