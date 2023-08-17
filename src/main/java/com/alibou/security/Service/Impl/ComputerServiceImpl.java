@@ -35,6 +35,7 @@ public class ComputerServiceImpl implements ComputerService {
     private CpuProdRepository cpuProdRepository;
     private CpuModelRepository cpuModelRepository;
 
+
     @Autowired
     public ComputerServiceImpl(ComputerRepository computerRepository, UserRepository userRepository, ProductionRepository productionRepository,
                                ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository,
@@ -139,7 +140,6 @@ public class ComputerServiceImpl implements ComputerService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
         Computer computer = new Computer();
-
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
         computer.setProduction(productionRepository.findById(computerDTO.getProduction())
