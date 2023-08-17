@@ -3,6 +3,7 @@ package com.alibou.security.Controller;
 import com.alibou.security.DTO.ComputerDTO;
 import com.alibou.security.DTO.HistoryDTO;
 import com.alibou.security.DTO.OutDTO.ComputerOutDTO;
+import com.alibou.security.DTO.OutDTO.HistoryOutDTO;
 import com.alibou.security.DTO.UserDTO;
 import com.alibou.security.Entity.Computer;
 import com.alibou.security.Service.ComputerService;
@@ -80,13 +81,13 @@ public class ComputerController {
                     Object originalValue = field.get(originalComputerDTO);
                     Object newValue = field.get(computerDTO);
                     if (originalValue != null && !originalValue.equals(newValue)) {
-                        changes.add(" В поле : " + field.getName() + " изменено значенеие с " + originalValue + " на " + newValue);
+                        changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
                     }
                 } catch (IllegalAccessException e) {
                 }
             }
 
-            String changeDetails = String.join(", ", changes);
+            String changeDetails = String.join("/n ", changes);
 
 
 
@@ -106,6 +107,16 @@ public class ComputerController {
         Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
+    }
+    @GetMapping("/History/{equipmentId}/{itemtypeId}")
+    public ResponseEntity<List<HistoryOutDTO>> getAllHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
+        List<HistoryOutDTO> history = historyService.getHistoryList(equipmentId, itemtypeId);
+        return ResponseEntity.ok(history);
+    }
+    @GetMapping("/History/Last/{equipmentId}/{itemtypeId}")
+    public ResponseEntity<HistoryOutDTO> getLastHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
+        HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
+        return ResponseEntity.ok(history);
     }
 
 }

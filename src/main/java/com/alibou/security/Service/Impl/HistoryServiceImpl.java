@@ -2,8 +2,10 @@ package com.alibou.security.Service.Impl;
 
 import com.alibou.security.DTO.HistoryDTO;
 import com.alibou.security.DTO.ItemTypeDTO;
+import com.alibou.security.DTO.OutDTO.ComputerOutDTO;
 import com.alibou.security.DTO.OutDTO.HistoryOutDTO;
 import com.alibou.security.DTO.UserDTO;
+import com.alibou.security.Entity.Computer;
 import com.alibou.security.Entity.HistoryOfChanges;
 import com.alibou.security.Entity.ItemType;
 import com.alibou.security.Entity.User;
@@ -17,6 +19,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @PersistenceContext
@@ -34,9 +39,21 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public HistoryOutDTO getHistory(Integer equipmentId, Integer itemtypeId) {
+    public HistoryOutDTO getLastHistory(Integer equipmentId, Integer itemtypeId) {
         HistoryOfChanges historyOfChanges = historyRepository.findByItemTypeAndEquipment(equipmentId,itemtypeId);
         return mapToDTO(historyOfChanges);
+    }
+    @Override
+    public List<HistoryOutDTO> getHistoryList(Integer equipmentId, Integer itemtypeId) {
+        List<HistoryOfChanges> historyOfChangesList = historyRepository.findByItemTypeAndEquipmentforList(equipmentId, itemtypeId);
+        return mapToDTOs(historyOfChangesList);
+    }
+
+
+    private List<HistoryOutDTO> mapToDTOs(List<HistoryOfChanges> historyOfChanges){
+        return historyOfChanges.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -46,6 +63,7 @@ public class HistoryServiceImpl implements HistoryService {
         HistoryOfChanges newHistory = historyRepository.save(historyOfChanges);
         return mapFromDTO(newHistory);
     }
+
 
     private HistoryOfChanges mapToEntity(HistoryDTO historyDTO){
         HistoryOfChanges historyOfChanges = new HistoryOfChanges();
@@ -74,6 +92,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .build();
     }
 
+
     private HistoryDTO mapFromDTO(HistoryOfChanges historyOfChanges){
         return HistoryDTO
                 .builder()
@@ -85,6 +104,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .changeDate(historyOfChanges.getChangeDate())
                 .build();
     }
+
 
 
 }

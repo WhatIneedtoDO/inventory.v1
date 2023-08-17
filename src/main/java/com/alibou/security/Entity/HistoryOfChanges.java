@@ -30,5 +30,6 @@ public class HistoryOfChanges {
     @JsonIgnoreProperties({"computers", "monitors"})
     private ItemType itemType;
     private Date changeDate;
+    @Column(columnDefinition = "TEXT")
     private String changeDetails;
 }
