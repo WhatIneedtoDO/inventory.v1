@@ -15,5 +15,6 @@ public interface ComputerService {
     Computer updateComputer(Integer computerId, ComputerDTO computerDTO);
     ComputerDTO addComputer(ComputerDTO computerDTO);
     List<ComputerOutDTO> getAllComputersWithDetails();
+    Computer deleteById(Integer computerId);
 
 }

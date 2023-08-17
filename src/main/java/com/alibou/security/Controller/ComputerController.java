@@ -66,6 +66,7 @@ public class ComputerController {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
+
         if (user.isPresent()) {
             Integer userid = user.get().getId();
             Integer equipmentId = computerId;
@@ -87,9 +88,7 @@ public class ComputerController {
                 }
             }
 
-            String changeDetails = String.join("/n ", changes);
-
-
+            String changeDetails = String.join(" ", changes);
 
             HistoryDTO historyDTO = HistoryDTO.builder()
                     .user(userid)
@@ -100,13 +99,24 @@ public class ComputerController {
                     .build();
 
             historyService.addHistory(historyDTO);
-
+            Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         }
 
-        Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
+
 
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
+    }
+
+   @DeleteMapping("/Delete/{computerId}")
+    public ResponseEntity<Void> deleteComputer(@PathVariable Integer computerId) {
+        Computer deletedComputer = computerService.deleteById(computerId);
+
+        if (deletedComputer == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
     @GetMapping("/History/{equipmentId}/{itemtypeId}")
     public ResponseEntity<List<HistoryOutDTO>> getAllHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
