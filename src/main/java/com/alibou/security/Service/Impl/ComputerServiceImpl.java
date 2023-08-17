@@ -76,7 +76,7 @@ public class ComputerServiceImpl implements ComputerService {
         Integer userId = computerDTO.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
-        computer.setId(computerId);
+        computer.setId(computer.getId());
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
         computer.setProduction(productionRepository.findById(computerDTO.getProduction())
@@ -126,11 +126,20 @@ public class ComputerServiceImpl implements ComputerService {
 
 
 
+
     //вывод JSON объекта с полноценными объектами вместо Id
     @Override
     public List<ComputerOutDTO> getAllComputersWithDetails() {
         List<Computer> computers = computerRepository.findAllComputersWithDetails();
         return mapToDTOs(computers);
+    }
+
+    @Override
+    public Computer deleteById(Integer computerId) {
+        Computer computer = computerRepository.findById(computerId)
+                .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
+        computerRepository.deleteById(computerId);
+        return computer;
     }
 
 

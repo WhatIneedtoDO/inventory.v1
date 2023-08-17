@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +67,7 @@ public class ComputerController {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
+
         if (user.isPresent()) {
             Integer userid = user.get().getId();
             Integer equipmentId = computerId;
@@ -74,6 +76,8 @@ public class ComputerController {
             ComputerDTO originalComputerDTO = computerService.getComputerById(computerId);
             List<String> changes = new ArrayList<>();
 
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             Field[] fields = originalComputerDTO.getClass().getDeclaredFields();
             for (Field field : fields) {
                 field.setAccessible(true);
@@ -81,15 +85,23 @@ public class ComputerController {
                     Object originalValue = field.get(originalComputerDTO);
                     Object newValue = field.get(computerDTO);
                     if (originalValue != null && !originalValue.equals(newValue)) {
-                        changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                        if (originalValue instanceof Date && newValue instanceof Date) {
+
+                            String originalDateStr = dateFormatter.format((Date) originalValue);
+                            String newDateStr = dateFormatter.format((Date) newValue);
+
+                            if (!originalDateStr.equals(newDateStr)) {
+                                changes.add(" В поле : " + field.getName() + ": изменено значение с " + originalDateStr + " на " + newDateStr);
+                            }
+                        } else {
+                            changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                        }
                     }
                 } catch (IllegalAccessException e) {
                 }
             }
 
             String changeDetails = String.join(" ", changes);
-
-
 
             HistoryDTO historyDTO = HistoryDTO.builder()
                     .user(userid)
@@ -100,13 +112,24 @@ public class ComputerController {
                     .build();
 
             historyService.addHistory(historyDTO);
-
+            Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         }
 
-        Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
+
 
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
+    }
+
+   @DeleteMapping("/Delete/{computerId}")
+    public ResponseEntity<Void> deleteComputer(@PathVariable Integer computerId) {
+        Computer deletedComputer = computerService.deleteById(computerId);
+
+        if (deletedComputer == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
     @GetMapping("/History/{equipmentId}/{itemtypeId}")
     public ResponseEntity<List<HistoryOutDTO>> getAllHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
