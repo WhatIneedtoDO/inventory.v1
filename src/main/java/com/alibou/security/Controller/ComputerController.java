@@ -131,15 +131,7 @@ public class ComputerController {
 
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("/History/{equipmentId}/{itemtypeId}")
-    public ResponseEntity<List<HistoryOutDTO>> getAllHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
-        List<HistoryOutDTO> history = historyService.getHistoryList(equipmentId, itemtypeId);
-        return ResponseEntity.ok(history);
-    }
-    @GetMapping("/History/Last/{equipmentId}/{itemtypeId}")
-    public ResponseEntity<HistoryOutDTO> getLastHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
-        HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
-        return ResponseEntity.ok(history);
-    }
+
+
 
 }
