@@ -91,17 +91,17 @@ public class ComputerController {
                             String newDateStr = dateFormatter.format((Date) newValue);
 
                             if (!originalDateStr.equals(newDateStr)) {
-                                changes.add(" В поле : " + field.getName() + ": изменено значение с " + originalDateStr + " на " + newDateStr);
+                                changes.add(field.getName() + " = " + originalDateStr + ",= " + newDateStr);
                             }
                         } else {
-                            changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                            changes.add(field.getName() + " = " + originalValue + ",= " + newValue);
                         }
                     }
                 } catch (IllegalAccessException e) {
                 }
             }
 
-            String changeDetails = String.join(" ", changes);
+            String changeDetails = String.join(";", changes);
 
             HistoryDTO historyDTO = HistoryDTO.builder()
                     .user(userid)
