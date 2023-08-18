@@ -50,11 +50,63 @@ public class MonitorServiceImpl implements MonitorService {
         return mapToDTOWithId(savedMonitor);
     }
 
+    @Override
+    public MonitorDTO getMonitorById(Integer monitorId) {
+        Monitor monitor = monitorRepository.findById(monitorId)
+                .orElseThrow(()-> new EntityNotFoundException("Monitor not found"));
+        return mapToDTOWithId(monitor);
+    }
+
+    @Override
+    public MonitorOutDTO getMonitorOutById(Integer monitorId) {
+        Monitor monitor = monitorRepository.findById(monitorId)
+                .orElseThrow(()-> new EntityNotFoundException("Monitor not found"));
+        return mapToDTO(monitor);
+    }
+
     //вывод JSON объекта с полноценными объектами вместо Id
     @Override
     public List<MonitorOutDTO> getAllMonitorsWithDetails() {
         List<Monitor> monitors = monitorRepository.findAllMonitorsWithDetails();
         return mapToDTOs(monitors);
+    }
+
+    @Override
+    public Monitor updateMonitor(Integer monitorId, MonitorDTO monitorDTO) {
+        Monitor monitor = monitorRepository.findById(monitorId)
+                .orElseThrow(()-> new EntityNotFoundException("Monitor not found"));
+        monitor.setId(monitor.getId());
+        monitor.setI_card(monitorDTO.getI_card());
+        monitor.setSerialnumber(monitorDTO.getSerialnumber());
+        monitor.setI_number(monitorDTO.getI_number());
+        monitor.setModel(modelRepository.findById(monitorDTO.getModel())
+                .orElseThrow(() -> new EntityNotFoundException("Model not found")));
+        monitor.setItemType(itemTypeRepository.findById(monitorDTO.getItemType())
+                .orElseThrow(() -> new EntityNotFoundException("ItemType not found")));
+        monitor.setSize(monitorDTO.getSize());
+        monitor.setYear(monitorDTO.getYear());
+        monitor.setServ(monitorDTO.getServ());
+        monitor.setCity(cityRepository.findById(monitorDTO.getCity())
+                .orElseThrow(() -> new EntityNotFoundException("City not found")));
+        monitor.setLocation(locationRepository.findById(monitorDTO.getLocation())
+                .orElseThrow(() -> new EntityNotFoundException("Location not found")));
+        monitor.setRoom(monitorDTO.getRoom());
+        monitor.setProduction(productionRepository.findById(monitorDTO.getProduction())
+                .orElseThrow(() -> new EntityNotFoundException("Production not found")));
+        monitor.setUser(userRepository.findById(monitorDTO.getUserId())
+                .orElseThrow(()->new EntityNotFoundException("User not found")));
+        monitor.setStaydate(monitorDTO.getStaydate());
+        monitor.setPrice(monitorDTO.getPrice());
+        monitor.setComment(monitorDTO.getComment());
+        return monitorRepository.save(monitor);
+    }
+
+    @Override
+    public Monitor deleteById(Integer monitorId) {
+        Monitor monitor = monitorRepository.findById(monitorId)
+                .orElseThrow(()-> new EntityNotFoundException("Monitor not found"));
+        monitorRepository.deleteById(monitorId);
+        return monitor;
     }
 
     private List<MonitorOutDTO> mapToDTOs(List<Monitor> monitors) {

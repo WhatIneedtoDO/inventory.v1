@@ -91,17 +91,17 @@ public class ComputerController {
                             String newDateStr = dateFormatter.format((Date) newValue);
 
                             if (!originalDateStr.equals(newDateStr)) {
-                                changes.add(" В поле : " + field.getName() + ": изменено значение с " + originalDateStr + " на " + newDateStr);
+                                changes.add(field.getName() + " = " + originalDateStr + ",= " + newDateStr);
                             }
                         } else {
-                            changes.add(" В поле : " + field.getName() + ": изменено значенеие с " + originalValue + " на " + newValue);
+                            changes.add(field.getName() + " = " + originalValue + ",= " + newValue);
                         }
                     }
                 } catch (IllegalAccessException e) {
                 }
             }
 
-            String changeDetails = String.join(" ", changes);
+            String changeDetails = String.join(";", changes);
 
             HistoryDTO historyDTO = HistoryDTO.builder()
                     .user(userid)
@@ -131,15 +131,7 @@ public class ComputerController {
 
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("/History/{equipmentId}/{itemtypeId}")
-    public ResponseEntity<List<HistoryOutDTO>> getAllHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
-        List<HistoryOutDTO> history = historyService.getHistoryList(equipmentId, itemtypeId);
-        return ResponseEntity.ok(history);
-    }
-    @GetMapping("/History/Last/{equipmentId}/{itemtypeId}")
-    public ResponseEntity<HistoryOutDTO> getLastHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
-        HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
-        return ResponseEntity.ok(history);
-    }
+
+
 
 }
