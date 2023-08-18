@@ -16,16 +16,12 @@ import java.util.stream.Collectors;
 public class ModelDTO {
     private Integer id;
     private String name;
-    private List<ComputerDTO> computers;
 
     public static ModelDTO fromModel(Model model){
-//        List<ComputerDTO> computerDTOList = model.getComputers().stream()
-//                .map(ComputerDTO::fromComputer)
-//                .collect(Collectors.toList());
+
         return ModelDTO.builder()
                 .id(model.getId())
                 .name(model.getName())
-  //              .computers(computerDTOList)
                 .build();
     }
 }

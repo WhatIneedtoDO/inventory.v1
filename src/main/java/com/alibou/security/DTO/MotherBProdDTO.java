@@ -16,7 +16,6 @@ import java.util.List;
 public class MotherBProdDTO {
     private Integer id;
     private String name;
-    private List<ComputerDTO> computers;
     public static MotherBProdDTO fromMotherBProd(MotherBProd motherBProd) {
         return MotherBProdDTO.builder()
                 .id(motherBProd.getId())

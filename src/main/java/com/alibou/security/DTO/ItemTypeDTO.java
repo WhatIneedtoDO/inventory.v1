@@ -17,15 +17,11 @@ import java.util.List;
 public class ItemTypeDTO {
     private Integer id;
     private String name;
-    private List<ComputerDTO> computers;
     public static ItemTypeDTO fromItemType(ItemType itemType) {
-//        List<ComputerDTO> computerDTOList = itemType.getComputers().stream()
-//                .map(ComputerDTO::fromComputer)
-//                .collect(Collectors.toList());
+
         return ItemTypeDTO.builder()
                 .id(itemType.getId())
                 .name(itemType.getName())
-       //         .computers(computerDTOList)
                 .build();
     }
 }

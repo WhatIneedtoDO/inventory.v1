@@ -24,19 +24,15 @@ public class UserDTO {
     private String username;
     private Role role;
 
-    private List<ComputerDTO> computers;
 
     public static UserDTO fromUser(User user) {
-//        List<ComputerDTO> computerDTOList = user.getComputers().stream()
-//                .map(ComputerDTO::fromComputer)
-//                .collect(Collectors.toList());
+
         return UserDTO.builder()
                 .id(user.getId())
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .username(user.getUsername())
                 .role(user.getRole())
-            //    .computers(computerDTOList)
                 .build();
     }
     public static User toUser(UserDTO userDTO) {

@@ -16,7 +16,6 @@ import java.util.List;
 public class MotherBModelDTO {
     private Integer id;
     private String name;
-    private List<ComputerDTO> computers;
     public static MotherBModelDTO fromMotherBModel(MotherBModel motherBModel) {
         return MotherBModelDTO.builder()
                 .id(motherBModel.getId())
