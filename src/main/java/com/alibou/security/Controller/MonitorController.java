@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*",maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/Monitors")
 public class MonitorController {
@@ -44,19 +44,20 @@ public class MonitorController {
     }
 
     @GetMapping("/Details/{monitorId}")
-    public ResponseEntity<MonitorOutDTO> getMonitorDetails(@PathVariable Integer monitorId){
+    public ResponseEntity<MonitorOutDTO> getMonitorDetails(@PathVariable Integer monitorId) {
         MonitorOutDTO monitorById = monitorService.getMonitorOutById(monitorId);
         return ResponseEntity.ok(monitorById);
     }
+
     @PostMapping("/add")
-    public ResponseEntity<MonitorDTO> addMonitor(@RequestBody MonitorDTO monitorDTO){
+    public ResponseEntity<MonitorDTO> addMonitor(@RequestBody MonitorDTO monitorDTO) {
         MonitorDTO addedMonitor = monitorService.addMonitor(monitorDTO);
         return new ResponseEntity<>(addedMonitor, HttpStatus.CREATED);
     }
 
     @PutMapping("/Update/{monitorId}")
     public ResponseEntity<MonitorOutDTO> updateMonitor(@PathVariable Integer monitorId, @AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestBody MonitorDTO monitorDTO){
+                                                       @RequestBody MonitorDTO monitorDTO) {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
@@ -67,52 +68,18 @@ public class MonitorController {
             Integer itemType = monitorDTO.getItemType();
 
             MonitorDTO originalMonitorDTO = monitorService.getMonitorById(monitorId);
-            List<String> changes = new ArrayList<>();
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            historyService.HistoryObject(originalMonitorDTO,monitorDTO,equipmentId,itemType,userid);
 
-            Field[] fields = originalMonitorDTO.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    Object originalValue = field.get(originalMonitorDTO);
-                    Object newValue = field.get(monitorDTO);
-                    if (originalValue != null && !originalValue.equals(newValue)) {
-                        if (originalValue instanceof Date && newValue instanceof Date) {
-
-                            String originalDateStr = dateFormatter.format((Date) originalValue);
-                            String newDateStr = dateFormatter.format((Date) newValue);
-
-                            if (!originalDateStr.equals(newDateStr)) {
-                                changes.add(field.getName() + " = " + originalDateStr + ",= " + newDateStr);
-                            }
-                        } else {
-                            changes.add(field.getName() + " = " + originalValue + ",= " + newValue);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                }
-            }
-
-            String changeDetails = String.join(";", changes);
-
-            HistoryDTO historyDTO = HistoryDTO.builder()
-                    .user(userid)
-                    .itemtypeId(itemType)
-                    .equipmentId(equipmentId)
-                    .changeDate(new Date())
-                    .changedetails(changeDetails)
-                    .build();
-
-            historyService.addHistory(historyDTO);
-            Monitor updatedMonitor = monitorService.updateMonitor(monitorId, monitorDTO);
+            Monitor updatedMonitor = monitorService.updateMonitor(monitorId,monitorDTO);
         }
         return ResponseEntity.ok(monitorService.getMonitorOutById(monitorId));
     }
+
     @DeleteMapping("/Delete/{monitorId}")
-    public ResponseEntity<Void> deleteMonitor(@PathVariable Integer monitorId){
+    public ResponseEntity<Void> deleteMonitor(@PathVariable Integer monitorId) {
         Monitor deletedMonitor = monitorService.deleteById(monitorId);
-        if (deletedMonitor == null){
+        if (deletedMonitor == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();

@@ -39,6 +39,12 @@ public class Monitor {
     @JsonIgnoreProperties({"computers","monitors"})
     private ItemType itemType;
     private Integer size;
+    //порты
+    private Integer hdmi;
+    private Integer vga;
+    private Integer displayport;
+    private Integer dvid;
+    //
     private Integer year;
     @Enumerated(EnumType.STRING)
     private Serviceability serv;
@@ -58,5 +64,6 @@ public class Monitor {
     private Date staydate;
     private Double price;
     private String comment;
-    //порты
+
+
 }

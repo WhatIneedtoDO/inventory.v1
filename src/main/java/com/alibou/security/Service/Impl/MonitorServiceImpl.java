@@ -84,6 +84,10 @@ public class MonitorServiceImpl implements MonitorService {
         monitor.setItemType(itemTypeRepository.findById(monitorDTO.getItemType())
                 .orElseThrow(() -> new EntityNotFoundException("ItemType not found")));
         monitor.setSize(monitorDTO.getSize());
+        monitor.setHdmi(monitorDTO.getHdmi());
+        monitor.setVga(monitorDTO.getVga());
+        monitor.setDisplayport(monitorDTO.getDisplayport());
+        monitor.setDvid(monitorDTO.getDvid());
         monitor.setYear(monitorDTO.getYear());
         monitor.setServ(monitorDTO.getServ());
         monitor.setCity(cityRepository.findById(monitorDTO.getCity())
@@ -132,6 +136,10 @@ public class MonitorServiceImpl implements MonitorService {
                 .model(modelDTO)
                 .itemType(itemTypeDTO)
                 .size(monitor.getSize())
+                .hdmi(monitor.getHdmi())
+                .vga(monitor.getVga())
+                .displayport(monitor.getDisplayport())
+                .dvid(monitor.getDvid())
                 .year(monitor.getYear())
                 .serv(monitor.getServ())
                 .city(cityDTO)
@@ -157,6 +165,10 @@ public class MonitorServiceImpl implements MonitorService {
                 .model(monitor.getModel().getId())
                 .itemType(monitor.getItemType().getId())
                 .size(monitor.getSize())
+                .hdmi(monitor.getHdmi())
+                .vga(monitor.getVga())
+                .displayport(monitor.getDisplayport())
+                .dvid(monitor.getDvid())
                 .year(monitor.getYear())
                 .serv(monitor.getServ())
                 .city(monitor.getCity().getId())
@@ -181,6 +193,10 @@ public class MonitorServiceImpl implements MonitorService {
         monitor.setItemType(itemTypeRepository.findById(monitorDTO.getItemType())
                 .orElseThrow(() -> new EntityNotFoundException("ItemType not found")));
         monitor.setSize(monitorDTO.getSize());
+        monitor.setHdmi(monitorDTO.getHdmi());
+        monitor.setVga(monitorDTO.getVga());
+        monitor.setDisplayport(monitorDTO.getDisplayport());
+        monitor.setDvid(monitorDTO.getDvid());
         monitor.setYear(monitorDTO.getYear());
         monitor.setServ(monitorDTO.getServ());
         monitor.setCity(cityRepository.findById(monitorDTO.getCity())

@@ -84,7 +84,7 @@ public class ComputerController {
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
     }
 
-   @DeleteMapping("/Delete/{computerId}")
+    @DeleteMapping("/Delete/{computerId}")
     public ResponseEntity<Void> deleteComputer(@PathVariable Integer computerId) {
         Computer deletedComputer = computerService.deleteById(computerId);
 
@@ -94,7 +94,6 @@ public class ComputerController {
 
         return ResponseEntity.noContent().build();
     }
-
 
 
 }

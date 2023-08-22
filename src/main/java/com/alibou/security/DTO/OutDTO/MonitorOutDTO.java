@@ -23,6 +23,12 @@ public class MonitorOutDTO {
     private ModelDTO model;
     private ItemTypeDTO itemType;
     private Integer size;
+    //порты
+    private Integer hdmi;
+    private Integer vga;
+    private Integer displayport;
+    private Integer dvid;
+    //
     private Integer year;
     private Serviceability serv;
     private CityDTO city;
