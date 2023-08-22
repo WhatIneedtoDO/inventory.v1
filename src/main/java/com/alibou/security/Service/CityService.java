@@ -9,4 +9,5 @@ import java.util.List;
 @Service
 public interface CityService {
     List<CityDTO> getAllCity();
+    CityDTO getCityById(Integer id);
 }

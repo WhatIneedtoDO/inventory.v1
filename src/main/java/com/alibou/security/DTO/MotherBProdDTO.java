@@ -2,10 +2,7 @@ package com.alibou.security.DTO;
 
 import com.alibou.security.Entity.MotherBModel;
 import com.alibou.security.Entity.MotherBProd;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,10 +10,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class MotherBProdDTO {
     private Integer id;
     private String name;
-    private List<ComputerDTO> computers;
     public static MotherBProdDTO fromMotherBProd(MotherBProd motherBProd) {
         return MotherBProdDTO.builder()
                 .id(motherBProd.getId())

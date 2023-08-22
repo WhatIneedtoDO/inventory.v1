@@ -6,6 +6,7 @@ import com.alibou.security.Entity.City;
 import com.alibou.security.Entity.ItemType;
 import com.alibou.security.Repository.ItemTypeRepository;
 import com.alibou.security.Service.ItemTypeService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,14 @@ public class ItemTypeServiceImpl implements ItemTypeService {
         List<ItemType> typeDTOs = typesRepository.findAll();
         return mapToDTOs(typeDTOs);
     }
+
+    @Override
+    public ItemTypeDTO getItemTypeById(Integer id) {
+        ItemType itemType = typesRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Item type not found"));
+        return mapToDTO(itemType);
+    }
+
     private List<ItemTypeDTO> mapToDTOs(List<ItemType> types){
         return types.stream()
                 .map(this::mapToDTO)

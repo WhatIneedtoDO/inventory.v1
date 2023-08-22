@@ -9,4 +9,5 @@ import java.util.List;
 @Service
 public interface MotherBProdService {
     List<MotherBProdDTO> getAllMotherBProds();
+    MotherBProdDTO getMotherBProdById(Integer id);
 }

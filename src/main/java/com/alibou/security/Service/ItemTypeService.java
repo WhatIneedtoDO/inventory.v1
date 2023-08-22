@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface ItemTypeService {
     List<ItemTypeDTO> getAllTypes();
+    ItemTypeDTO getItemTypeById(Integer id);
 }

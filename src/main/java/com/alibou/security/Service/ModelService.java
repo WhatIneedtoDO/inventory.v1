@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface ModelService {
     List<ModelDTO> getAllModel();
+    ModelDTO getModelById(Integer id);
 }

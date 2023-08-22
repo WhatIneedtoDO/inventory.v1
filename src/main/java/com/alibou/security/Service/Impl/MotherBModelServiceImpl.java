@@ -5,6 +5,7 @@ import com.alibou.security.DTO.MotherBModelDTO;
 import com.alibou.security.Entity.MotherBModel;
 import com.alibou.security.Repository.MotherBModelRepos;
 import com.alibou.security.Service.MotherBModelService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,14 @@ public class MotherBModelServiceImpl implements MotherBModelService {
         List<MotherBModel> models = motherBModelRepos.findAll();
         return mapToDTOs(models);
     }
+
+    @Override
+    public MotherBModelDTO getMotherModelById(Integer id) {
+        MotherBModel model = motherBModelRepos.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Motherboard model not found"));
+        return mapToDTO(model);
+    }
+
     private List<MotherBModelDTO> mapToDTOs(List<MotherBModel> models){
         return models.stream()
                 .map(this::mapToDTO)

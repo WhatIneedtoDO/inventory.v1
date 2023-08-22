@@ -74,49 +74,12 @@ public class ComputerController {
             Integer itemType = computerDTO.getItemType();
 
             ComputerDTO originalComputerDTO = computerService.getComputerById(computerId);
-            List<String> changes = new ArrayList<>();
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            historyService.HistoryObject(originalComputerDTO, computerDTO, equipmentId, itemType, userid);
 
-            Field[] fields = originalComputerDTO.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    Object originalValue = field.get(originalComputerDTO);
-                    Object newValue = field.get(computerDTO);
-                    if (originalValue != null && !originalValue.equals(newValue)) {
-                        if (originalValue instanceof Date && newValue instanceof Date) {
-
-                            String originalDateStr = dateFormatter.format((Date) originalValue);
-                            String newDateStr = dateFormatter.format((Date) newValue);
-
-                            if (!originalDateStr.equals(newDateStr)) {
-                                changes.add(field.getName() + " = " + originalDateStr + ",= " + newDateStr);
-                            }
-                        } else {
-                            changes.add(field.getName() + " = " + originalValue + ",= " + newValue);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                }
-            }
-
-            String changeDetails = String.join(";", changes);
-
-            HistoryDTO historyDTO = HistoryDTO.builder()
-                    .user(userid)
-                    .itemtypeId(itemType)
-                    .equipmentId(equipmentId)
-                    .changeDate(new Date())
-                    .changedetails(changeDetails)
-                    .build();
-
-            historyService.addHistory(historyDTO);
             Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         }
-
-
 
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
     }

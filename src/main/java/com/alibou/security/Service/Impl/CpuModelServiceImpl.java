@@ -1,11 +1,10 @@
 package com.alibou.security.Service.Impl;
 
 import com.alibou.security.DTO.CpuModelDTO;
-import com.alibou.security.DTO.ModelDTO;
 import com.alibou.security.Entity.CpuModel;
-import com.alibou.security.Entity.Model;
 import com.alibou.security.Repository.CpuModelRepository;
 import com.alibou.security.Service.CpuModelService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +16,23 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class CpuModelServiceImpl implements CpuModelService {
-    private final CpuModelRepository cpumodel;
+    private final CpuModelRepository cpuModelRepository;
 
     public CpuModelServiceImpl(CpuModelRepository cpumodel) {
-        this.cpumodel = cpumodel;
+        this.cpuModelRepository = cpumodel;
     }
 
     @Override
     public List<CpuModelDTO> getAllCpuModel() {
-        List<CpuModel> models = cpumodel.findAll();
+        List<CpuModel> models = cpuModelRepository.findAll();
         return mapToDTOs(models);
+    }
+
+    @Override
+    public CpuModelDTO getCpuModelById(Integer id) {
+        CpuModel cpuModel = cpuModelRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Cpu model not found"));
+        return mapToDTO(cpuModel);
     }
 
     private List<CpuModelDTO> mapToDTOs(List<CpuModel> cpuModels){

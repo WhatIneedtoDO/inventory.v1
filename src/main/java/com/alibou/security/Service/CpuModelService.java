@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface CpuModelService {
     List<CpuModelDTO> getAllCpuModel();
+    CpuModelDTO getCpuModelById(Integer id);
 }

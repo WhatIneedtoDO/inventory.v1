@@ -1,10 +1,10 @@
 package com.alibou.security.Service.Impl;
 
 import com.alibou.security.DTO.ProductionsDTO;
-import com.alibou.security.Entity.MotherBProd;
 import com.alibou.security.Entity.Productions;
 import com.alibou.security.Repository.ProductionRepository;
 import com.alibou.security.Service.ProdService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,11 @@ public class ProdServiceImpl implements ProdService {
         List<Productions> prodList = prodRepository.findAll();
         return mapToDTOs(prodList);
     }
-
+    public ProductionsDTO getProductionById(Integer id){
+        Productions productions = prodRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("production not Found"));
+        return mapToDTO(productions);
+    }
     private List<ProductionsDTO> mapToDTOs(List<Productions> prodList) {
         return prodList.stream()
                 .map(this::mapToDTO)

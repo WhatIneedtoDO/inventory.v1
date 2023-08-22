@@ -8,5 +8,6 @@ import java.util.List;
 @Service
 public interface MotherBModelService {
     List<MotherBModelDTO> getAllMotherBModels();
+    MotherBModelDTO getMotherModelById(Integer id);
 
 }

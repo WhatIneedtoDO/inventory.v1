@@ -10,7 +10,7 @@ import java.util.List;
 public interface HistoryService {
     HistoryOutDTO getLastHistory(Integer equipmentId, Integer itemtypeId);
     HistoryDTO addHistory(HistoryDTO historyDTO);
-
     List<HistoryOutDTO> getHistoryList(Integer equipmentId, Integer itemtypeId);
+    public <T> void HistoryObject(T originalObject, T updatedObject, Integer equipmentId, Integer itemType, Integer userId);
 
 }

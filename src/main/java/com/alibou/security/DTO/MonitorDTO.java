@@ -4,16 +4,14 @@ import com.alibou.security.Entity.Enum.RAM;
 import com.alibou.security.Entity.Enum.SSD;
 import com.alibou.security.Entity.Enum.Serviceability;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class MonitorDTO {
     private Integer id;
     private Integer i_card;

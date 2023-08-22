@@ -4,6 +4,7 @@ import com.alibou.security.DTO.CityDTO;
 import com.alibou.security.Entity.City;
 import com.alibou.security.Repository.CityRepository;
 import com.alibou.security.Service.CityService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,14 @@ public class CityServiceImpl implements CityService {
         List<City> cityDTOS = cityRepository.findAll();
         return mapToDTOs(cityDTOS);
     }
+
+    @Override
+    public CityDTO getCityById(Integer id) {
+        City city = cityRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("City Not Found"));
+        return mapToDTO(city);
+    }
+
     private List<CityDTO> mapToDTOs(List<City> cities){
         return cities.stream()
                 .map(this::mapToDTO)

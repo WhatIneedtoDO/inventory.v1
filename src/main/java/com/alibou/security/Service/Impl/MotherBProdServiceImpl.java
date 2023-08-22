@@ -6,6 +6,7 @@ import com.alibou.security.Entity.MotherBModel;
 import com.alibou.security.Entity.MotherBProd;
 import com.alibou.security.Repository.MotherBProdRepos;
 import com.alibou.security.Service.MotherBProdService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,14 @@ public class MotherBProdServiceImpl implements MotherBProdService {
         List<MotherBProd> prods = motherBProdRepos.findAll();
         return mapToDTOs(prods);
     }
+
+    @Override
+    public MotherBProdDTO getMotherBProdById(Integer id) {
+        MotherBProd motherBProd = motherBProdRepos.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Motherboard production not found"));
+        return mapToDTO(motherBProd);
+    }
+
     private List<MotherBProdDTO> mapToDTOs(List<MotherBProd> models){
         return models.stream()
                 .map(this::mapToDTO)
