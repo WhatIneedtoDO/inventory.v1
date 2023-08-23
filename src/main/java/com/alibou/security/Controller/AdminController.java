@@ -1,6 +1,7 @@
 package com.alibou.security.Controller;
 
 import com.alibou.security.DTO.UserDTO;
+import com.alibou.security.Entity.User;
 import com.alibou.security.Service.AuthenticationService;
 import com.alibou.security.Service.UserService;
 import com.alibou.security.auth.AuthenticationResponse;
@@ -55,24 +56,32 @@ public class AdminController {
 
     @PostMapping("/addUser")
     @PreAuthorize("hasAuthority('admin:create')")
-    @Hidden
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
         return ResponseEntity.ok(service.register(request));
     }
 
+    @PostMapping("/changePassword/{userId}")
+    @PreAuthorize("hasAuthority('admin:update')")
+    public ResponseEntity<String> changePassword(@PathVariable Integer userId, @RequestParam String newPassword) {
+        userService.updatePassword(userId, newPassword);
+        return ResponseEntity.ok("Password updated successfully.");
+    }
+
     @PutMapping
     @PreAuthorize("hasAuthority('admin:update')")
-    @Hidden
     public String put() {
         return "PUT:: admin controller";
     }
 
-    @DeleteMapping
+    @DeleteMapping("/Delete/{userId}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    @Hidden
-    public String delete() {
-        return "DELETE:: admin controller";
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId){
+        User deletedUser = userService.deleteById(userId);
+        if (deletedUser == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 }

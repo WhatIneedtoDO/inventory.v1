@@ -1,6 +1,7 @@
 package com.alibou.security.Service;
 
 import com.alibou.security.DTO.UserDTO;
+import com.alibou.security.Entity.Computer;
 import com.alibou.security.Entity.User;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,8 @@ public interface UserService {
  List<UserDTO> getAllUsers();
  Optional<UserDTO> getUserById(Integer id);
  Optional<UserDTO> getUserByUsername(String username);
+ User deleteById(Integer userId);
 
+ void changeCurrentUserPassword(String currentPassword,String newPassword);
+ void updatePassword(Integer userId, String newPassword);
 }
