@@ -1,7 +1,7 @@
 package com.invent.first.Controller;
 
-import com.invent.first.auth.AuthenticationRequest;
-import com.invent.first.auth.AuthenticationResponse;
+import com.invent.first.request.AuthenticationRequest;
+import com.invent.first.response.AuthenticationResponse;
 import com.invent.first.Service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

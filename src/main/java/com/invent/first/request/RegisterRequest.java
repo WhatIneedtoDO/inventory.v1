@@ -1,4 +1,4 @@
-package com.invent.first.auth;
+package com.invent.first.request;
 
 import com.invent.first.Entity.Enum.Role;
 import lombok.AllArgsConstructor;

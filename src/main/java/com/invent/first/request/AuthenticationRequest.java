@@ -1,4 +1,4 @@
-package com.invent.first.auth;
+package com.invent.first.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

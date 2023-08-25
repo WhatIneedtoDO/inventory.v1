@@ -1,12 +1,15 @@
 package com.invent.first.Service.Impl;
 
+import com.invent.first.DTO.LocationDTO;
 import com.invent.first.DTO.UserDTO;
+import com.invent.first.Entity.Location;
 import com.invent.first.Entity.User;
 import com.invent.first.Repository.UserRepository;
 import com.invent.first.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +53,7 @@ public class UserDetailsServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+
                 user.setPassword(passwordEncoder.encode(newPassword));
                 repository.save(user);
             } else {
@@ -86,6 +90,7 @@ public class UserDetailsServiceImpl implements UserService {
                         .build())
                 .collect(Collectors.toList());
     }
+
     @Override
     public Optional<UserDTO> getUserById(Integer id) {
         Optional<User> user = repository.findById(id);

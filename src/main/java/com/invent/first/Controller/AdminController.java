@@ -4,8 +4,8 @@ import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.User;
 import com.invent.first.Service.AuthenticationService;
 import com.invent.first.Service.UserService;
-import com.invent.first.auth.AuthenticationResponse;
-import com.invent.first.auth.RegisterRequest;
+import com.invent.first.response.AuthenticationResponse;
+import com.invent.first.request.RegisterRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,10 +36,11 @@ public class AdminController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Map.of(userDetails.getUsername(),userDetails.getAuthorities().toString()));
+                .body(Map.of(userDetails.getUsername(), userDetails.getAuthorities().toString()));
     }
+
     @GetMapping("/Details")
-    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<Optional<UserDTO>> getUserByUsername(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
@@ -63,7 +64,8 @@ public class AdminController {
 
     @PostMapping("/changePassword/{userId}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<String> changePassword(@PathVariable Integer userId, @RequestParam String newPassword) {
+    public ResponseEntity<String> changePassword(@PathVariable Integer userId) {
+        String newPassword = "P@ssw0rd";
         userService.updatePassword(userId, newPassword);
         return ResponseEntity.ok("Password updated successfully.");
     }
@@ -76,9 +78,9 @@ public class AdminController {
 
     @DeleteMapping("/Delete/{userId}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId){
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
         User deletedUser = userService.deleteById(userId);
-        if (deletedUser == null){
+        if (deletedUser == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();

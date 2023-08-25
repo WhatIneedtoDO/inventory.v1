@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,13 +38,14 @@ public class HistoryServiceImpl implements HistoryService {
     private final CpuModelService cpuModelService;
     private final CityService cityService;
     private final LocationService locationService;
+    private final UserService userService;
 
 
     @Autowired
-    public HistoryServiceImpl(HistoryRepository historyRepository,UserRepository userRepository,ItemTypeRepository itemTypeRepository,
-                              ProdService prodService,ModelService modelService,ItemTypeService itemTypeService,MotherBProdService motherBProdService,
-                              MotherBModelService motherBModelService,CpuProdService cpuProdService, CpuModelService cpuModelService,
-                              CityService cityService,LocationService locationService){
+    public HistoryServiceImpl(HistoryRepository historyRepository, UserRepository userRepository, ItemTypeRepository itemTypeRepository,
+                              ProdService prodService, ModelService modelService, ItemTypeService itemTypeService, MotherBProdService motherBProdService,
+                              MotherBModelService motherBModelService, CpuProdService cpuProdService, CpuModelService cpuModelService,
+                              CityService cityService, LocationService locationService, UserService userService) {
         this.historyRepository = historyRepository;
         this.userRepository = userRepository;
         this.itemTypeRepository = itemTypeRepository;
@@ -57,18 +59,21 @@ public class HistoryServiceImpl implements HistoryService {
         this.cpuModelService = cpuModelService;
         this.cityService = cityService;
         this.locationService = locationService;
+        this.userService = userService;
     }
 
     @Override
     public HistoryOutDTO getLastHistory(Integer equipmentId, Integer itemtypeId) {
-        HistoryOfChanges historyOfChanges = historyRepository.findByItemTypeAndEquipment(equipmentId,itemtypeId);
+        HistoryOfChanges historyOfChanges = historyRepository.findByItemTypeAndEquipment(equipmentId, itemtypeId);
         return mapToDTO(historyOfChanges);
     }
+
     @Override
     public List<HistoryOutDTO> getHistoryList(Integer equipmentId, Integer itemtypeId) {
         List<HistoryOfChanges> historyOfChangesList = historyRepository.findByItemTypeAndEquipmentforList(equipmentId, itemtypeId);
         return mapToDTOs(historyOfChangesList);
     }
+
     private String getValueAsString(Integer id, String fieldName) {
         switch (fieldName) {
             case "production":
@@ -97,11 +102,15 @@ public class HistoryServiceImpl implements HistoryService {
                 return originalCityDTO.getName();
             case "location":
                 LocationDTO originalLocation = locationService.getLocationById(id);
-                return originalLocation.getEkp()+ "," + originalLocation.getStreet()+"," + originalLocation.getNumber();
+                return originalLocation.getEkp() + "," + originalLocation.getStreet() + "," + originalLocation.getNumber();
+            case "userId":
+                Optional<UserDTO> originalUser = userService.getUserById(id);
+                return originalUser.get().getUsername() + "," + originalUser.get().getLastname();
             default:
                 return id.toString();
         }
     }
+
     public String getFieldChangeDetails(Field field, Object originalValue, Object newValue) {
 
         if (originalValue != null && !originalValue.equals(newValue)) {
@@ -117,8 +126,18 @@ public class HistoryServiceImpl implements HistoryService {
                 String originalValueStr = getValueAsString((Integer) originalValue, field.getName());
                 String newValueStr = getValueAsString((Integer) newValue, field.getName());
 
+
                 if (!originalValueStr.equals(newValueStr)) {
                     return field.getName() + " = " + originalValueStr + " -> " + newValueStr;
+                }
+            } else if (originalValue instanceof Enum) {
+                Enum<?> originalEnum = (Enum<?>) originalValue;
+                Enum<?> newEnum = (Enum<?>) newValue;
+                String originalEnumValue = originalEnum.name().substring("VALUE".length()); // Используйте метод getValue()
+                String newEnumValue = newEnum.name().substring("VALUE".length()); // Используйте метод getValue()
+
+                if (!originalEnumValue.equals(newEnumValue)) {
+                    return field.getName() + " = " + originalEnumValue + " -> " + newEnumValue;
                 }
             } else {
                 return field.getName() + " = " + originalValue + " -> " + newValue;
@@ -157,7 +176,7 @@ public class HistoryServiceImpl implements HistoryService {
         addHistory(historyDTO);
     }
 
-    private List<HistoryOutDTO> mapToDTOs(List<HistoryOfChanges> historyOfChanges){
+    private List<HistoryOutDTO> mapToDTOs(List<HistoryOfChanges> historyOfChanges) {
         return historyOfChanges.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -172,21 +191,21 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
 
-    private HistoryOfChanges mapToEntity(HistoryDTO historyDTO){
+    private HistoryOfChanges mapToEntity(HistoryDTO historyDTO) {
         HistoryOfChanges historyOfChanges = new HistoryOfChanges();
 
         historyOfChanges.setUser(userRepository.findById(historyDTO.getUser())
-                .orElseThrow(()-> new EntityNotFoundException("User not found")));
+                .orElseThrow(() -> new EntityNotFoundException("User not found")));
         historyOfChanges.setItemType(itemTypeRepository.findById(historyDTO.getItemtypeId())
-                .orElseThrow(()->new EntityNotFoundException("Item type nor found")));
+                .orElseThrow(() -> new EntityNotFoundException("Item type nor found")));
         historyOfChanges.setEquipmentId(historyDTO.getEquipmentId());
         historyOfChanges.setChangeDate(historyDTO.getChangeDate());
         historyOfChanges.setChangeDetails(historyDTO.getChangedetails());
         return historyOfChanges;
     }
 
-    private HistoryOutDTO mapToDTO(HistoryOfChanges historyOfChanges){
-       UserDTO user = UserDTO.fromUser(historyOfChanges.getUser());
+    private HistoryOutDTO mapToDTO(HistoryOfChanges historyOfChanges) {
+        UserDTO user = UserDTO.fromUser(historyOfChanges.getUser());
         ItemTypeDTO itemtype = ItemTypeDTO.fromItemType(historyOfChanges.getItemType());
         return HistoryOutDTO
                 .builder()
@@ -200,7 +219,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
 
-    private HistoryDTO mapFromDTO(HistoryOfChanges historyOfChanges){
+    private HistoryDTO mapFromDTO(HistoryOfChanges historyOfChanges) {
         return HistoryDTO
                 .builder()
                 .id(historyOfChanges.getId())
@@ -211,7 +230,6 @@ public class HistoryServiceImpl implements HistoryService {
                 .changeDate(historyOfChanges.getChangeDate())
                 .build();
     }
-
 
 
 }

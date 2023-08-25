@@ -1,8 +1,8 @@
 package com.invent.first.Service;
 
-import com.invent.first.auth.AuthenticationRequest;
-import com.invent.first.auth.AuthenticationResponse;
-import com.invent.first.auth.RegisterRequest;
+import com.invent.first.request.AuthenticationRequest;
+import com.invent.first.response.AuthenticationResponse;
+import com.invent.first.request.RegisterRequest;
 import com.invent.first.Entity.Token;
 import com.invent.first.Repository.TokenRepository;
 import com.invent.first.Entity.Enum.TokenType;

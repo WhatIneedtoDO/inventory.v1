@@ -3,6 +3,7 @@ package com.invent.first.Controller;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Service.AuthenticationService;
 import com.invent.first.Service.UserService;
+import com.invent.first.request.PasswordRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,8 +33,9 @@ public class UserController {
     }
     @PostMapping("/ChangePassword")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> changePassword(@RequestParam String currentPassword, @RequestParam String newPassword) {
-        userService.changeCurrentUserPassword(currentPassword, newPassword);
+    public ResponseEntity<String> changePassword(@RequestBody  PasswordRequest passwordRequest) {
+
+        userService.changeCurrentUserPassword(passwordRequest.getCurrentPassword(),passwordRequest.getNewPassword());
 
         return ResponseEntity.ok("Password changed successfully.");
     }

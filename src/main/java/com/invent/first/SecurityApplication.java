@@ -1,7 +1,7 @@
 package com.invent.first;
 
 import com.invent.first.Service.AuthenticationService;
-import com.invent.first.auth.RegisterRequest;
+import com.invent.first.request.RegisterRequest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
