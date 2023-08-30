@@ -25,5 +25,7 @@ public class Location {
     private List<Computer> computers;
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Monitor> monitors;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    private List<Printers> printers;
 
 }

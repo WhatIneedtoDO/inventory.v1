@@ -3,13 +3,8 @@ package com.invent.first.Entity;
 import com.invent.first.Entity.Enum.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -40,13 +35,15 @@ public class User implements UserDetails {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Role role;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<Token> tokens;
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<Computer> computers;
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<Monitor> monitors;
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Printers> printers;
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<HistoryOfChanges> history;
 
   @Override
