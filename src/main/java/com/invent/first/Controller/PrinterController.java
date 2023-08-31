@@ -1,15 +1,11 @@
 package com.invent.first.Controller;
-
-import com.invent.first.DTO.ComputerDTO;
 import com.invent.first.DTO.OutDTO.PrinterOutDTO;
 import com.invent.first.DTO.PrinterDTO;
 import com.invent.first.DTO.UserDTO;
-import com.invent.first.Entity.Computer;
 import com.invent.first.Entity.Printers;
 import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.PrinterService;
 import com.invent.first.Service.UserService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
