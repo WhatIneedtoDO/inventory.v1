@@ -109,7 +109,7 @@ public class PrinterServiceImpl implements PrinterService {
     public Printers deleteById(Integer printerId) {
         Printers printer = printerRepository.findById(printerId)
                 .orElseThrow(()-> new EntityNotFoundException("Printer not Found"));
-        productionRepository.deleteById(printerId);
+        printerRepository.deleteById(printerId);
 
         return printer;
     }

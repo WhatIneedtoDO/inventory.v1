@@ -133,12 +133,18 @@ public class HistoryServiceImpl implements HistoryService {
             } else if (originalValue instanceof Enum) {
                 Enum<?> originalEnum = (Enum<?>) originalValue;
                 Enum<?> newEnum = (Enum<?>) newValue;
-                String originalEnumValue = originalEnum.name().substring("VALUE".length()); // Используйте метод getValue()
-                String newEnumValue = newEnum.name().substring("VALUE".length()); // Используйте метод getValue()
-
-                if (!originalEnumValue.equals(newEnumValue)) {
-                    return field.getName() + " = " + originalEnumValue + " -> " + newEnumValue;
+                if( originalEnum.name().startsWith("VALUE")&& newEnum.name().startsWith("VALUE")) {
+                    String originalEnumValue = originalEnum.name().substring("VALUE".length()); // Используйте метод getValue()
+                    String newEnumValue = newEnum.name().substring("VALUE".length()); // Используйте метод getValue()
+                    if (!originalEnumValue.equals(newEnumValue)) {
+                        return field.getName() + " = " + originalEnumValue + " -> " + newEnumValue;
+                    }
+                }else {
+                    if (!originalEnum.equals(newEnum)) {
+                        return field.getName() + " = " + originalEnum + " -> " + newEnum;
+                    }
                 }
+
             } else {
                 return field.getName() + " = " + originalValue + " -> " + newValue;
             }

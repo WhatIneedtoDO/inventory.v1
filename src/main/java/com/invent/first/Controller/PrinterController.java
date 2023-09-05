@@ -67,6 +67,7 @@ public class PrinterController {
         }
         return ResponseEntity.ok(printerService.getPrinterOutById(printerId));
     }
+
     @DeleteMapping("/Delete/{printerId}")
     public ResponseEntity<Void> deletePrinter(@PathVariable Integer printerId){
         Printers deletedPrinter = printerService.deleteById(printerId);
