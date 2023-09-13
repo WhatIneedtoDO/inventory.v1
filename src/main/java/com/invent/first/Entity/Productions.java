@@ -26,5 +26,7 @@ public class Productions {
     private List<Monitor> monitors;
     @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
     private List<Printers> printers;
+    @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
+    private List<Telephones> telephones;
 
 }

@@ -43,6 +43,8 @@ public class User implements UserDetails {
   private List<Monitor> monitors;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Printers> printers;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Telephones> telephones;
   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<HistoryOfChanges> history;
 

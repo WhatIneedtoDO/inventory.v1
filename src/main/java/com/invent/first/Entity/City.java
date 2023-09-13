@@ -27,6 +27,9 @@ public class City {
     private List<Monitor> monitors;
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Printers> printers;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<Telephones> telephones;
+
 
 
 }

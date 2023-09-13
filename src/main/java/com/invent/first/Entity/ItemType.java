@@ -26,6 +26,8 @@ public class ItemType {
         private List<Monitor> monitors;
         @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
         private List<Printers> printers;
+        @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
+        private List<Telephones> telephones;
         @OneToMany(mappedBy = "itemType",cascade = CascadeType.ALL)
         private List<HistoryOfChanges> history;
 
