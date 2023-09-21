@@ -60,6 +60,7 @@ public class ComputerServiceImpl implements ComputerService {
         return mapToDTOWithId(computer);
     }
 
+
     @Override
     public ComputerOutDTO getComputerOutById(Integer computerId) {
         Computer computer = computerRepository.findById(computerId)

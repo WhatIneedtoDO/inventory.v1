@@ -16,7 +16,7 @@ public class ItemTypeDTO {
     public static ItemTypeDTO fromItemType(ItemType itemType) {
         return ItemTypeDTO.builder()
                 .id(itemType.getId())
-                .name(itemType.getName())
+                .name(itemType.getTypename())
                 .build();
     }
 }

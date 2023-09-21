@@ -62,6 +62,7 @@ public class MonitorServiceImpl implements MonitorService {
         return mapToDTO(monitor);
     }
 
+
     //вывод JSON объекта с полноценными объектами вместо Id
     @Override
     public List<MonitorOutDTO> getAllMonitorsWithDetails() {
