@@ -26,7 +26,7 @@ public class Computer {
     private Integer i_card;
 
     private String serialnumber;
-
+    @Column(unique = true)
     private String i_number;
     @JsonIgnoreProperties({"computers", "monitors"})
     @ManyToOne

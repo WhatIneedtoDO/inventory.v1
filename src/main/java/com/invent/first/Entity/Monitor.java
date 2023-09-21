@@ -24,7 +24,7 @@ public class Monitor {
     private Integer i_card;
 
     private String serialnumber;
-
+    @Column(unique = true)
     private String i_number;
     @ManyToOne
     @JoinColumn(name ="productions_id")
