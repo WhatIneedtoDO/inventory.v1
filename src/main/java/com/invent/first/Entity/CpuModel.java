@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "cpumodel")
 public class CpuModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @OneToMany( mappedBy= "cpumodel",cascade = CascadeType.ALL)

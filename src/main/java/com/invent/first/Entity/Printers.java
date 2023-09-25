@@ -18,7 +18,7 @@ import java.util.Date;
 @Table(name = "printers")
 public class Printers {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer i_card;
     private String serialnumber;

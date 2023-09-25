@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "location")
 public class Location {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String street;
     private String number;

@@ -17,7 +17,7 @@ import java.util.List;
 public class MotherBProd {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @OneToMany( mappedBy= "motherbprod",cascade = CascadeType.ALL)

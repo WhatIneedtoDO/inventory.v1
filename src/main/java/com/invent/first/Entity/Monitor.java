@@ -18,7 +18,7 @@ import java.util.Date;
 @Table(name = "monitors")
 public class Monitor {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer i_card;

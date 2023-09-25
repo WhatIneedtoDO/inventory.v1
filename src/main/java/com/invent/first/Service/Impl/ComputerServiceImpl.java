@@ -6,12 +6,14 @@ import com.invent.first.Entity.Computer;
 import com.invent.first.Entity.User;
 import com.invent.first.Repository.*;
 import com.invent.first.Service.ComputerService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +34,14 @@ public class ComputerServiceImpl implements ComputerService {
     private MotherBModelRepos motherBModelRepos;
     private CpuProdRepository cpuProdRepository;
     private CpuModelRepository cpuModelRepository;
+    private EntityManager entityManager;
 
 
     @Autowired
     public ComputerServiceImpl(ComputerRepository computerRepository, UserRepository userRepository, ProductionRepository productionRepository,
                                ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository,
                                MotherBProdRepos motherBProdRepos,MotherBModelRepos motherBModelRepos, CpuProdRepository cpuProdRepository,
-                               CpuModelRepository cpuModelRepository) {
+                               CpuModelRepository cpuModelRepository,EntityManager entityManager) {
 
         this.productionRepository = productionRepository;
         this.computerRepository = computerRepository;
@@ -51,6 +54,7 @@ public class ComputerServiceImpl implements ComputerService {
         this.motherBProdRepos = motherBProdRepos;
         this.cpuProdRepository = cpuProdRepository;
         this.cpuModelRepository = cpuModelRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -67,7 +71,15 @@ public class ComputerServiceImpl implements ComputerService {
                 .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
         return mapToDTO(computer);
     }
-
+    public List<ComputerOutDTO> getAllComputerPairs(){
+        entityManager.clear();
+        List<Integer> computerIds = computerRepository.findPairsToMonitor();
+        if (computerIds.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<Computer> computers = computerRepository.findAllById(computerIds);
+        return mapToDTOs(computers);
+    }
     @Override
     public Computer updateComputer(Integer computerId, ComputerDTO computerDTO) {
         Computer computer = computerRepository.findById(computerId)

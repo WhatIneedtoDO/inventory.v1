@@ -18,7 +18,7 @@ public class City {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)

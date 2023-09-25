@@ -20,7 +20,7 @@ import java.util.Date;
 public class Computer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer i_card;

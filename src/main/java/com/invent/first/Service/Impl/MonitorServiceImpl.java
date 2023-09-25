@@ -6,13 +6,17 @@ import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.Entity.Monitor;
 import com.invent.first.Repository.*;
 import com.invent.first.Service.MonitorService;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +30,11 @@ public class MonitorServiceImpl implements MonitorService {
     private LocationRepository locationRepository;
     private ItemTypeRepository itemTypeRepository;
     private CityRepository cityRepository;
+    private EntityManager entityManager;
     @Autowired
     public MonitorServiceImpl(MonitorRepository monitorRepository, UserRepository userRepository, ProductionRepository productionRepository,
-                              ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository, CityRepository cityRepository){
+                              ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository,
+                              CityRepository cityRepository,EntityManager entityManager){
 
         this.monitorRepository = monitorRepository;
         this.productionRepository = productionRepository;
@@ -37,6 +43,7 @@ public class MonitorServiceImpl implements MonitorService {
         this.locationRepository = locationRepository;
         this.itemTypeRepository = itemTypeRepository;
         this.cityRepository = cityRepository;
+        this.entityManager = entityManager;
 
     }
 
@@ -67,6 +74,18 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<MonitorOutDTO> getAllMonitorsWithDetails() {
         List<Monitor> monitors = monitorRepository.findAllMonitorsWithDetails();
+        return mapToDTOs(monitors);
+    }
+    public List<MonitorOutDTO> getAllMonitorPairs(){
+        entityManager.clear();
+        List<Integer> monitorIds = monitorRepository.findPairsToComputer();
+        // Проверка, что есть хотя бы один monitor.id
+        if (monitorIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Monitor> monitors = monitorRepository.findAllById(monitorIds);
+
         return mapToDTOs(monitors);
     }
 

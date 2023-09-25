@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "pmodel")
 public class Model {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @OneToMany( mappedBy= "model",cascade = CascadeType.ALL)

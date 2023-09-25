@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name = "history_of_change")
 public class HistoryOfChanges {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

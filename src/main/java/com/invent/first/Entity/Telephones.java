@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name = "telephones")
 public class Telephones {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer i_card;
     private String serialnumber;
