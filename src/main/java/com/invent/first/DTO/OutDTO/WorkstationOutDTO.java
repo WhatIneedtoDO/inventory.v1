@@ -26,4 +26,5 @@ public class WorkstationOutDTO {
     private String username;
     private String firstname;
     private String lastname;
+    private Boolean spisano;
 }

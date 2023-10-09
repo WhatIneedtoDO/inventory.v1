@@ -6,7 +6,9 @@ import com.invent.first.DTO.MotherBModelDTO;
 import com.invent.first.DTO.MotherBProdDTO;
 import com.invent.first.DTO.OutDTO.HistoryOutDTO;
 import com.invent.first.Service.*;
+import com.invent.first.response.TrashJsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +23,17 @@ public class PublicController {
     private final CpuProdService cpuProdService;
     private final CpuModelService cpuModelService;
     private final HistoryService historyService;
+    private final TrashService trashService;
     @Autowired
     public PublicController(MotherBProdService motherBProdService, MotherBModelService motherBModelService,
-                            CpuProdService cpuProdService, CpuModelService cpuModelService, HistoryService historyService){
+                            CpuProdService cpuProdService, CpuModelService cpuModelService, HistoryService historyService,
+                            TrashService trashService){
         this.motherBProdService = motherBProdService ;
         this.motherBModelService = motherBModelService;
         this.cpuProdService = cpuProdService;
         this.cpuModelService = cpuModelService;
         this.historyService = historyService;
+        this.trashService = trashService;
     }
     @GetMapping("/MotherBoard/Productions")
     public ResponseEntity<List<MotherBProdDTO>> getAllProd(){
@@ -61,5 +66,10 @@ public class PublicController {
     public ResponseEntity<HistoryOutDTO> getLastHistory(@PathVariable Integer equipmentId, @PathVariable Integer itemtypeId) {
         HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
         return ResponseEntity.ok(history);
+    }
+    @GetMapping("/Trash/all")
+    public ResponseEntity<List<TrashJsonResponse>> getAllTrash(){
+        List<TrashJsonResponse> trashList = trashService.getList();
+        return ResponseEntity.ok(trashList);
     }
 }

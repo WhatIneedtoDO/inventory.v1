@@ -44,7 +44,7 @@ public class ItemTypeServiceImpl implements ItemTypeService {
         return ItemTypeDTO
                 .builder()
                 .id(types.getId())
-                .name(types.getTypename())
+                .name(types.getName())
                 .build();
     }
 }

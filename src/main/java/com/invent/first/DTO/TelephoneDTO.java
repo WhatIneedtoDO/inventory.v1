@@ -31,5 +31,5 @@ public class TelephoneDTO {
     private Date staydate;
     private Double price;
     private String comment;
-
+    private Boolean spisano;
 }

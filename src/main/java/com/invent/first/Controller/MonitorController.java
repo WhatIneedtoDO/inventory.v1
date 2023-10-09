@@ -6,13 +6,16 @@ import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Monitor;
 import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.MonitorService;
+import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +26,14 @@ public class MonitorController {
     private final MonitorService monitorService;
     private final UserService userService;
     private final HistoryService historyService;
+    private final TrashService trashService;
 
 
-    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService) {
+    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService,TrashService trashService) {
         this.monitorService = monitorService;
         this.userService = userService;
         this.historyService = historyService;
+        this.trashService = trashService;
     }
 
     @GetMapping("/all")
@@ -51,7 +56,7 @@ public class MonitorController {
 
     @PutMapping("/Update/{monitorId}")
     public ResponseEntity<MonitorOutDTO> updateMonitor(@PathVariable Integer monitorId, @AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestBody MonitorDTO monitorDTO) {
+                                                       @RequestBody MonitorDTO monitorDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
@@ -64,6 +69,10 @@ public class MonitorController {
             MonitorDTO originalMonitorDTO = monitorService.getMonitorById(monitorId);
 
             historyService.HistoryObject(originalMonitorDTO,monitorDTO,equipmentId,itemType,userid);
+
+            if(monitorDTO.getSpisano() != null && monitorDTO.getSpisano().equals(true)){
+                trashService.TrashObject(monitorDTO,equipmentId,itemType,trashdate);
+            }
 
             Monitor updatedMonitor = monitorService.updateMonitor(monitorId,monitorDTO);
         }

@@ -5,14 +5,17 @@ import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Printers;
 import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.PrinterService;
+import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +27,14 @@ public class PrinterController {
     private final PrinterService printerService;
     private final UserService userService;
     private final HistoryService historyService;
+    private final TrashService trashService;
 
     @Autowired
-    public PrinterController(PrinterService printerService, UserService userService,HistoryService historyService){
+    public PrinterController(PrinterService printerService, UserService userService,HistoryService historyService,TrashService trashService){
         this.printerService = printerService;
         this.userService = userService;
         this.historyService = historyService;
+        this.trashService = trashService;
     }
 
     @GetMapping("/all")
@@ -49,7 +54,7 @@ public class PrinterController {
     }
     @PutMapping("/Update/{printerId}")
     public ResponseEntity<PrinterOutDTO> updatePrinter(@PathVariable Integer printerId,@AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestBody PrinterDTO printerDTO){
+                                                       @RequestBody PrinterDTO printerDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate){
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
@@ -62,6 +67,9 @@ public class PrinterController {
 
             historyService.HistoryObject(originalPrinterDTO, printerDTO, equipmentId, itemType, userid);
 
+            if (printerDTO.getSpisano() !=null && printerDTO.getSpisano().equals(true)){
+                trashService.TrashObject(printerDTO,equipmentId,itemType,trashdate);
+            }
             Printers updatedPrinter = printerService.updatePrinter(printerId, printerDTO);
 
         }

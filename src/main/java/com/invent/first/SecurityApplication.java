@@ -1,5 +1,6 @@
 package com.invent.first;
 
+
 import com.invent.first.Service.AuthenticationService;
 import com.invent.first.request.RegisterRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -18,38 +19,38 @@ public class SecurityApplication {
 		SpringApplication.run(SecurityApplication.class, args);
 	}
 
-//	@Bean
-//	public CommandLineRunner commandLineRunner(
-//			AuthenticationService service
-//	) {
-//		return args -> {
-//			var admin = RegisterRequest.builder()
-//					.firstname("Admin")
-//					.lastname("Admin")
-//					.username("admin")
-//					.password("password")
-//					.role(ADMIN)
-//					.build();
-//			System.out.println("Admin token: " + service.register(admin).getAccessToken());
-//
-//			var danil = RegisterRequest.builder()
-//					.firstname("danil")
-//					.lastname("shevelev")
-//					.username("danil")
-//					.password("password111")
-//					.role(ADMIN)
-//					.build();
-//			System.out.println("Admin token: " + service.register(danil).getAccessToken());
-//
-//			var manager = RegisterRequest.builder()
-//					.firstname("Admin")
-//					.lastname("Admin")
-//					.username("manager")
-//					.password("password")
-//					.role(MANAGER)
-//					.build();
-//			System.out.println("Manager token: " + service.register(manager).getAccessToken());
-//
-//	};
-//	}
+	@Bean
+	public CommandLineRunner commandLineRunner(
+			AuthenticationService service
+	) {
+		return args -> {
+		/*	var admin = RegisterRequest.builder()
+					.firstname("Admin")
+					.lastname("Admin")
+					.username("admin")
+					.password("password")
+					.role(ADMIN)
+					.build();
+			System.out.println("Admin token: " + service.register(admin).getAccessToken());
+*/
+			var danil = RegisterRequest.builder()
+					.firstname("danil")
+					.lastname("shevelev")
+					.username("danil")
+					.password("password111")
+					.role(ADMIN)
+					.build();
+			System.out.println("danil token: " + service.register(danil).getAccessToken());
+
+			/*var manager = RegisterRequest.builder()
+					.firstname("Admin")
+					.lastname("Admin")
+					.username("manager")
+					.password("password")
+					.role(MANAGER)
+					.build();
+			System.out.println("Manager token: " + service.register(manager).getAccessToken());
+*/
+	};
+	}
 }

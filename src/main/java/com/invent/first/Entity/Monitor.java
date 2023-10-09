@@ -64,6 +64,6 @@ public class Monitor {
     private Date staydate;
     private Double price;
     private String comment;
-
+    private Boolean spisano;
 
 }

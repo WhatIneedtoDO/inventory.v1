@@ -6,15 +6,17 @@ import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Telephones;
 import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.TelephoneService;
+import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
-import org.apache.tomcat.util.MultiThrowable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,12 +27,14 @@ public class TelephoneController {
     private final TelephoneService telephoneService;
     private final UserService userService;
     private final HistoryService historyService;
+    private final TrashService trashService;
 
     @Autowired
-    public TelephoneController (TelephoneService telephoneService, UserService userService, HistoryService historyService){
+    public TelephoneController (TelephoneService telephoneService, UserService userService, HistoryService historyService,TrashService trashService){
         this.telephoneService = telephoneService;
         this.userService = userService;
         this.historyService = historyService;
+        this.trashService = trashService;
     }
 
     @GetMapping("/all")
@@ -51,7 +55,7 @@ public class TelephoneController {
     }
     @PutMapping("/Update/{telephoneId}")
     public ResponseEntity<TelephoneOutDTO> updateTelephone(@PathVariable Integer telephoneId, @AuthenticationPrincipal UserDetails userDetails,
-                                                           @RequestBody TelephoneDTO telephoneDTO){
+                                                           @RequestBody TelephoneDTO telephoneDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate){
 
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
@@ -63,6 +67,10 @@ public class TelephoneController {
 
             TelephoneDTO originalTelephoneDTO = telephoneService.getTelephoneById(telephoneId);
             historyService.HistoryObject(originalTelephoneDTO, telephoneDTO, telephoneId, itemType, userid);
+
+            if (telephoneDTO.getSpisano()!=null && telephoneDTO.getSpisano().equals(true)){
+                trashService.TrashObject(telephoneDTO,telephoneId,itemType,trashdate);
+            }
 
             Telephones updatedTelephone = telephoneService.updateTelephone(telephoneId, telephoneDTO);
         }

@@ -6,14 +6,17 @@ import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Computer;
 import com.invent.first.Service.ComputerService;
 import com.invent.first.Service.HistoryService;
+import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +27,17 @@ public class ComputerController {
     private final ComputerService computerService;
     private final UserService userService;
     private final HistoryService historyService;
+    private final TrashService trashService;
 
 
     @Autowired
-    public ComputerController(ComputerService computerService, UserService userService, HistoryService historyService) {
+    public ComputerController(ComputerService computerService, UserService userService, HistoryService historyService,
+                              TrashService trashService) {
 
         this.computerService = computerService;
         this.userService = userService;
         this.historyService = historyService;
+        this.trashService = trashService;
     }
 
     @GetMapping("/all")
@@ -54,7 +60,7 @@ public class ComputerController {
 
     @PutMapping("/Update/{computerId}")
     public ResponseEntity<ComputerOutDTO> updateComputer(@PathVariable Integer computerId, @AuthenticationPrincipal UserDetails userDetails,
-                                                         @RequestBody ComputerDTO computerDTO) {
+                                                         @RequestBody ComputerDTO computerDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate)  {
 
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
@@ -69,6 +75,9 @@ public class ComputerController {
 
             historyService.HistoryObject(originalComputerDTO, computerDTO, equipmentId, itemType, userid);
 
+            if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(true)){
+                trashService.TrashObject(computerDTO,equipmentId,itemType,trashdate);
+            }
             Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         }

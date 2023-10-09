@@ -71,12 +71,13 @@ public class ComputerServiceImpl implements ComputerService {
                 .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
         return mapToDTO(computer);
     }
+    //заполняет массив id компьютеров у которых одинаковые инвентарные номера с мониторами
     public List<ComputerOutDTO> getAllComputerPairs(){
-        entityManager.clear();
         List<Integer> computerIds = computerRepository.findPairsToMonitor();
         if (computerIds.isEmpty()){
             return Collections.emptyList();
         }
+    //ищет компьютеры по заполненому списку выше в бд и формирует json объекты
         List<Computer> computers = computerRepository.findAllById(computerIds);
         return mapToDTOs(computers);
     }
@@ -123,6 +124,7 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setStaydate(computerDTO.getStaydate());
         computer.setPrice(computerDTO.getPrice());
         computer.setComment(computerDTO.getComment());
+        computer.setSpisano(computerDTO.getSpisano());
         return computerRepository.save(computer);
     }
 
@@ -195,6 +197,7 @@ public class ComputerServiceImpl implements ComputerService {
         computer.setStaydate(computerDTO.getStaydate());
         computer.setPrice(computerDTO.getPrice());
         computer.setComment(computerDTO.getComment());
+        computer.setSpisano(computerDTO.getSpisano());
         return computer;
     }
 
@@ -247,6 +250,7 @@ public class ComputerServiceImpl implements ComputerService {
                 .staydate(computer.getStaydate())
                 .price(computer.getPrice())
                 .comment(computer.getComment())
+                .spisano(computer.getSpisano())
                 .build();
 
     }
@@ -281,6 +285,7 @@ public class ComputerServiceImpl implements ComputerService {
                 .staydate(computer.getStaydate())
                 .price(computer.getPrice())
                 .comment(computer.getComment())
+                .spisano(computer.getSpisano())
                 .build();
 
     }

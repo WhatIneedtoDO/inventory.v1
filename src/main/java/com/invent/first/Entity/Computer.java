@@ -85,7 +85,7 @@ public class Computer {
     private Date staydate;
     private Double price;
     private String comment;
-
+    private Boolean spisano;
 
     protected boolean canEqual(final Object other) {
         return other instanceof Computer;

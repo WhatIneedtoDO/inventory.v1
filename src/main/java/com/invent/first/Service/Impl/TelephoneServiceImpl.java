@@ -89,6 +89,7 @@ public class TelephoneServiceImpl implements TelephoneService {
         telephone.setStaydate(telephoneDTO.getStaydate());
         telephone.setPrice(telephoneDTO.getPrice());
         telephone.setComment(telephoneDTO.getComment());
+        telephone.setSpisano(telephoneDTO.getSpisano());
         return telephoneRepository.save(telephone);
     }
 
@@ -136,6 +137,7 @@ public class TelephoneServiceImpl implements TelephoneService {
                 .staydate(telephone.getStaydate())
                 .price(telephone.getPrice())
                 .comment(telephone.getComment())
+                .spisano(telephone.getSpisano())
                 .build();
     }
     private TelephoneOutDTO mapToDTO(Telephones telephone) {
@@ -164,6 +166,7 @@ public class TelephoneServiceImpl implements TelephoneService {
                 .staydate(telephone.getStaydate())
                 .price(telephone.getPrice())
                 .comment(telephone.getComment())
+                .spisano(telephone.getSpisano())
                 .build();
 
     }
@@ -191,6 +194,7 @@ public class TelephoneServiceImpl implements TelephoneService {
         telephone.setStaydate(telephoneDTO.getStaydate());
         telephone.setPrice(telephoneDTO.getPrice());
         telephone.setComment(telephoneDTO.getComment());
+        telephone.setSpisano(telephoneDTO.getSpisano());
         return telephone;
     }
     private List<TelephoneOutDTO> mapToDTOs(List<Telephones> telephones) {

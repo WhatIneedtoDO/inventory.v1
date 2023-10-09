@@ -87,6 +87,7 @@ public class PrinterServiceImpl implements PrinterService {
         printer.setStaydate(printerDTO.getStaydate());
         printer.setPrice(printerDTO.getPrice());
         printer.setComment(printerDTO.getComment());
+        printer.setSpisano(printerDTO.getSpisano());
 
         return printerRepository.save(printer);
     }
@@ -150,6 +151,7 @@ public class PrinterServiceImpl implements PrinterService {
         printer.setStaydate(printerDTO.getStaydate());
         printer.setPrice(printerDTO.getPrice());
         printer.setComment(printerDTO.getComment());
+        printer.setSpisano(printerDTO.getSpisano());
         return printer;
     }
     private PrinterDTO mapToDTOWithId(Printers printer){
@@ -179,6 +181,7 @@ public class PrinterServiceImpl implements PrinterService {
                 .staydate(printer.getStaydate())
                 .price(printer.getPrice())
                 .comment(printer.getComment())
+                .spisano(printer.getSpisano())
                 .build();
     }
     private PrinterOutDTO mapToDTO(Printers printer){
@@ -214,6 +217,7 @@ public class PrinterServiceImpl implements PrinterService {
                 .staydate(printer.getStaydate())
                 .price(printer.getPrice())
                 .comment(printer.getComment())
+                .spisano(printer.getSpisano())
                 .build();
     }
 }

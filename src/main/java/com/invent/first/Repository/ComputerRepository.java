@@ -24,6 +24,7 @@ public interface ComputerRepository extends JpaRepository<Computer,Integer> {
             "JOIN FETCH c.location " +
             "JOIN FETCH c.user u")
     List<Computer> findAllComputersWithDetails();
+    //формирует список id компьютеров , где одинаковые инвентарные номера с мониторами
     @Query(value = "SELECT c.id FROM Computer c INNER JOIN Monitor m ON c.i_number = m.i_number")
     @Modifying
     @Transactional

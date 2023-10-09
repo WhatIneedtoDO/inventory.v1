@@ -46,5 +46,6 @@ public class ComputerDTO {
     private Date staydate;
     private Double price;
     private String comment;
+    private Boolean spisano;
 
 }

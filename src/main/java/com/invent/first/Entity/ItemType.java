@@ -19,7 +19,7 @@ public class ItemType {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
-        private String typename;
+        private String name;
         @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
         private List<Computer> computers;
         @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)

@@ -23,14 +23,14 @@ public class WorkStationService {
         this.monitorService = monitorService;
         this.computerService = computerService;
     }
-
+    //объединяет 2 метода из ComputerServiceImpl и MonitorServiceImpl, формирует список с объектами на вывод
     public List<Object> getAllWorkstations (){
         List<ComputerOutDTO> computers = computerService.getAllComputerPairs();
         List<MonitorOutDTO> monitors = monitorService.getAllMonitorPairs();
         if (computers.isEmpty() || monitors.isEmpty()) {
             return Collections.emptyList();
         }
-
+        //заполянет лист по 2 элемента (компьютер\монитор)
         List<Object> workstations = new ArrayList<>();
         Iterator<ComputerOutDTO> computerIterator = computers.iterator();
         Iterator<MonitorOutDTO> monitorIterator = monitors.iterator();

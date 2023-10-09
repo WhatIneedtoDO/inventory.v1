@@ -120,6 +120,7 @@ public class MonitorServiceImpl implements MonitorService {
         monitor.setStaydate(monitorDTO.getStaydate());
         monitor.setPrice(monitorDTO.getPrice());
         monitor.setComment(monitorDTO.getComment());
+        monitor.setSpisano(monitorDTO.getSpisano());
         return monitorRepository.save(monitor);
     }
 
@@ -167,6 +168,7 @@ public class MonitorServiceImpl implements MonitorService {
                 .staydate(monitor.getStaydate())
                 .price(monitor.getPrice())
                 .comment(monitor.getComment())
+                .spisano(monitor.getSpisano())
                 .build();
 
     }
@@ -196,6 +198,7 @@ public class MonitorServiceImpl implements MonitorService {
                 .staydate(monitor.getStaydate())
                 .price(monitor.getPrice())
                 .comment(monitor.getComment())
+                .spisano(monitor.getSpisano())
                 .build();
 
     }
@@ -229,6 +232,7 @@ public class MonitorServiceImpl implements MonitorService {
         monitor.setStaydate(monitorDTO.getStaydate());
         monitor.setPrice(monitorDTO.getPrice());
         monitor.setComment(monitorDTO.getComment());
+        monitor.setSpisano(monitorDTO.getSpisano());
         return monitor;
     }
 

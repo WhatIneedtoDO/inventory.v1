@@ -35,5 +35,6 @@ public class MonitorDTO {
     private Date staydate;
     private Double price;
     private String comment;
+    private Boolean spisano;
     
 }

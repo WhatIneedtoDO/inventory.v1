@@ -65,7 +65,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public HistoryOutDTO getLastHistory(Integer equipmentId, Integer itemtypeId) {
         HistoryOfChanges historyOfChanges = historyRepository.findByItemTypeAndEquipment(equipmentId, itemtypeId);
-        return mapToDTO(historyOfChanges);
+        return mapToOutDTO(historyOfChanges);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     private List<HistoryOutDTO> mapToDTOs(List<HistoryOfChanges> historyOfChanges) {
         return historyOfChanges.stream()
-                .map(this::mapToDTO)
+                .map(this::mapToOutDTO)
                 .collect(Collectors.toList());
     }
 
@@ -210,7 +210,7 @@ public class HistoryServiceImpl implements HistoryService {
         return historyOfChanges;
     }
 
-    private HistoryOutDTO mapToDTO(HistoryOfChanges historyOfChanges) {
+    private HistoryOutDTO mapToOutDTO(HistoryOfChanges historyOfChanges) {
         UserDTO user = UserDTO.fromUser(historyOfChanges.getUser());
         ItemTypeDTO itemtype = ItemTypeDTO.fromItemType(historyOfChanges.getItemType());
         return HistoryOutDTO
