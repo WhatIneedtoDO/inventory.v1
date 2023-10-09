@@ -75,10 +75,11 @@ public class ComputerController {
             ComputerDTO originalComputerDTO = computerService.getComputerById(computerId);
 
             historyService.HistoryObject(originalComputerDTO, computerDTO, equipmentId, itemType, userid);
-
+            //Добавление в таблицу Списания(Trash)
             if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(true)) {
                 trashService.TrashObject(computerDTO, equipmentId, itemType, trashdate);
             }
+            //удаление из таблицы списания
             try {
                 if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(false)) {
                     trashService.deleteTrashObject(equipmentId, itemType);
