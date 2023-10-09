@@ -18,6 +18,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @PersistenceContext
 @Transactional
@@ -51,6 +53,14 @@ public class TrashServiceImpl implements TrashService {
                 // Обработка исключения
                 e.printStackTrace();
             }
+        }
+    }
+    @Override
+    public void deleteTrashObject(Integer equipmentId, Integer itemTypeId){
+        Optional<Trash> trashOptional = trashRepository.findByEquipmentIdAndItemTypeId(equipmentId, itemTypeId);
+        if (trashOptional.isPresent()) {
+            Trash trashToDelete = trashOptional.get();
+            trashRepository.delete(trashToDelete);
         }
     }
 

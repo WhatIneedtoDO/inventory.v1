@@ -8,6 +8,7 @@ import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.TelephoneService;
 import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,16 @@ public class TelephoneController {
 
             if (telephoneDTO.getSpisano()!=null && telephoneDTO.getSpisano().equals(true)){
                 trashService.TrashObject(telephoneDTO,telephoneId,itemType,trashdate);
+            }
+            try {
+            if (telephoneDTO.getSpisano() == null || telephoneDTO.getSpisano().equals(false)){
+                    trashService.deleteTrashObject(telephoneId, itemType);
+            }
+
+            } catch (EntityNotFoundException e) {
+                // Обработка исключения, если запись Trash не найдена
+            } catch (Exception ex) {
+                // Обработка других исключений
             }
 
             Telephones updatedTelephone = telephoneService.updateTelephone(telephoneId, telephoneDTO);

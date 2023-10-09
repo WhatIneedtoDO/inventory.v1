@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrashJsonResponse {
+public class TrashJsonResponse { //формирование объекта Trash с данными из бд
     private Integer trash_id;
     private Integer equipment_id;
     private String itemtype;
@@ -37,6 +37,7 @@ public class TrashJsonResponse {
     private Double price;
     private String comment;
 
+    // сопоставление alias-ов для правильного формирования таблицы
     public TrashJsonResponse(Tuple tuple) {
         this.trash_id = tuple.get("trash_id", Integer.class);
         this.equipment_id = tuple.get("equipment_id", Integer.class);

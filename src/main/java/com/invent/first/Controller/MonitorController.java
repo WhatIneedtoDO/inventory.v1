@@ -8,6 +8,7 @@ import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.MonitorService;
 import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class MonitorController {
     private final TrashService trashService;
 
 
-    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService,TrashService trashService) {
+    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService, TrashService trashService) {
         this.monitorService = monitorService;
         this.userService = userService;
         this.historyService = historyService;
@@ -56,7 +57,7 @@ public class MonitorController {
 
     @PutMapping("/Update/{monitorId}")
     public ResponseEntity<MonitorOutDTO> updateMonitor(@PathVariable Integer monitorId, @AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestBody MonitorDTO monitorDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
+                                                       @RequestBody MonitorDTO monitorDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
@@ -68,13 +69,21 @@ public class MonitorController {
 
             MonitorDTO originalMonitorDTO = monitorService.getMonitorById(monitorId);
 
-            historyService.HistoryObject(originalMonitorDTO,monitorDTO,equipmentId,itemType,userid);
+            historyService.HistoryObject(originalMonitorDTO, monitorDTO, equipmentId, itemType, userid);
 
-            if(monitorDTO.getSpisano() != null && monitorDTO.getSpisano().equals(true)){
-                trashService.TrashObject(monitorDTO,equipmentId,itemType,trashdate);
+            if (monitorDTO.getSpisano() != null && monitorDTO.getSpisano().equals(true)) {
+                trashService.TrashObject(monitorDTO, equipmentId, itemType, trashdate);
             }
-
-            Monitor updatedMonitor = monitorService.updateMonitor(monitorId,monitorDTO);
+            try {
+                if (monitorDTO.getSpisano() == null || monitorDTO.getSpisano().equals(false)) {
+                    trashService.deleteTrashObject(equipmentId, itemType);
+                }
+            } catch (EntityNotFoundException e) {
+                // Обработка исключения, если запись Trash не найдена
+            } catch (Exception ex) {
+                // Обработка других исключений
+            }
+            Monitor updatedMonitor = monitorService.updateMonitor(monitorId, monitorDTO);
         }
         return ResponseEntity.ok(monitorService.getMonitorOutById(monitorId));
     }

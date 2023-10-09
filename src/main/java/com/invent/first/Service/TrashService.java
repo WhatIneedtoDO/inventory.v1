@@ -12,4 +12,5 @@ public interface TrashService {
     TrashDTO add(TrashDTO trashDTO);
    List<TrashJsonResponse> getList();
     public <T> void TrashObject(T objectDTO,Integer equipmentId, Integer itemType, Date trashDate);
+    void deleteTrashObject(Integer equipmentId, Integer itemTypeId);
 }

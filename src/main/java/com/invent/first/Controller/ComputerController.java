@@ -8,6 +8,7 @@ import com.invent.first.Service.ComputerService;
 import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -60,7 +61,7 @@ public class ComputerController {
 
     @PutMapping("/Update/{computerId}")
     public ResponseEntity<ComputerOutDTO> updateComputer(@PathVariable Integer computerId, @AuthenticationPrincipal UserDetails userDetails,
-                                                         @RequestBody ComputerDTO computerDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate)  {
+                                                         @RequestBody ComputerDTO computerDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
 
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
@@ -75,13 +76,21 @@ public class ComputerController {
 
             historyService.HistoryObject(originalComputerDTO, computerDTO, equipmentId, itemType, userid);
 
-            if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(true)){
-                trashService.TrashObject(computerDTO,equipmentId,itemType,trashdate);
+            if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(true)) {
+                trashService.TrashObject(computerDTO, equipmentId, itemType, trashdate);
+            }
+            try {
+                if (computerDTO.getSpisano() != null && computerDTO.getSpisano().equals(false)) {
+                    trashService.deleteTrashObject(equipmentId, itemType);
+                }
+            } catch (EntityNotFoundException e) {
+                // Обработка исключения, если запись Trash не найдена
+            } catch (Exception ex) {
+                // Обработка других исключений
             }
             Computer updatedComputer = computerService.updateComputer(computerId, computerDTO);
 
         }
-
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
     }
 

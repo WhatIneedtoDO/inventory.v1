@@ -1,4 +1,5 @@
 package com.invent.first.Controller;
+
 import com.invent.first.DTO.OutDTO.PrinterOutDTO;
 import com.invent.first.DTO.PrinterDTO;
 import com.invent.first.DTO.UserDTO;
@@ -7,6 +8,7 @@ import com.invent.first.Service.HistoryService;
 import com.invent.first.Service.PrinterService;
 import com.invent.first.Service.TrashService;
 import com.invent.first.Service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,7 @@ public class PrinterController {
     private final TrashService trashService;
 
     @Autowired
-    public PrinterController(PrinterService printerService, UserService userService,HistoryService historyService,TrashService trashService){
+    public PrinterController(PrinterService printerService, UserService userService, HistoryService historyService, TrashService trashService) {
         this.printerService = printerService;
         this.userService = userService;
         this.historyService = historyService;
@@ -38,23 +40,26 @@ public class PrinterController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PrinterOutDTO>> getAllPrinters(){
+    public ResponseEntity<List<PrinterOutDTO>> getAllPrinters() {
         List<PrinterOutDTO> printers = printerService.getAllPrintersWithDetails();
         return ResponseEntity.ok(printers);
     }
+
     @GetMapping("/Details/{printerId}")
-    public ResponseEntity<PrinterOutDTO> getPrinterDetails(@PathVariable Integer printerId){
+    public ResponseEntity<PrinterOutDTO> getPrinterDetails(@PathVariable Integer printerId) {
         PrinterOutDTO printerById = printerService.getPrinterOutById(printerId);
         return ResponseEntity.ok(printerById);
     }
+
     @PostMapping("/add")
-    public ResponseEntity<PrinterDTO> addPrinter(@RequestBody PrinterDTO printerDTO){
+    public ResponseEntity<PrinterDTO> addPrinter(@RequestBody PrinterDTO printerDTO) {
         PrinterDTO addedPrinter = printerService.addPrinter(printerDTO);
         return new ResponseEntity<>(addedPrinter, HttpStatus.CREATED);
     }
+
     @PutMapping("/Update/{printerId}")
-    public ResponseEntity<PrinterOutDTO> updatePrinter(@PathVariable Integer printerId,@AuthenticationPrincipal UserDetails userDetails,
-                                                       @RequestBody PrinterDTO printerDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate){
+    public ResponseEntity<PrinterOutDTO> updatePrinter(@PathVariable Integer printerId, @AuthenticationPrincipal UserDetails userDetails,
+                                                       @RequestBody PrinterDTO printerDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
 
@@ -67,9 +72,20 @@ public class PrinterController {
 
             historyService.HistoryObject(originalPrinterDTO, printerDTO, equipmentId, itemType, userid);
 
-            if (printerDTO.getSpisano() !=null && printerDTO.getSpisano().equals(true)){
-                trashService.TrashObject(printerDTO,equipmentId,itemType,trashdate);
+            if (printerDTO.getSpisano() != null && printerDTO.getSpisano().equals(true)) {
+                trashService.TrashObject(printerDTO, equipmentId, itemType, trashdate);
             }
+            try {
+                if (printerDTO.getSpisano() == null || printerDTO.getSpisano().equals(false)) {
+
+                    trashService.deleteTrashObject(equipmentId, itemType);
+                }
+            } catch (EntityNotFoundException e) {
+                // Обработка исключения, если запись Trash не найдена
+            } catch (Exception ex) {
+                // Обработка других исключений
+            }
+
             Printers updatedPrinter = printerService.updatePrinter(printerId, printerDTO);
 
         }
@@ -77,9 +93,9 @@ public class PrinterController {
     }
 
     @DeleteMapping("/Delete/{printerId}")
-    public ResponseEntity<Void> deletePrinter(@PathVariable Integer printerId){
+    public ResponseEntity<Void> deletePrinter(@PathVariable Integer printerId) {
         Printers deletedPrinter = printerService.deleteById(printerId);
-        if ( deletedPrinter == null){
+        if (deletedPrinter == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();

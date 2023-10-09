@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TrashRepository extends JpaRepository<Trash,Integer> {
+
     //Запрос , который по данным из тааблицы Trash подтягивает все остальные поля в зависимости от типа оборудования
     @Query(value = """
     SELECT
@@ -99,6 +101,11 @@ public interface TrashRepository extends JpaRepository<Trash,Integer> {
              LEFT JOIN invent.location l on l.id =COALESCE(c.location_id,m.location_id,p.location_id,tel.location_id) ;
     """,nativeQuery = true)
     List<Tuple> getAllTrash();
-
-
+//поиск по Itemtypeid и equipmentId
+    @Query(value = """
+            SELECT t FROM Trash t
+            WHERE t.equipment_id = :equipmentId
+              AND t.itemType.id = :itemtypeId
+            """)
+    Optional<Trash> findByEquipmentIdAndItemTypeId(Integer equipmentId, Integer itemtypeId);
 }
