@@ -67,9 +67,4 @@ public class PublicController {
         HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
         return ResponseEntity.ok(history);
     }
-    @GetMapping("/Trash/all")
-    public ResponseEntity<List<TrashJsonResponse>> getAllTrash(){
-        List<TrashJsonResponse> trashList = trashService.getList();
-        return ResponseEntity.ok(trashList);
-    }
 }

@@ -98,10 +98,11 @@ public interface TrashRepository extends JpaRepository<Trash,Integer> {
              LEFT JOIN invent.pmodel mo ON mo.id = COALESCE(c.model_id,m.model_id,p.model_id,tel.model_id)
              LEFT JOIN invent._user u on u.id = COALESCE(c.user_id,m.user_id,p.user_id,tel.user_id)
              LEFT JOIN invent.city ct on ct.id = COALESCE(c.city_id,m.city_id,p.city_id,tel.city_id)
-             LEFT JOIN invent.location l on l.id =COALESCE(c.location_id,m.location_id,p.location_id,tel.location_id) ;
+             LEFT JOIN invent.location l on l.id =COALESCE(c.location_id,m.location_id,p.location_id,tel.location_id);
     """,nativeQuery = true)
     List<Tuple> getAllTrash();
-//поиск по Itemtypeid и equipmentId
+    //Вывод только для определенного типа оборудования
+    // поиск по Itemtypeid и equipmentId
     @Query(value = """
             SELECT t FROM Trash t
             WHERE t.equipment_id = :equipmentId

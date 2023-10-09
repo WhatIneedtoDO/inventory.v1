@@ -29,4 +29,5 @@ public interface ComputerRepository extends JpaRepository<Computer,Integer> {
     @Modifying
     @Transactional
     List<Integer> findPairsToMonitor();
+
 }
