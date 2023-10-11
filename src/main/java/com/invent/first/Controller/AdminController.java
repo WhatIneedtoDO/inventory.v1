@@ -20,7 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/admin")
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;
     private final AuthenticationService service;
@@ -68,12 +68,6 @@ public class AdminController {
         String newPassword = "P@ssw0rd";
         userService.updatePassword(userId, newPassword);
         return ResponseEntity.ok("Password updated successfully.");
-    }
-
-    @PutMapping
-    @PreAuthorize("hasAuthority('admin:update')")
-    public String put() {
-        return "PUT:: admin controller";
     }
 
     @DeleteMapping("/Delete/{userId}")

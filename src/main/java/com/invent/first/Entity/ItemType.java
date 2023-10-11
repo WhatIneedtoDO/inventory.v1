@@ -28,7 +28,11 @@ public class ItemType {
         private List<Printers> printers;
         @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
         private List<Telephones> telephones;
+        @OneToMany(mappedBy = "itemType", cascade = CascadeType.ALL)
+        private List<ServerEqs> serverEqs;
         @OneToMany(mappedBy = "itemType",cascade = CascadeType.ALL)
         private List<HistoryOfChanges> history;
+        @OneToMany(mappedBy = "itemType",cascade = CascadeType.ALL)
+        private List<Trash> trash;
 
 }

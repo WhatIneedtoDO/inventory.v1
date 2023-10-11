@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "productions")
 public class Productions {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,6 +25,8 @@ public class Productions {
     private List<Monitor> monitors;
     @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
     private List<Printers> printers;
+    @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
+    private List<ServerEqs> serverEqs;
     @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
     private List<Telephones> telephones;
 

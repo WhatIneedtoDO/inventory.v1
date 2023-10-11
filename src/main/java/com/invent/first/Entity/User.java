@@ -45,6 +45,8 @@ public class User implements UserDetails {
   private List<Printers> printers;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Telephones> telephones;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<ServerEqs> serverEqs;
   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<HistoryOfChanges> history;
 

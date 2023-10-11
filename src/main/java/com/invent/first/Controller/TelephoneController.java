@@ -88,7 +88,7 @@ public class TelephoneController {
         return ResponseEntity.ok(telephoneService.getTelephoneOutById(telephoneId));
     }
     @DeleteMapping("/Delete/{telephoneId}")
-    public ResponseEntity<Void> deleteComputer(@PathVariable Integer telephoneId){
+    public ResponseEntity<Void> delete(@PathVariable Integer telephoneId){
         Telephones deletedTelephone = telephoneService.deleteById(telephoneId);
         if (deletedTelephone == null){
             return ResponseEntity.notFound().build();
