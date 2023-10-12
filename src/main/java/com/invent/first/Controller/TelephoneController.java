@@ -90,6 +90,7 @@ public class TelephoneController {
     @DeleteMapping("/Delete/{telephoneId}")
     public ResponseEntity<Void> delete(@PathVariable Integer telephoneId){
         Telephones deletedTelephone = telephoneService.deleteById(telephoneId);
+        trashService.deleteTrashObject(telephoneId,deletedTelephone.getItemType().getId());
         if (deletedTelephone == null){
             return ResponseEntity.notFound().build();
         }

@@ -65,6 +65,13 @@ public class TrashServiceImpl implements TrashService {
     }
 
     @Override
+    public Trash getTrash(Integer equipmentId, Integer itemTypeId) {
+        Trash trash = trashRepository.findByEquipmentIdAndItemTypeId(equipmentId,itemTypeId)
+                .orElseThrow(()-> new EntityNotFoundException("Not found in trash"));
+        return trash;
+    }
+
+    @Override
     public TrashDTO add(TrashDTO trashDTO) {
         Trash trash = mapToEntity(trashDTO);
         Trash newTrash = trashRepository.save(trash);

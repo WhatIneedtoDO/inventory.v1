@@ -48,7 +48,8 @@ public class ServerEqs {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-    private String room;// String т.к. предполагается форма записи '110-2',где 2 - это номер шкафа
+    private Integer room;
+    private Integer closet;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"password", "role", "token"})

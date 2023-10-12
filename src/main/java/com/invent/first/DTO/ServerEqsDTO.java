@@ -27,7 +27,8 @@ public class ServerEqsDTO {
     private Serviceability serv;
     private Integer city;
     private Integer location;
-    private String room;
+    private Integer room;
+    private Integer closet;
     @JsonIgnoreProperties(value = {"password", "role","token"})
     private Integer userId;
     private Date staydate;

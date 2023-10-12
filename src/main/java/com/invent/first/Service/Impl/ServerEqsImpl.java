@@ -3,6 +3,7 @@ package com.invent.first.Service.Impl;
 import com.invent.first.DTO.*;
 import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.Entity.ServerEqs;
+import com.invent.first.Entity.Trash;
 import com.invent.first.Repository.*;
 import com.invent.first.Service.ServerEqsService;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +28,7 @@ public class ServerEqsImpl implements ServerEqsService {
     private final LocationRepository locationRepository;
     private final ItemTypeRepository itemTypeRepository;
     private final CityRepository cityRepository;
+
 
     @Autowired
     public ServerEqsImpl (ServerEqsRepository serverEqsRepository, UserRepository userRepository, ProductionRepository productionRepository,
@@ -78,6 +81,7 @@ public class ServerEqsImpl implements ServerEqsService {
         serverEqs.setLocation(locationRepository.findById(serverEqsDTO.getLocation())
                 .orElseThrow(()-> new EntityNotFoundException("Location not Found")));
         serverEqs.setRoom(serverEqsDTO.getRoom());
+        serverEqs.setCloset(serverEqsDTO.getCloset());
         serverEqs.setUser(userRepository.findById(serverEqsDTO.getUserId())
                 .orElseThrow(()-> new EntityNotFoundException("User not Found")));
         serverEqs.setStaydate(serverEqsDTO.getStaydate());
@@ -100,10 +104,12 @@ public class ServerEqsImpl implements ServerEqsService {
         return mapToDTOs(serverEqs);
     }
 
+
     @Override
+    @Transactional
     public ServerEqs deleteById(Integer eqsId) {
         ServerEqs serverEqs = serverEqsRepository.findById(eqsId)
-                .orElseThrow(()-> new EntityNotFoundException("Telephone not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("Server or Commutator not Found"));
         serverEqsRepository.deleteById(eqsId);
         return serverEqs;
     }
@@ -124,6 +130,7 @@ public class ServerEqsImpl implements ServerEqsService {
                 .city(serverEqs.getCity().getId())
                 .location(serverEqs.getLocation().getId())
                 .room(serverEqs.getRoom())
+                .closet(serverEqs.getCloset())
                 .userId(serverEqs.getUser().getId())
                 .staydate(serverEqs.getStaydate())
                 .price(serverEqs.getPrice())
@@ -154,6 +161,7 @@ public class ServerEqsImpl implements ServerEqsService {
                 .city(cityDTO)
                 .location(locationDTO)
                 .room(serverEqs.getRoom())
+                .closet(serverEqs.getCloset())
                 .userId(userDTO)
                 .staydate(serverEqs.getStaydate())
                 .price(serverEqs.getPrice())
@@ -181,6 +189,7 @@ public class ServerEqsImpl implements ServerEqsService {
         serverEqs.setLocation(locationRepository.findById(serverEqsDTO.getLocation())
                 .orElseThrow(()-> new EntityNotFoundException("Location not Found")));
         serverEqs.setRoom(serverEqsDTO.getRoom());
+        serverEqs.setCloset(serverEqsDTO.getCloset());
         serverEqs.setUser(userRepository.findById(serverEqsDTO.getUserId())
                 .orElseThrow(()-> new EntityNotFoundException("User not Found")));
         serverEqs.setStaydate(serverEqsDTO.getStaydate());

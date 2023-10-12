@@ -4,6 +4,7 @@ import com.invent.first.Entity.Trash;
 import com.invent.first.response.TrashJsonResponse;
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -59,7 +60,8 @@ public interface TrashRepository extends JpaRepository<Trash,Integer> {
             WHEN t.item_type_id = 6 THEN p.serv
             WHEN t.item_type_id = 7 THEN tel.serv
             ELSE NULL
-            END AS serv,
+            END AS serv, 
+       
         CASE
             WHEN t.item_type_id = 1 THEN c.room
             WHEN t.item_type_id = 2 THEN m.room
@@ -119,4 +121,11 @@ public interface TrashRepository extends JpaRepository<Trash,Integer> {
               AND t.itemType.id = :itemtypeId
             """)
     Optional<Trash> findByEquipmentIdAndItemTypeId(Integer equipmentId, Integer itemtypeId);
+    @Modifying
+    @Query(value = """
+    DELETE FROM trash
+    WHERE equipment_id = :equipmentId
+      AND item_type_id = :itemtypeId
+    """,nativeQuery = true)
+    void deleteByEquipment_idAndItemType(Integer equipmentId,Integer itemtypeId);
 }

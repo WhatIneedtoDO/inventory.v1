@@ -96,6 +96,7 @@ public class ServerEqsController {
     @DeleteMapping("/Delete/{eqsId}")
     public ResponseEntity<Void> deleteServerEqs(@PathVariable Integer eqsId){
         ServerEqs deletedServerEqs = serverEqsService.deleteById(eqsId);
+        trashService.deleteTrashObject(eqsId,deletedServerEqs.getItemType().getId());
         if (deletedServerEqs == null){
             return ResponseEntity.notFound().build();
         }

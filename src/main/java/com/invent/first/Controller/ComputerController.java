@@ -98,7 +98,7 @@ public class ComputerController {
     @DeleteMapping("/Delete/{computerId}")
     public ResponseEntity<Void> deleteComputer(@PathVariable Integer computerId) {
         Computer deletedComputer = computerService.deleteById(computerId);
-
+        trashService.deleteTrashObject(computerId,deletedComputer.getItemType().getId());
         if (deletedComputer == null) {
             return ResponseEntity.notFound().build();
         }

@@ -91,6 +91,7 @@ public class MonitorController {
     @DeleteMapping("/Delete/{monitorId}")
     public ResponseEntity<Void> deleteMonitor(@PathVariable Integer monitorId) {
         Monitor deletedMonitor = monitorService.deleteById(monitorId);
+        trashService.deleteTrashObject(monitorId,deletedMonitor.getItemType().getId());
         if (deletedMonitor == null) {
             return ResponseEntity.notFound().build();
         }

@@ -95,6 +95,7 @@ public class PrinterController {
     @DeleteMapping("/Delete/{printerId}")
     public ResponseEntity<Void> deletePrinter(@PathVariable Integer printerId) {
         Printers deletedPrinter = printerService.deleteById(printerId);
+        trashService.deleteTrashObject(printerId,deletedPrinter.getItemType().getId());
         if (deletedPrinter == null) {
             return ResponseEntity.notFound().build();
         }
