@@ -1,4 +1,4 @@
-# Spring Boot 3.0 Security with JWT Implementation,Spring data,JPA,Hibernate,MySQL
+# Inventory APP created with Spring Boot 3.0 Security with JWT Implementation,Spring data,JPA,Hibernate,MySQL,JDBC
 This project demonstrates the implementation of security using Spring Boot 3.0 and JSON Web Tokens (JWT),Crud operation , Spring data, Hibernate, JPA . It includes the following features:
 
 ## Features
@@ -23,6 +23,7 @@ This project demonstrates the implementation of security using Spring Boot 3.0 a
 * BCrypt
 * Maven
 * MySQL
+* JDBC
  
 ## Getting Started
 To get started with this project, you will need to have the following installed on your local machine:
