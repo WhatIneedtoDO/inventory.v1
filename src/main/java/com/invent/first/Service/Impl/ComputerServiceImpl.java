@@ -23,18 +23,18 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class ComputerServiceImpl implements ComputerService {
-    private ComputerRepository computerRepository;
-    private UserRepository userRepository;
-    private ProductionRepository productionRepository;
-    private ModelRepository modelRepository;
-    private LocationRepository locationRepository;
-    private ItemTypeRepository itemTypeRepository;
-    private CityRepository cityRepository;
-    private MotherBProdRepos motherBProdRepos;
-    private MotherBModelRepos motherBModelRepos;
-    private CpuProdRepository cpuProdRepository;
-    private CpuModelRepository cpuModelRepository;
-    private EntityManager entityManager;
+    private final ComputerRepository computerRepository;
+    private final UserRepository userRepository;
+    private final ProductionRepository productionRepository;
+    private final ModelRepository modelRepository;
+    private final LocationRepository locationRepository;
+    private final ItemTypeRepository itemTypeRepository;
+    private final CityRepository cityRepository;
+    private final MotherBProdRepos motherBProdRepos;
+    private final MotherBModelRepos motherBModelRepos;
+    private final CpuProdRepository cpuProdRepository;
+    private final CpuModelRepository cpuModelRepository;
+    private final EntityManager entityManager;
 
 
     @Autowired

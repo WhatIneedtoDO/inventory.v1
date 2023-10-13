@@ -49,6 +49,8 @@ public class User implements UserDetails {
   private List<ServerEqs> serverEqs;
   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
   private List<HistoryOfChanges> history;
+  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+  private List<PowerSystem> powerSystem;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

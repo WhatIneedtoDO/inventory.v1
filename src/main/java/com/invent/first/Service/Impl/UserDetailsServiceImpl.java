@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class UserDetailsServiceImpl implements UserService {
-    private UserRepository repository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     public UserDetailsServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;

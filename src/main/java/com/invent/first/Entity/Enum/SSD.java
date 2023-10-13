@@ -3,6 +3,7 @@ package com.invent.first.Entity.Enum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum SSD {
     VALUENOTINSTALL(0),
@@ -13,7 +14,6 @@ public enum SSD {
     VALUE2048(2048),
     VALUE4096(4096);
 
-    @Getter
     private final int value;
 
 

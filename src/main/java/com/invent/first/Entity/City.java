@@ -29,6 +29,10 @@ public class City {
     private List<Printers> printers;
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Telephones> telephones;
+    @OneToMany(mappedBy = "city",cascade = CascadeType.ALL)
+    private List<ServerEqs> serverEqs;
+    @OneToMany(mappedBy = "city",cascade = CascadeType.ALL)
+    private List<PowerSystem> powerSystem;
 
 
 

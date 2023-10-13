@@ -29,5 +29,7 @@ public class Productions {
     private List<ServerEqs> serverEqs;
     @OneToMany(mappedBy = "production", cascade = CascadeType.ALL)
     private List<Telephones> telephones;
+    @OneToMany(mappedBy = "production",cascade = CascadeType.ALL)
+    private List<PowerSystem> powerSystem;
 
 }

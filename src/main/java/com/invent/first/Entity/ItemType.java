@@ -34,5 +34,6 @@ public class ItemType {
         private List<HistoryOfChanges> history;
         @OneToMany(mappedBy = "itemType",cascade = CascadeType.ALL)
         private List<Trash> trash;
-
+        @OneToMany(mappedBy = "itemType",cascade = CascadeType.ALL)
+        private List<PowerSystem> powerSystem;
 }

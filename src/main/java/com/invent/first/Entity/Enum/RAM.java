@@ -3,6 +3,7 @@ package com.invent.first.Entity.Enum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum RAM {
 
@@ -17,7 +18,6 @@ public enum RAM {
     VALUE64(64),
     VALUE128(128);
 
-    @Getter
     private final int value;
 
 

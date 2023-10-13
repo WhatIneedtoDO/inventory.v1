@@ -181,7 +181,7 @@ public class ServerEqsImpl implements ServerEqsService {
         serverEqs.setItemType(itemTypeRepository.findById(serverEqsDTO.getItemType())
                 .orElseThrow(()-> new EntityNotFoundException("Item type not Found")));
         serverEqs.setName(serverEqsDTO.getName());
-        serverEqs.setId(serverEqsDTO.getId());
+        serverEqs.setIp(serverEqsDTO.getIp());
         serverEqs.setYear(serverEqsDTO.getYear());
         serverEqs.setServ(serverEqsDTO.getServ());
         serverEqs.setCity(cityRepository.findById(serverEqsDTO.getCity())

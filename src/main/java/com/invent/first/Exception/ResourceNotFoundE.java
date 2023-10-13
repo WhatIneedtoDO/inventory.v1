@@ -1,8 +1,10 @@
 package com.invent.first.Exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@Getter
 @ResponseStatus(value = HttpStatus.NOT_FOUND )
 public class ResourceNotFoundE extends RuntimeException {
     public static final long serialVersionUID = 1L;
@@ -20,15 +22,4 @@ public class ResourceNotFoundE extends RuntimeException {
     public ResourceNotFoundE() {
     }
 
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Object getFieldValue() {
-        return fieldValue;
-    }
 }

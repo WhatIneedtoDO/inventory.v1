@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class MotherBProdServiceImpl implements MotherBProdService {
-    private MotherBProdRepos motherBProdRepos;
+    private final MotherBProdRepos motherBProdRepos;
     @Autowired
     public MotherBProdServiceImpl(MotherBProdRepos motherBProdRepos){
         this.motherBProdRepos = motherBProdRepos;

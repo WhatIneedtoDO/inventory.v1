@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class PrinterServiceImpl implements PrinterService {
-    private PrinterRepository printerRepository;
-    private UserRepository userRepository;
-    private ProductionRepository productionRepository;
-    private ModelRepository modelRepository;
-    private LocationRepository locationRepository;
-    private ItemTypeRepository itemTypeRepository;
-    private CityRepository cityRepository;
+    private final PrinterRepository printerRepository;
+    private final UserRepository userRepository;
+    private final ProductionRepository productionRepository;
+    private final ModelRepository modelRepository;
+    private final LocationRepository locationRepository;
+    private final ItemTypeRepository itemTypeRepository;
+    private final CityRepository cityRepository;
 
 
     @Autowired

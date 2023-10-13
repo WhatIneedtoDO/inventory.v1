@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/Model")
 public class ModelController {
-    private ModelService modelService;
+    private final ModelService modelService;
     @Autowired
     public ModelController(ModelService modelService) {
         this.modelService = modelService;

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class ProdServiceImpl implements ProdService {
-    private ProductionRepository prodRepository;
+    private final ProductionRepository prodRepository;
     @Autowired
     public ProdServiceImpl(ProductionRepository prodRepository){
         this.prodRepository = prodRepository;

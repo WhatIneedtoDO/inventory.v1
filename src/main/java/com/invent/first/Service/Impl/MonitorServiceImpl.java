@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 @PersistenceContext
 @Transactional
 public class MonitorServiceImpl implements MonitorService {
-    private MonitorRepository monitorRepository;
-    private UserRepository userRepository;
-    private ProductionRepository productionRepository;
-    private ModelRepository modelRepository;
-    private LocationRepository locationRepository;
-    private ItemTypeRepository itemTypeRepository;
-    private CityRepository cityRepository;
-    private EntityManager entityManager;
+    private final MonitorRepository monitorRepository;
+    private final UserRepository userRepository;
+    private final ProductionRepository productionRepository;
+    private final ModelRepository modelRepository;
+    private final LocationRepository locationRepository;
+    private final ItemTypeRepository itemTypeRepository;
+    private final CityRepository cityRepository;
+    private final EntityManager entityManager;
     @Autowired
     public MonitorServiceImpl(MonitorRepository monitorRepository, UserRepository userRepository, ProductionRepository productionRepository,
                               ModelRepository modelRepository, LocationRepository locationRepository, ItemTypeRepository itemTypeRepository,

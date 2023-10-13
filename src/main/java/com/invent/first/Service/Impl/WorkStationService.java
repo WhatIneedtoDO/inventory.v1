@@ -16,8 +16,8 @@ import java.util.List;
 @PersistenceContext
 @Transactional
 public class WorkStationService {
-    private MonitorServiceImpl monitorService;
-    private ComputerServiceImpl computerService;
+    private final MonitorServiceImpl monitorService;
+    private final ComputerServiceImpl computerService;
     @Autowired
     public WorkStationService(MonitorServiceImpl monitorService,ComputerServiceImpl computerService){
         this.monitorService = monitorService;

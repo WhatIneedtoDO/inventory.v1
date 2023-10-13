@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/Type")
 public class ItemTypeController {
-    private ItemTypeService itemTypeService;
+    private final ItemTypeService itemTypeService;
     @Autowired
     public ItemTypeController(ItemTypeService itemTypeService) {
         this.itemTypeService = itemTypeService;

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/Production")
 public class ProdController {
-    private ProdService prodService;
+    private final ProdService prodService;
     @Autowired
     public ProdController(ProdService prodService){
         this.prodService = prodService;

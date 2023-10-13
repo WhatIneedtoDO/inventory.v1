@@ -31,5 +31,6 @@ public class Location {
     private List<Telephones> telephones;
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<ServerEqs> serverEqs;
-
+    @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
+    private List<PowerSystem> powerSystem;
 }

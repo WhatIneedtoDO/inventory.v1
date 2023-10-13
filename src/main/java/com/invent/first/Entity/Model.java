@@ -29,4 +29,6 @@ public class Model {
     private List<Telephones> telephones;
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL)
     private List<ServerEqs> serverEqs;
+    @OneToMany(mappedBy = "model",cascade = CascadeType.ALL)
+    private List<PowerSystem> powerSystem;
 }
