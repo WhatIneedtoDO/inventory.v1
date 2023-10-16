@@ -19,20 +19,20 @@ public class SecurityApplication {
 		SpringApplication.run(SecurityApplication.class, args);
 	}
 
-	@Bean
+/*	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
 		return args -> {
-		/*	var admin = RegisterRequest.builder()
+			var admin = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")
 					.username("admin")
 					.password("password")
 					.role(ADMIN)
 					.build();
-			System.out.println("Admin token: " + service.register(admin).getAccessToken());
-*/
+		*//**	System.out.println("Admin token: " + service.register(admin).getAccessToken());
+
 	/*		var danil = RegisterRequest.builder()
 					.firstname("danil")
 					.lastname("shevelev")
@@ -41,8 +41,8 @@ public class SecurityApplication {
 					.role(ADMIN)
 					.build();
 			System.out.println("danil token: " + service.register(danil).getAccessToken());
-*/
-			/*var manager = RegisterRequest.builder()
+*//*
+			*//*var manager = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")
 					.username("manager")
@@ -50,7 +50,7 @@ public class SecurityApplication {
 					.role(MANAGER)
 					.build();
 			System.out.println("Manager token: " + service.register(manager).getAccessToken());
-*/
+*//*
 	};
-	}
+	}*/
 }
