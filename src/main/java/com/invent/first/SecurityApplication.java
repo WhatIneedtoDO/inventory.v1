@@ -1,6 +1,7 @@
 package com.invent.first;
 
 
+import com.invent.first.Repository.UserRepository;
 import com.invent.first.Service.AuthenticationService;
 import com.invent.first.request.RegisterRequest;
 import org.springframework.boot.CommandLineRunner;
@@ -19,38 +20,38 @@ public class SecurityApplication {
 		SpringApplication.run(SecurityApplication.class, args);
 	}
 
-/*	@Bean
+	@Bean
 	public CommandLineRunner commandLineRunner(
-			AuthenticationService service
+			AuthenticationService service,
+			UserRepository userRepository
 	) {
 		return args -> {
-			var admin = RegisterRequest.builder()
-					.firstname("Admin")
-					.lastname("Admin")
-					.username("admin")
-					.password("password")
-					.role(ADMIN)
-					.build();
-		*//**	System.out.println("Admin token: " + service.register(admin).getAccessToken());
+			String adminUsername = "admin";
+			String managerUsername = "manager";
 
-	/*		var danil = RegisterRequest.builder()
-					.firstname("danil")
-					.lastname("shevelev")
-					.username("danil")
-					.password("password111")
-					.role(ADMIN)
-					.build();
-			System.out.println("danil token: " + service.register(danil).getAccessToken());
-*//*
-			*//*var manager = RegisterRequest.builder()
-					.firstname("Admin")
-					.lastname("Admin")
-					.username("manager")
-					.password("password")
-					.role(MANAGER)
-					.build();
-			System.out.println("Manager token: " + service.register(manager).getAccessToken());
-*//*
-	};
-	}*/
+			if (userRepository.findByUsername(adminUsername).isEmpty()) {
+				// Создать и зарегистрировать пользователя admin
+				var admin = RegisterRequest.builder()
+						.firstname("Admin")
+						.lastname("Admin")
+						.username(adminUsername)
+						.password("password")
+						.role(ADMIN)
+						.build();
+				System.out.println("Admin token: " + service.register(admin).getAccessToken());
+			}
+
+			if (userRepository.findByUsername(managerUsername).isEmpty()) {
+				// Создать и зарегистрировать пользователя manager
+				var manager = RegisterRequest.builder()
+						.firstname("Manager")
+						.lastname("Manager")
+						.username(managerUsername)
+						.password("password")
+						.role(MANAGER)
+						.build();
+				System.out.println("Manager token: " + service.register(manager).getAccessToken());
+			}
+		};
+	}
 }
