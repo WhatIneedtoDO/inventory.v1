@@ -1,11 +1,13 @@
 package com.invent.first.Controller;
 
 import com.invent.first.DTO.UserDTO;
+import com.invent.first.Entity.Enum.Role;
 import com.invent.first.Entity.User;
 import com.invent.first.Service.AuthenticationService;
 import com.invent.first.Service.UserService;
 import com.invent.first.response.AuthenticationResponse;
 import com.invent.first.request.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,6 +70,16 @@ public class AdminController {
         String newPassword = "P@ssw0rd";
         userService.updatePassword(userId, newPassword);
         return ResponseEntity.ok("Password updated successfully.");
+    }
+    @PostMapping("/changeRole/{id}")
+    @PreAuthorize("hasAuthority('admin:update')")
+    public ResponseEntity<String>changeRole(@PathVariable Integer id, @RequestBody Role newRole){
+        boolean roleChanged = userService.changeRole(id, newRole);
+        if (roleChanged){
+            return ResponseEntity.ok("Role has changed");
+        }else {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Something Wrong");
+        }
     }
 
     @DeleteMapping("/Delete/{userId}")

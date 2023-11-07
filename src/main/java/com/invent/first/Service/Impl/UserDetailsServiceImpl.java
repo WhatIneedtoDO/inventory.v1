@@ -1,15 +1,13 @@
 package com.invent.first.Service.Impl;
 
-import com.invent.first.DTO.LocationDTO;
 import com.invent.first.DTO.UserDTO;
-import com.invent.first.Entity.Location;
+import com.invent.first.Entity.Enum.Role;
 import com.invent.first.Entity.User;
 import com.invent.first.Repository.UserRepository;
 import com.invent.first.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +37,27 @@ public class UserDetailsServiceImpl implements UserService {
         repository.deleteById(userId);
         return user;
     }
+
+    @Override
+    public boolean changeRole(Integer id, Role newRole) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setRole(newRole);
+            repository.save(user);
+
+            return true;
+
+        } else {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
+    }
+
     @Override
     public boolean changeCurrentUserPassword(String currentPassword, String newPassword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,6 +91,7 @@ public class UserDetailsServiceImpl implements UserService {
             throw new EntityNotFoundException("User not found , check id");
         }
     }
+
 
 
     @Override
