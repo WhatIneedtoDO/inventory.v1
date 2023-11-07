@@ -1,5 +1,6 @@
 package com.invent.first.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.invent.first.Entity.*;
 import com.invent.first.Entity.Enum.HDD;
 import com.invent.first.Entity.Enum.RAM;
@@ -43,6 +44,7 @@ public class ComputerDTO {
     private Integer room;
     @JsonIgnoreProperties(value = {"password", "role","token"})
     private Integer userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date staydate;
     private Double price;
     private String comment;

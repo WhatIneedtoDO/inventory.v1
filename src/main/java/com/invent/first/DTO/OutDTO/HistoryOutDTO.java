@@ -1,5 +1,6 @@
 package com.invent.first.DTO.OutDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.invent.first.DTO.ItemTypeDTO;
 import com.invent.first.DTO.UserDTO;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class HistoryOutDTO {
     private UserDTO user;
     private Integer equipmentId;
     private ItemTypeDTO itemType;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date changedate;
     private String details;
 }

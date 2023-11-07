@@ -1,6 +1,7 @@
 package com.invent.first.DTO.OutDTO;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.invent.first.DTO.*;
 import com.invent.first.Entity.Enum.Serviceability;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class MonitorOutDTO {
     private LocationDTO location;
     private Integer room;
     private UserDTO userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;

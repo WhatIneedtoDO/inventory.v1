@@ -1,5 +1,6 @@
 package com.invent.first.DTO.OutDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.invent.first.DTO.*;
 import com.invent.first.Entity.Enum.PrinterEnum.*;
@@ -40,6 +41,7 @@ public class PrinterOutDTO {
     private Integer room;
     @JsonIgnoreProperties(value = {"password", "role","token"})
     private UserDTO userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;

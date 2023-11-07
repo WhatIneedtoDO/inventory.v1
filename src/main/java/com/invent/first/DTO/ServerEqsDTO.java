@@ -1,5 +1,6 @@
 package com.invent.first.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.invent.first.Entity.Enum.Serviceability;
 import lombok.*;
@@ -31,6 +32,7 @@ public class ServerEqsDTO {
     private Integer closet;
     @JsonIgnoreProperties(value = {"password", "role","token"})
     private Integer userId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;
