@@ -15,6 +15,6 @@ public interface UserService {
  Optional<UserDTO> getUserByUsername(String username);
  User deleteById(Integer userId);
 
- void changeCurrentUserPassword(String currentPassword,String newPassword);
+ boolean changeCurrentUserPassword(String currentPassword,String newPassword);
  void updatePassword(Integer userId, String newPassword);
 }

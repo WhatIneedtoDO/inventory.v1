@@ -40,11 +40,10 @@ public class UserDetailsServiceImpl implements UserService {
         return user;
     }
     @Override
-    public void changeCurrentUserPassword(String currentPassword, String newPassword) {
+    public boolean changeCurrentUserPassword(String currentPassword, String newPassword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-
-            return;
+            return false;
         }
 
         String username = authentication.getName();
@@ -53,15 +52,13 @@ public class UserDetailsServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-
                 user.setPassword(passwordEncoder.encode(newPassword));
                 repository.save(user);
-            } else {
-                System.out.println("пароли не совпадают");
+                return true; // Пароль успешно изменен
             }
-        } else {
-            throw new EntityNotFoundException("Пользователь не найден");
         }
+
+        return false; // Пароль не изменен
     }
 
     @Override
