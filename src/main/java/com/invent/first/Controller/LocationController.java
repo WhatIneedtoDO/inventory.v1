@@ -2,12 +2,10 @@ package com.invent.first.Controller;
 
 import com.invent.first.DTO.LocationDTO;
 import com.invent.first.Service.LocationService;
+import com.invent.first.response.EkpJsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +22,10 @@ public class LocationController {
     public ResponseEntity<List<LocationDTO>> getAllLocations(){
         List<LocationDTO> locations = locationService.getAllLocations();
         return ResponseEntity.ok(locations);
+    }
+    @GetMapping("/{ekp}")
+    public ResponseEntity<List<EkpJsonResponse>> getByEkp(@PathVariable Integer ekp){
+        List<EkpJsonResponse> byEkpList = locationService.getByEkp(ekp);
+        return ResponseEntity.ok(byEkpList);
     }
 }
