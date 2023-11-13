@@ -11,128 +11,69 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends JpaRepository<Location,Integer> {
     @Query(value = """
-    SELECT
-           l.ekp,
-           ct.name AS city,
-           l.street,l.number,
-           CASE
-                      WHEN c.id IS NOT NULL THEN c.id
-                      WHEN m.id IS NOT NULL THEN m.id
-                      WHEN seq.id IS NOT NULL THEN seq.id
-                      WHEN ps.id IS NOT NULL THEN ps.id
-                      WHEN p.id IS NOT NULL THEN p.id
-                      WHEN tel.id IS NOT NULL THEN tel.id
-                      ELSE NULL
-                      END AS equipment_id,
-           it.name AS itemtype,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.i_number
-               WHEN m.id IS NOT NULL THEN m.i_number
-               WHEN seq.id IS NOT NULL THEN seq.i_number
-               WHEN ps.id IS NOT NULL THEN ps.i_number
-               WHEN p.id IS NOT NULL THEN p.i_number
-               WHEN tel.id IS NOT NULL THEN tel.i_number
-               ELSE NULL
-               END AS i_number,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.serialnumber
-               WHEN m.id IS NOT NULL THEN m.serialnumber
-               WHEN seq.id IS NOT NULL THEN seq.serialnumber
-               WHEN ps.id IS NOT NULL THEN ps.serialnumber
-               WHEN p.id IS NOT NULL THEN p.serialnumber
-               WHEN tel.id IS NOT NULL THEN tel.serialnumber
-               ELSE NULL
-               END AS serialnumber,
-                CASE
-               WHEN c.id IS NOT NULL THEN c.i_card
-               WHEN m.id IS NOT NULL THEN m.i_card
-               WHEN seq.id IS NOT NULL THEN seq.i_card
-               WHEN ps.id IS NOT NULL THEN ps.i_card
-               WHEN p.id IS NOT NULL THEN p.i_card
-               WHEN tel.id IS NOT NULL THEN tel.i_card
-               ELSE NULL
-               END AS i_card,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.year
-               WHEN m.id IS NOT NULL THEN m.year
-               WHEN seq.id IS NOT NULL THEN seq.year
-               WHEN ps.id IS NOT NULL THEN ps.year
-               WHEN p.id IS NOT NULL THEN p.year
-               WHEN tel.id IS NOT NULL THEN tel.year
-               ELSE NULL
-               END AS year,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.serv
-               WHEN m.id IS NOT NULL THEN m.serv
-               WHEN seq.id IS NOT NULL THEN seq.serv
-               WHEN ps.id IS NOT NULL THEN ps.serv
-               WHEN p.id IS NOT NULL THEN p.serv
-               WHEN tel.id IS NOT NULL THEN tel.serv
-               ELSE NULL
-               END AS serv,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.room
-               WHEN m.id IS NOT NULL THEN m.room
-               WHEN seq.id IS NOT NULL THEN seq.room
-               WHEN ps.id IS NOT NULL THEN ps.room
-               WHEN p.id IS NOT NULL THEN p.room
-               WHEN tel.id IS NOT NULL THEN tel.room
-               ELSE NULL
-               END AS room,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.price
-               WHEN m.id IS NOT NULL THEN m.price
-               WHEN seq.id IS NOT NULL THEN seq.price
-               WHEN ps.id IS NOT NULL THEN ps.price
-               WHEN p.id IS NOT NULL THEN p.price
-               WHEN tel.id IS NOT NULL THEN tel.price
-               ELSE NULL
-               END AS price,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.comment
-               WHEN m.id IS NOT NULL THEN m.comment
-               WHEN seq.id IS NOT NULL THEN seq.comment
-               WHEN ps.id IS NOT NULL THEN ps.comment
-               WHEN p.id IS NOT NULL THEN p.comment
-               WHEN tel.id IS NOT NULL THEN tel.comment
-               ELSE NULL
-               END AS comment,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.spisano
-               WHEN m.id IS NOT NULL THEN m.spisano
-               WHEN seq.id IS NOT NULL THEN seq.spisano
-               WHEN ps.id IS NOT NULL THEN ps.spisano
-               WHEN p.id IS NOT NULL THEN p.spisano
-               WHEN tel.id IS NOT NULL THEN tel.spisano
-               ELSE NULL
-               END AS spisano,
-           CASE
-               WHEN c.id IS NOT NULL THEN c.staydate
-               WHEN m.id IS NOT NULL THEN m.staydate
-               WHEN seq.id IS NOT NULL THEN seq.staydate
-               WHEN ps.id IS NOT NULL THEN ps.staydate
-               WHEN p.id IS NOT NULL THEN p.staydate
-               WHEN tel.id IS NOT NULL THEN tel.staydate
-               ELSE NULL
-               END AS staydate,
-           pr.name AS production,
-           mo.name AS model,
-           u.firstname AS firstname,
-           u.lastname AS lastname
-    
-    FROM location l
-        left join invent.computers c on l.id = c.location_id
-        left join invent.monitors m on l.id = m.location_id
-        left join invent.powersystems ps on l.id = ps.location_id
-        left join invent.printers p on l.id = p.location_id
-        left join invent.servereqs seq on l.id = seq.location_id
-        left join invent.telephones tel on l.id = tel.location_id
-        LEFT JOIN invent.item_type it ON it.id = COALESCE(c.item_type_id,m.item_type_id,p.item_type_id,tel.item_type_id,seq.item_type_id,ps.item_type_id)
-        LEFT JOIN invent.productions pr ON pr.id = COALESCE(c.productions_id, m.productions_id, p.productions_id, tel.productions_id,seq.productions_id,ps.productions_id)
-        LEFT JOIN invent.pmodel mo ON mo.id = COALESCE(c.model_id,m.model_id,p.model_id,tel.model_id,seq.model_id,ps.model_id)
-        LEFT JOIN invent._user u on u.id = COALESCE(c.user_id,m.user_id,p.user_id,tel.user_id,seq.user_id,ps.user_id)
-        LEFT JOIN invent.city ct on ct.id = COALESCE(c.city_id,m.city_id,p.city_id,tel.city_id,seq.city_id,ps.city_id)
-    WHERE ekp = :ekp
-    """,nativeQuery = true)
+            SELECT
+                    l.ekp,
+                    ct.name AS city,
+                    l.street,
+                    l.number,
+                    equipment.id AS equipment_id,
+                    it.name AS itemtype,
+                    equipment.i_number,
+                    equipment.serialnumber,
+                    equipment.i_card,
+                    equipment.year,
+                    equipment.serv,
+                    equipment.room,
+                    equipment.price,
+                    equipment.comment,
+                    equipment.spisano,
+                    equipment.staydate,
+                    COALESCE(pr.name, mo.name, '') AS production,
+                    COALESCE(mo.name, '') AS model,
+                    COALESCE(u.firstname, '') AS firstname,
+                    COALESCE(u.lastname, '') AS lastname
+            FROM location l
+                         LEFT JOIN (
+                    SELECT c.id, c.i_number, c.serialnumber, c.i_card, c.year, c.serv, c.room, c.price, c.comment, c.spisano, c.staydate,
+                           c.location_id, c.item_type_id, c.productions_id, c.model_id, c.user_id, c.city_id
+                    FROM invent.computers c
+                
+                    UNION ALL
+                
+                    SELECT m.id, m.i_number, m.serialnumber, m.i_card, m.year, m.serv, m.room, m.price, m.comment, m.spisano, m.staydate,
+                           m.location_id, m.item_type_id, m.productions_id, m.model_id, m.user_id, m.city_id
+                    FROM invent.monitors m
+                
+                    UNION ALL
+                
+                    SELECT seq.id, seq.i_number, seq.serialnumber, seq.i_card, seq.year, seq.serv, seq.room, seq.price, seq.comment, seq.spisano, seq.staydate,
+                           seq.location_id, seq.item_type_id, seq.productions_id, seq.model_id, seq.user_id, seq.city_id
+                    FROM invent.servereqs seq
+                
+                    UNION ALL
+                
+                    SELECT ps.id, ps.i_number, ps.serialnumber, ps.i_card, ps.year, ps.serv, ps.room, ps.price, ps.comment, ps.spisano, ps.staydate,
+                           ps.location_id, ps.item_type_id, ps.productions_id, ps.model_id, ps.user_id, ps.city_id
+                    FROM invent.powersystems ps
+                
+                    UNION ALL
+                
+                    SELECT p.id, p.i_number, p.serialnumber, p.i_card, p.year, p.serv, p.room, p.price, p.comment, p.spisano, p.staydate,
+                           p.location_id, p.item_type_id, p.productions_id, p.model_id, p.user_id, p.city_id
+                    FROM invent.printers p
+                
+                    UNION ALL
+                
+                    SELECT tel.id, tel.i_number, tel.serialnumber, tel.i_card, tel.year, tel.serv, tel.room, tel.price, tel.comment, tel.spisano, tel.staydate,
+                           tel.location_id, tel.item_type_id, tel.productions_id, tel.model_id, tel.user_id, tel.city_id
+                    FROM invent.telephones tel
+                ) AS equipment ON l.id = equipment.location_id
+                         LEFT JOIN invent.item_type it ON it.id = equipment.item_type_id
+                         LEFT JOIN invent.productions pr ON pr.id = equipment.productions_id
+                         LEFT JOIN invent.pmodel mo ON mo.id = equipment.model_id
+                         LEFT JOIN invent._user u ON u.id = equipment.user_id
+                         LEFT JOIN invent.city ct ON ct.id = equipment.city_id
+            WHERE l.ekp = :ekp;
+            """,nativeQuery = true)
     List<Tuple> getByEkp(Integer ekp);
 }
