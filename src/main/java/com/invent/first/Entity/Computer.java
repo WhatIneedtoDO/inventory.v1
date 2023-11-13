@@ -73,7 +73,6 @@ public class Computer {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-    @JsonIgnoreProperties({"computers", "monitors"})
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;

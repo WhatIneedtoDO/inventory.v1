@@ -54,7 +54,6 @@ public class Monitor {
     private City city;
     @ManyToOne
     @JoinColumn(name ="location_id")
-    @JsonIgnoreProperties({"computers","monitors"})
     private Location location;
     private Integer room;
     @ManyToOne(fetch = FetchType.LAZY)
