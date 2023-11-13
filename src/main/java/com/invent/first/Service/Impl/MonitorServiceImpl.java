@@ -76,6 +76,13 @@ public class MonitorServiceImpl implements MonitorService {
         List<Monitor> monitors = monitorRepository.findAllMonitorsWithDetails();
         return mapToDTOs(monitors);
     }
+
+    @Override
+    public List<MonitorOutDTO> getByEkp(Integer ekp) {
+        List<Monitor> monitors = monitorRepository.findByEkp(ekp);
+        return mapToDTOs(monitors);
+    }
+
     public List<MonitorOutDTO> getAllMonitorPairs(){
         entityManager.clear();
         List<Integer> monitorIds = monitorRepository.findPairsToComputer();

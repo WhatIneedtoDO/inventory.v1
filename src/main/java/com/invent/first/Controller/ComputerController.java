@@ -47,6 +47,7 @@ public class ComputerController {
         return ResponseEntity.ok(computers);
     }
 
+
     @GetMapping("/Details/{computerId}")
     public ResponseEntity<ComputerOutDTO> getComputerDetails(@PathVariable Integer computerId) {
         ComputerOutDTO computerById = computerService.getComputerOutById(computerId);

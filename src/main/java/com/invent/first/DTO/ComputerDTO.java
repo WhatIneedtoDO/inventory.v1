@@ -44,7 +44,7 @@ public class ComputerDTO {
     private Integer room;
     @JsonIgnoreProperties(value = {"password", "role","token"})
     private Integer userId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;

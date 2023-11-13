@@ -14,6 +14,7 @@ public interface MonitorService {
     MonitorDTO getMonitorById(Integer monitorId);
     MonitorOutDTO getMonitorOutById(Integer monitorId);
     List<MonitorOutDTO> getAllMonitorsWithDetails();
+    List<MonitorOutDTO> getByEkp(Integer ekp);
     Monitor updateMonitor(Integer monitorId, MonitorDTO monitorDTO);
     Monitor deleteById(Integer monitorId);
 }

@@ -16,5 +16,6 @@ public interface ComputerService {
     ComputerDTO addComputer(ComputerDTO computerDTO);
     List<ComputerOutDTO> getAllComputersWithDetails();
     Computer deleteById(Integer computerId);
+    List<ComputerOutDTO> getComputersOnEkp(Integer ekp);
 
 }

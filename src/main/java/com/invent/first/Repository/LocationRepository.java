@@ -13,8 +13,17 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
     @Query(value = """
     SELECT
            l.ekp,
-           ct.name AS city_id,
+           ct.name AS city,
            l.street,l.number,
+           CASE
+                      WHEN c.id IS NOT NULL THEN c.id
+                      WHEN m.id IS NOT NULL THEN m.id
+                      WHEN seq.id IS NOT NULL THEN seq.id
+                      WHEN ps.id IS NOT NULL THEN ps.id
+                      WHEN p.id IS NOT NULL THEN p.id
+                      WHEN tel.id IS NOT NULL THEN tel.id
+                      ELSE NULL
+                      END AS equipment_id,
            it.name AS itemtype,
            CASE
                WHEN c.id IS NOT NULL THEN c.i_number
@@ -34,6 +43,15 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
                WHEN tel.id IS NOT NULL THEN tel.serialnumber
                ELSE NULL
                END AS serialnumber,
+                CASE
+               WHEN c.id IS NOT NULL THEN c.i_card
+               WHEN m.id IS NOT NULL THEN m.i_card
+               WHEN seq.id IS NOT NULL THEN seq.i_card
+               WHEN ps.id IS NOT NULL THEN ps.i_card
+               WHEN p.id IS NOT NULL THEN p.i_card
+               WHEN tel.id IS NOT NULL THEN tel.i_card
+               ELSE NULL
+               END AS i_card,
            CASE
                WHEN c.id IS NOT NULL THEN c.year
                WHEN m.id IS NOT NULL THEN m.year
@@ -97,8 +115,8 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
                WHEN tel.id IS NOT NULL THEN tel.staydate
                ELSE NULL
                END AS staydate,
-           pr.name AS productions_id,
-           mo.name AS model_id,
+           pr.name AS production,
+           mo.name AS model,
            u.firstname AS firstname,
            u.lastname AS lastname
     

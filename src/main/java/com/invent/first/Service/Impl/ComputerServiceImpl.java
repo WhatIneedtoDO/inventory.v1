@@ -88,7 +88,7 @@ public class ComputerServiceImpl implements ComputerService {
         Integer userId = computerDTO.getUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
-        computer.setId(computer.getId());
+        computer.setId(computerDTO.getId());
         computer.setI_card(computerDTO.getI_card());
         computer.setUser(user);
         computer.setProduction(productionRepository.findById(computerDTO.getProduction())
@@ -153,6 +153,12 @@ public class ComputerServiceImpl implements ComputerService {
                 .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
         computerRepository.deleteById(computerId);
         return computer;
+    }
+
+    @Override
+    public List<ComputerOutDTO> getComputersOnEkp(Integer ekp) {
+        List<Computer> computers = computerRepository.findComputersByEkp(ekp);
+        return mapToDTOs(computers);
     }
 
 

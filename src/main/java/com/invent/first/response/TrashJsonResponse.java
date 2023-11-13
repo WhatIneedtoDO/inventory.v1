@@ -1,5 +1,6 @@
 package com.invent.first.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.invent.first.DTO.*;
 import com.invent.first.Entity.Enum.Serviceability;
@@ -18,6 +19,7 @@ public class TrashJsonResponse { //формирование объекта Trash
     private Integer trash_id;
     private Integer equipment_id;
     private String itemtype;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date trash_date;
     private Integer i_card;
     private String serialnumber;
@@ -33,6 +35,7 @@ public class TrashJsonResponse { //формирование объекта Trash
     private Integer room;
     private String firstname;
     private String lastname;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;

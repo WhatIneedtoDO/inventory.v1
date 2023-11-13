@@ -1,5 +1,6 @@
 package com.invent.first.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Tuple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class EkpJsonResponse {
     private Integer room;
     private String firstname;
     private String lastname;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date staydate;
     private Double price;
     private String comment;
