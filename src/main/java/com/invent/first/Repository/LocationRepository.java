@@ -73,7 +73,7 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
                          LEFT JOIN invent.pmodel mo ON mo.id = equipment.model_id
                          LEFT JOIN invent._user u ON u.id = equipment.user_id
                          LEFT JOIN invent.city ct ON ct.id = equipment.city_id
-            WHERE l.ekp = :ekp;
+            WHERE l.ekp = :ekp
             """,nativeQuery = true)
     List<Tuple> getByEkp(Integer ekp);
 }
