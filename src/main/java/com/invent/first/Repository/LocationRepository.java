@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Location,Integer> {
+    //SELECT Запрос для объединения всех таблиц и сортировки по адрессу.
     @Query(value = """
             SELECT
                     l.ekp,
@@ -28,7 +29,7 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
                     equipment.comment,
                     equipment.spisano,
                     equipment.staydate,
-                    COALESCE(pr.name, mo.name, '') AS production,
+                    COALESCE(pr.name, '') AS production,
                     COALESCE(mo.name, '') AS model,
                     COALESCE(u.firstname, '') AS firstname,
                     COALESCE(u.lastname, '') AS lastname

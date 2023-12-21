@@ -1,6 +1,8 @@
 package com.invent.first.config;
 
+import com.invent.first.Repository.GlobalFilterRepository;
 import com.invent.first.Repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,9 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.invent.first.Repository")
-@ComponentScan(basePackages = "com.invent.first.Service")
+@ComponentScan(basePackages = {"com.invent.first.Repository", "com.invent.first.Service", "com.invent.first.Controller"})
 public class ApplicationConfig {
 
   private final UserRepository repository;
