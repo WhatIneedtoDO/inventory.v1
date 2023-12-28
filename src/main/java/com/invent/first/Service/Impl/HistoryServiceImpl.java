@@ -115,7 +115,7 @@ public class HistoryServiceImpl implements HistoryService {
 
         if (originalValue != null && !originalValue.equals(newValue)) {
             if (originalValue instanceof Date && newValue instanceof Date) {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String originalDateStr = dateFormatter.format((Date) originalValue);
                 String newDateStr = dateFormatter.format((Date) newValue);
 

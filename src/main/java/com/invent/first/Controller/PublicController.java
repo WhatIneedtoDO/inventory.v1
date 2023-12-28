@@ -71,7 +71,7 @@ public class PublicController {
         return ResponseEntity.ok(history);
     }
     @GetMapping("/GlobalFilter")
-    public ResponseEntity<List<FilteredJsonResponse>> getFilteredEqs(@RequestParam(defaultValue = "",required = false)String itemType, @RequestParam(defaultValue = "",required = false)String iNumber,
+    public ResponseEntity<List<FilteredJsonResponse>> getFilteredEqs(@RequestParam(defaultValue = "",required = false)String itemType, @RequestParam(defaultValue = "",required = false)List<String> iNumbers,
                                                                      @RequestParam(defaultValue = "",required = false)Integer iCard, @RequestParam(defaultValue = "",required = false)String serialNumber,
                                                                      @RequestParam(defaultValue = "",required = false)String production, @RequestParam(defaultValue = "",required = false)String model,
                                                                      @RequestParam(defaultValue = "",required = false)Double price, @RequestParam(defaultValue = "",required = false)Integer room,
@@ -79,8 +79,9 @@ public class PublicController {
                                                                      @RequestParam(defaultValue = "",required = false)Boolean spisano, @RequestParam(defaultValue = "",required = false)@DateTimeFormat(pattern = "dd-MM-yyyy")Date staydate,
                                                                      @RequestParam(defaultValue = "",required = false)Integer year,@RequestParam(defaultValue = "",required = false)Integer ekp,
                                                                      @RequestParam(defaultValue = "",required = false)String firstname,@RequestParam(defaultValue = "",required = false)String lastname,@RequestParam(required = false)String username){
-        List<FilteredJsonResponse> filteredList = filterService.getFilteredEqs(itemType,iNumber,iCard,serialNumber,production,model,
+        List<FilteredJsonResponse> filteredList = filterService.getFilteredEqs(itemType,iNumbers,iCard,serialNumber,production,model,
                                                                                     price,room,serv,city,spisano,staydate,year,ekp,firstname,lastname,username);
         return ResponseEntity.ok(filteredList);
     }
+
 }

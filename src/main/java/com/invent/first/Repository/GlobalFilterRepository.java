@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Repository
@@ -20,7 +21,7 @@ public class GlobalFilterRepository{
     }
     //формирует таблицу Result , сопоставление происходит через filteredJsonResponse
     public List<FilteredJsonResponse> globalFilterResult(
-            String itemType, String iNumber, Integer iCard, String serialNumber,
+            String itemType, List<String> iNumbers, Integer iCard, String serialNumber,
             String production, String model, Double price, Integer room,
             String serv, String city, Boolean spisano, Date staydate,
             Integer year, Integer ekp, String firstname, String lastname,
@@ -96,7 +97,7 @@ public class GlobalFilterRepository{
                      ) result
                 WHERE 1=1
                 AND (item_type = :itemType OR :itemType IS NULL)
-                AND (result.i_number = :iNumber OR :iNumber IS NULL)
+                AND (result.i_number IN (:iNumbers) OR :iNumbers IS NULL)
                 AND (result.i_card = :iCard OR :iCard IS NULL)
                 AND (result.serialnumber = :serialNumber OR :serialNumber IS NULL)
                 AND (production = :production or :production IS NULL)
@@ -114,9 +115,12 @@ public class GlobalFilterRepository{
                 AND (username = :username or :username IS NULL)
                 ORDER BY id
                 """;
+        if (iNumbers == null) {
+            iNumbers = new ArrayList<>();
+        }
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("itemType", itemType)
-                .addValue("iNumber", iNumber)
+                .addValue("iNumber", iNumbers)
                 .addValue("iCard", iCard)
                 .addValue("serialNumber", serialNumber)
                 .addValue("production", production)

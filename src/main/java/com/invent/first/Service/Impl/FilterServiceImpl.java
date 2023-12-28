@@ -41,11 +41,11 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public List<FilteredJsonResponse> getFilteredEqs(String itemType, String iNumber, Integer iCard, String serialNumber, String production, String model, Double price,
+    public List<FilteredJsonResponse> getFilteredEqs(String itemType, List<String> iNumbers, Integer iCard, String serialNumber, String production, String model, Double price,
                                                      Integer room, String serv, String city, Boolean spisano, Date staydate, Integer year, Integer ekp, String firstname,
                                                      String lastname, String username) {
         itemType = convertEmptyStringToNull(itemType);
-        iNumber = convertEmptyStringToNull(iNumber);
+        iNumbers = (iNumbers != null && iNumbers.isEmpty()) ? null : iNumbers;
         iCard = convertEmptyStringToNull(iCard);
         serialNumber = convertEmptyStringToNull(serialNumber);
         production = convertEmptyStringToNull(production);
@@ -61,7 +61,7 @@ public class FilterServiceImpl implements FilterService {
         firstname = convertEmptyStringToNull(firstname);
         lastname = convertEmptyStringToNull(lastname);
         username = convertEmptyStringToNull(username);
-        return repository.globalFilterResult(itemType, iNumber, iCard, serialNumber, production, model,
+        return repository.globalFilterResult(itemType, iNumbers, iCard, serialNumber, production, model,
                 price, room, serv, city, spisano, staydate, year, ekp, firstname, lastname, username);
     }
 }
