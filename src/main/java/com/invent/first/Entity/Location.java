@@ -20,6 +20,7 @@ public class Location {
     private Integer id;
     private String street;
     private String number;
+    @Column(unique = true)
     private Integer ekp;
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Computer> computers;
