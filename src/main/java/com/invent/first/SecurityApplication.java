@@ -28,6 +28,7 @@ public class SecurityApplication {
 		return args -> {
 			String adminUsername = "admin";
 			String managerUsername = "manager";
+			String allRulesUsername = "adminrules";
 
 			if (userRepository.findByUsername(adminUsername).isEmpty()) {
 				// Создать и зарегистрировать пользователя admin
@@ -39,6 +40,17 @@ public class SecurityApplication {
 						.role(ADMIN)
 						.build();
 				System.out.println("Admin token: " + service.register(admin).getAccessToken());
+			}
+			if (userRepository.findByUsername(allRulesUsername).isEmpty()) {
+				// Создать и зарегистрировать пользователя admin
+				var allRules = RegisterRequest.builder()
+						.firstname("Admin")
+						.lastname("Admin")
+						.username(allRulesUsername)
+						.password("pass123")
+						.role(ADMIN)
+						.build();
+				System.out.println("Admin token: " + service.register(allRules).getAccessToken());
 			}
 
 			if (userRepository.findByUsername(managerUsername).isEmpty()) {

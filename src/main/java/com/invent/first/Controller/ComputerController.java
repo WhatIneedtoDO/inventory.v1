@@ -4,19 +4,21 @@ import com.invent.first.DTO.ComputerDTO;
 import com.invent.first.DTO.OutDTO.ComputerOutDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Computer;
-import com.invent.first.Service.ComputerService;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +31,18 @@ public class ComputerController {
     private final UserService userService;
     private final HistoryService historyService;
     private final TrashService trashService;
+    private final ExcelExportService<ComputerOutDTO> excelExportService;
 
 
     @Autowired
     public ComputerController(ComputerService computerService, UserService userService, HistoryService historyService,
-                              TrashService trashService) {
+                              TrashService trashService,ExcelExportService<ComputerOutDTO> excelExportService) {
 
         this.computerService = computerService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
 
     @GetMapping("/all")
@@ -105,6 +109,12 @@ public class ComputerController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<ComputerOutDTO> computers = computerService.getAllComputersWithDetails();
+        excelExportService.exportToExcel(computers,ComputerOutDTO.class,response);
     }
 
 

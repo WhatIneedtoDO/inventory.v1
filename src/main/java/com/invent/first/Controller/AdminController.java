@@ -22,7 +22,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/admin")
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final UserService userService;
     private final AuthenticationService service;
@@ -33,7 +32,6 @@ public class AdminController {
     }
 
     @GetMapping("/U")
-    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<Map<String, String>> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
 
         return ResponseEntity.ok()
