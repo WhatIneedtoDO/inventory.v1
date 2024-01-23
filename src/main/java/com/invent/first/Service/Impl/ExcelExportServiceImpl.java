@@ -47,39 +47,49 @@ public class ExcelExportServiceImpl<T> implements ExcelExportService<T> {
                     field.setAccessible(true);
                     Object value = field.get(dtoObject);
                     Cell cell = dataRow.createCell(i);
+
                     if (value != null) {
-                        if (field.getType().equals(Integer.class) || field.getType().equals(Long.class)) {
-                            if (field.getName().equals("id")) {
-                                String formattedId = "" + value;
-                                cell.setCellValue(formattedId);
+                        String fieldName = field.getName();
+
+                        switch (fieldName) {
+                            case "id" -> {
+                                if (field.getType().equals(Integer.class) || field.getType().equals(Long.class)) {
+                                    String formattedId = "" + value;
+                                    cell.setCellValue(formattedId);
+                                }
                             }
-                            // ... Другие типы данных, которые требуют форматирования
-                        } else if (field.getName().equals("production") || field.getName().equals("model")
-                                || field.getName().equals("motherBProd") || field.getName().equals("motherBModel")
-                                || field.getName().equals("cpuproduction") || field.getName().equals("cpumodel")
-                                || field.getName().equals("city") || field.getName().equals("itemType")) {
-                            Field nestedField = field.getType().getDeclaredField("name");
-                            nestedField.setAccessible(true);
-                            Object nestedValue = nestedField.get(value);
-                            if (nestedValue != null) {
-                                cell.setCellValue(nestedValue.toString());
+                            case "production", "model", "motherBProd", "motherBModel", "cpuproduction", "cpumodel", "city", "itemType" -> {
+                                Field nestedField = field.getType().getDeclaredField("name");
+                                nestedField.setAccessible(true);
+                                Object nestedValue = nestedField.get(value);
+                                if (nestedValue != null) {
+                                    cell.setCellValue(nestedValue.toString());
+                                }
                             }
-                        } else if (field.getName().equals("userId")) {
-                            Field usernameField = field.getType().getDeclaredField("username");
-                            usernameField.setAccessible(true);
-                            Object usernameValue = usernameField.get(value);
-                            if (usernameValue != null) {
-                                cell.setCellValue(usernameValue.toString());
+                            case "userId" -> {
+                                Field usernameField = field.getType().getDeclaredField("username");
+                                usernameField.setAccessible(true);
+                                Object usernameValue = usernameField.get(value);
+                                if (usernameValue != null) {
+                                    cell.setCellValue(usernameValue.toString());
+                                }
                             }
-                        } else if (field.getName().equals("location")) {
-                            Field locationField = field.getType().getDeclaredField("ekp");
-                            locationField.setAccessible(true);
-                            Object ekpValue = locationField.get(value);
-                            if (ekpValue != null) {
-                                cell.setCellValue(ekpValue.toString());
+                            case "location" -> {
+                                Field locationField = field.getType().getDeclaredField("ekp");
+                                locationField.setAccessible(true);
+                                Object ekpValue = locationField.get(value);
+                                if (ekpValue != null) {
+                                    cell.setCellValue(ekpValue.toString());
+                                }
                             }
-                        } else {
-                            cell.setCellValue(value.toString());
+                            case "serviceability"->{
+                                if (field.getType().isEnum()) {
+                                    Enum<?> enumValue = (Enum<?>) value;
+                                    cell.setCellValue(enumValue.toString());
+                                }
+                        }
+
+                            default -> cell.setCellValue(value.toString());
                         }
                     }
                 }
