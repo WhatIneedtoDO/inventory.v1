@@ -2,13 +2,13 @@ package com.invent.first.Controller;
 
 import com.invent.first.DTO.MonitorDTO;
 import com.invent.first.DTO.OutDTO.MonitorOutDTO;
+import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Monitor;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.MonitorService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +28,16 @@ public class MonitorController {
     private final UserService userService;
     private final HistoryService historyService;
     private final TrashService trashService;
+    private final ExcelExportService<MonitorOutDTO> excelExportService;
 
 
-    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService, TrashService trashService) {
+    public MonitorController(MonitorService monitorService, UserService userService, HistoryService historyService, TrashService trashService,
+                             ExcelExportService<MonitorOutDTO> excelExportService) {
         this.monitorService = monitorService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
 
     @GetMapping("/all")
@@ -96,6 +99,12 @@ public class MonitorController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<MonitorOutDTO> monitors = monitorService.getAllMonitorsWithDetails();
+        excelExportService.exportToExcel(monitors, MonitorOutDTO.class, response);
     }
 
 }

@@ -4,11 +4,10 @@ import com.invent.first.DTO.OutDTO.PrinterOutDTO;
 import com.invent.first.DTO.PrinterDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Printers;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.PrinterService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,13 +29,16 @@ public class PrinterController {
     private final UserService userService;
     private final HistoryService historyService;
     private final TrashService trashService;
+    private final ExcelExportService<PrinterOutDTO> excelExportService;
 
     @Autowired
-    public PrinterController(PrinterService printerService, UserService userService, HistoryService historyService, TrashService trashService) {
+    public PrinterController(PrinterService printerService, UserService userService, HistoryService historyService, TrashService trashService,
+                             ExcelExportService<PrinterOutDTO> excelExportService) {
         this.printerService = printerService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
 
     @GetMapping("/all")
@@ -100,6 +102,12 @@ public class PrinterController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<PrinterOutDTO> printers = printerService.getAllPrintersWithDetails();
+        excelExportService.exportToExcel(printers, PrinterOutDTO.class, response);
     }
 
 }

@@ -1,14 +1,14 @@
 package com.invent.first.Controller;
 
 import com.invent.first.DTO.OutDTO.PowerSystemOutDTO;
+import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.PowerSystemDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.PowerSystem;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.PowerSystemService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -29,13 +29,15 @@ public class PowerSysController {
     private final UserService userService;
     private final HistoryService historyService;
     private final TrashService trashService;
+    private final ExcelExportService<PowerSystemOutDTO> excelExportService;
     @Autowired
     public PowerSysController(PowerSystemService powerSystemService, UserService userService,
-                              HistoryService historyService, TrashService trashService) {
+                              HistoryService historyService, TrashService trashService, ExcelExportService<PowerSystemOutDTO> excelExportService) {
         this.powerSystemService = powerSystemService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
     @GetMapping("/all")
     public ResponseEntity<List<PowerSystemOutDTO>> getAllPowerSys(){
@@ -93,5 +95,11 @@ public class PowerSysController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<PowerSystemOutDTO> powerSystems = powerSystemService.getAllPSWithDetails();
+      excelExportService.exportToExcel(powerSystems,PowerSystemOutDTO.class,response);
     }
 }

@@ -4,11 +4,10 @@ import com.invent.first.DTO.OutDTO.TelephoneOutDTO;
 import com.invent.first.DTO.TelephoneDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Telephones;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.TelephoneService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,12 +29,15 @@ public class TelephoneController {
     private final HistoryService historyService;
     private final TrashService trashService;
 
+    private final ExcelExportService<TelephoneOutDTO> excelExportService;
     @Autowired
-    public TelephoneController (TelephoneService telephoneService, UserService userService, HistoryService historyService,TrashService trashService){
+    public TelephoneController (TelephoneService telephoneService, UserService userService, HistoryService historyService,TrashService trashService,
+                                ExcelExportService<TelephoneOutDTO> excelExportService){
         this.telephoneService = telephoneService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
 
     @GetMapping("/all")
@@ -95,5 +97,11 @@ public class TelephoneController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<TelephoneOutDTO> telephones = telephoneService.getAllTelephonesWithDetails();
+        excelExportService.exportToExcel(telephones, TelephoneOutDTO.class, response);
     }
 }

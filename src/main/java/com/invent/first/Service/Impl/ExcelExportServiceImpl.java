@@ -20,13 +20,13 @@ public class ExcelExportServiceImpl<T> implements ExcelExportService<T> {
 
     @SneakyThrows
     @Override
-    public void exportToExcel(List<T> data, Class<T> dtoClass, HttpServletResponse response) {
+    public void exportToExcel(List<T> data, Class<T> outDtoClass, HttpServletResponse response) {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Лист1");
 
-            Field[] fields = dtoClass.getDeclaredFields();
+            Field[] fields = outDtoClass.getDeclaredFields();
 
             // Создание заголовков
             Row headerRow = sheet.createRow(0);
@@ -82,7 +82,7 @@ public class ExcelExportServiceImpl<T> implements ExcelExportService<T> {
                                     cell.setCellValue(ekpValue.toString());
                                 }
                             }
-                            case "serviceability"->{
+                            case "serviceability","type","color","typePechat","format","printerClass"->{
                                 if (field.getType().isEnum()) {
                                     Enum<?> enumValue = (Enum<?>) value;
                                     cell.setCellValue(enumValue.toString());

@@ -2,16 +2,12 @@ package com.invent.first.Controller;
 
 import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.ServerEqsDTO;
-import com.invent.first.DTO.TelephoneDTO;
 import com.invent.first.DTO.UserDTO;
-import com.invent.first.Entity.Enum.RAM;
 import com.invent.first.Entity.ServerEqs;
-import com.invent.first.Entity.Telephones;
-import com.invent.first.Service.HistoryService;
-import com.invent.first.Service.ServerEqsService;
-import com.invent.first.Service.TrashService;
-import com.invent.first.Service.UserService;
+import com.invent.first.Service.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -32,14 +28,16 @@ public class ServerEqsController {
     private final UserService userService;
     private final HistoryService historyService;
     private final TrashService trashService;
+    private final ExcelExportService<ServerEqsOutDTO> excelExportService;
 
     @Autowired
     public ServerEqsController(ServerEqsService serverEqsService, UserService userService,
-                               HistoryService historyService, TrashService trashService) {
+                               HistoryService historyService, TrashService trashService,ExcelExportService<ServerEqsOutDTO> excelExportService) {
         this.serverEqsService = serverEqsService;
         this.userService = userService;
         this.historyService = historyService;
         this.trashService = trashService;
+        this.excelExportService = excelExportService;
     }
 
     @GetMapping("/all")
@@ -101,5 +99,11 @@ public class ServerEqsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+    @SneakyThrows
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) {
+        List<ServerEqsOutDTO> serverEqs = serverEqsService.getAllServerEqsWithDetails();
+        excelExportService.exportToExcel(serverEqs, ServerEqsOutDTO.class, response);
     }
 }
