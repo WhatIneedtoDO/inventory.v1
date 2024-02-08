@@ -156,10 +156,17 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
+    public List<ComputerOutDTO> getComputersByDept(Integer deptId) {
+        List<Computer> computers = computerRepository.findComputersByDept(deptId);
+        return mapToDTOs(computers);
+    }
+
+    @Override
     public List<ComputerOutDTO> getComputersOnEkp(Integer ekp) {
         List<Computer> computers = computerRepository.findComputersByEkp(ekp);
         return mapToDTOs(computers);
     }
+
 
 
     //используется ComputerDTO чтобы в базу сохранялись только ID

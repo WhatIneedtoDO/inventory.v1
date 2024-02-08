@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TelephoneRepository extends JpaRepository<Telephones,Integer> {
-    @Query(value = "SELECT t , u.id, u.username, u.firstname, u.lastname FROM Telephones t " +
+    @Query(value = "SELECT t , u.id, u.username, u.firstname, u.lastname,u.dept FROM Telephones t " +
             "JOIN FETCH t.production " +
             "JOIN FETCH t.model " +
             "JOIN FETCH t.itemType " +

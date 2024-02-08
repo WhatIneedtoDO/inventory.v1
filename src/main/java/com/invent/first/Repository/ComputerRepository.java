@@ -16,7 +16,7 @@ import java.util.List;
 public interface ComputerRepository extends JpaRepository<Computer,Integer> {
     Computer save(Computer computer);
 
-    @Query(value = "SELECT c , u.id, u.username, u.firstname, u.lastname FROM Computer c " +
+    @Query(value = "SELECT c , u.id, u.username, u.firstname, u.lastname,u.dept FROM Computer c " +
             "JOIN FETCH c.production " +
             "JOIN FETCH c.model " +
             "JOIN FETCH c.itemType " +
@@ -26,7 +26,7 @@ public interface ComputerRepository extends JpaRepository<Computer,Integer> {
     List<Computer> findAllComputersWithDetails();
 
     //формирует список компьютеров по коду ЕКП
-    @Query(value = "SELECT c , u.id, u.username, u.firstname, u.lastname FROM Computer c " +
+    @Query(value = "SELECT c , u.id, u.username, u.firstname, u.lastname,u.dept FROM Computer c " +
             "JOIN FETCH c.production " +
             "JOIN FETCH c.model " +
             "JOIN FETCH c.itemType " +
@@ -40,6 +40,14 @@ public interface ComputerRepository extends JpaRepository<Computer,Integer> {
     @Modifying
     @Transactional
     List<Integer> findPairsToMonitor();
-
-
+    //формирует список компов по отделу
+    @Query(value = "SELECT c , u.id, u.username, u.firstname, u.lastname,u.dept FROM Computer c " +
+            "JOIN FETCH c.production " +
+            "JOIN FETCH c.model " +
+            "JOIN FETCH c.itemType " +
+            "JOIN FETCH c.city " +
+            "JOIN FETCH c.location l " +
+            "JOIN FETCH c.user u " +
+            "WHERE u.dept = :deptId")
+    List<Computer> findComputersByDept(@Param("dept")Integer deptId);
 }

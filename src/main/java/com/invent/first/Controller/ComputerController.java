@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -45,25 +46,34 @@ public class ComputerController {
         this.excelExportService = excelExportService;
     }
 
+    @PreAuthorize("hasAuthority('admin:read')")
     @GetMapping("/all")
     public ResponseEntity<List<ComputerOutDTO>> getAllComputers() {
         List<ComputerOutDTO> computers = computerService.getAllComputersWithDetails();
         return ResponseEntity.ok(computers);
     }
-
-
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<ComputerOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        List<ComputerOutDTO> computerByDeptId = computerService.getComputersByDept(user.get().getDepartment().getId());
+        return ResponseEntity.ok(computerByDeptId);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','manager:read','user:read')")
     @GetMapping("/Details/{computerId}")
     public ResponseEntity<ComputerOutDTO> getComputerDetails(@PathVariable Integer computerId) {
         ComputerOutDTO computerById = computerService.getComputerOutById(computerId);
         return ResponseEntity.ok(computerById);
     }
 
+
     @PostMapping("/add")
     public ResponseEntity<ComputerDTO> addComputer(@RequestBody ComputerDTO computerDTO) {
         ComputerDTO addedComputer = computerService.addComputer(computerDTO);
         return new ResponseEntity<>(addedComputer, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAuthority('admin:update')")
     @PutMapping("/Update/{computerId}")
     public ResponseEntity<ComputerOutDTO> updateComputer(@PathVariable Integer computerId, @AuthenticationPrincipal UserDetails userDetails,
                                                          @RequestBody ComputerDTO computerDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
@@ -99,7 +109,7 @@ public class ComputerController {
         }
         return ResponseEntity.ok(computerService.getComputerOutById(computerId));
     }
-
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{computerId}")
     public ResponseEntity<Void> deleteComputer(@PathVariable Integer computerId) {
         Computer deletedComputer = computerService.deleteById(computerId);

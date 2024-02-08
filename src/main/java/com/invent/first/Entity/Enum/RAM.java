@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum RAM {
-
+    VALUE0(0),
     VALUE2(2),
     VALUE4(4),
     VALUE6(6),

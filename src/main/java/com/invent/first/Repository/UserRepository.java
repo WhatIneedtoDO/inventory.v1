@@ -16,13 +16,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Query(value = """
           SELECT u.id, u.firstname, u.lastname
-          , u.username, u.role
+          , u.username, u.role,u.dept
           FROM User u
           """)
   List<UserDTO> findAllUsersAsDTO();
   @Query(value = """
           SELECT u.id, u.firstname, u.lastname
-          , u.username
+          , u.username,u.dept
           FROM User u WHERE u.id = :userId
           """)
   UserDTO getUserAsDTObyId(@Param("userId") Integer userId);
@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   Optional<User> findByUsername(String username);
   @Query(value = """
           SELECT u.id, u.firstname, u.lastname
-          , u.username
+          , u.username,u.dept
           FROM User u WHERE u.id = :userId
           """)
   Optional<User> findByIdWithout(Integer userId);

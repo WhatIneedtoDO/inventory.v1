@@ -1,5 +1,6 @@
 package com.invent.first.Service.Impl;
 
+import com.invent.first.DTO.DepartmentsDTO;
 import com.invent.first.DTO.UserDTO;
 import com.invent.first.Entity.Enum.Role;
 import com.invent.first.Entity.User;
@@ -103,6 +104,7 @@ public class UserDetailsServiceImpl implements UserService {
                         .firstname(user.getFirstname())
                         .lastname(user.getLastname())
                         .username(user.getUsername())
+                        .department(DepartmentsDTO.fromDept(user.getDept()))
                         .role(user.getRole())
                         .build())
                 .collect(Collectors.toList());
@@ -116,6 +118,7 @@ public class UserDetailsServiceImpl implements UserService {
                 .firstname(u.getFirstname())
                 .lastname(u.getLastname())
                 .username(u.getUsername())
+                .department(DepartmentsDTO.fromDept(u.getDept()))
                 .role(u.getRole())
                 .build());
 
@@ -126,6 +129,7 @@ public class UserDetailsServiceImpl implements UserService {
                 .id(u.getId())
                 .firstname(u.getFirstname())
                 .lastname(u.getLastname())
+                .department(DepartmentsDTO.fromDept(u.getDept()))
                 .role(u.getRole())
                 .build());
 

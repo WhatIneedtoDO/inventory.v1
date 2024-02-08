@@ -16,6 +16,7 @@ public class UserDTO {
     private String firstname;
     private String lastname;
     private String username;
+    private DepartmentsDTO department;
     private Role role;
 
     public static UserDTO fromUser(User user) {
@@ -24,16 +25,9 @@ public class UserDTO {
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())
                 .username(user.getUsername())
+                .department(DepartmentsDTO.fromDept(user.getDept()))
                 .role(user.getRole())
                 .build();
     }
-    public static User toUser(UserDTO userDTO) {
-        return User.builder()
-                .id(userDTO.getId())
-                .firstname(userDTO.getFirstname())
-                .lastname(userDTO.getLastname())
-                .username(userDTO.getUsername())
-                .role(userDTO.getRole())
-                .build();
-    }
+
 }

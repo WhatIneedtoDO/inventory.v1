@@ -31,7 +31,9 @@ public class User implements UserDetails {
   private String username;
   @JsonIgnoreProperties
   private String password;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "dept_id")
+  public Department dept;
   @Enumerated(EnumType.STRING)
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Role role;

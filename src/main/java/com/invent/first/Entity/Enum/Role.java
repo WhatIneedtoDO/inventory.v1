@@ -38,6 +38,11 @@ public enum Role {
                   Permission.USER_READ,
                   Permission.USER_UPDATE
           )
+  ),
+  BOSS(
+      Set.of(
+          Permission.BOSS_READ
+      )
   )
 
   ;
