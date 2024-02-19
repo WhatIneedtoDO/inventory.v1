@@ -1,5 +1,6 @@
 package com.invent.first.Controller;
 
+import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.ServerEqsDTO;
 import com.invent.first.DTO.UserDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,21 @@ public class ServerEqsController {
     public ResponseEntity<ServerEqsOutDTO> getServerEqsDetails(@PathVariable Integer eqsId) {
         ServerEqsOutDTO serverEqsById = serverEqsService.getServerEqsOutById(eqsId);
         return ResponseEntity.ok(serverEqsById);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<ServerEqsOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<ServerEqsOutDTO> serverEqsByDeptId = serverEqsService.getByDept(deptId);
+        return ResponseEntity.ok(serverEqsByDeptId);
     }
 
     @PostMapping("/add")

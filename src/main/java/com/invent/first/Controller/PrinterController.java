@@ -1,5 +1,6 @@
 package com.invent.first.Controller;
 
+import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.PrinterOutDTO;
 import com.invent.first.DTO.PrinterDTO;
 import com.invent.first.DTO.UserDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +53,21 @@ public class PrinterController {
     public ResponseEntity<PrinterOutDTO> getPrinterDetails(@PathVariable Integer printerId) {
         PrinterOutDTO printerById = printerService.getPrinterOutById(printerId);
         return ResponseEntity.ok(printerById);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<PrinterOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<PrinterOutDTO> printerByDeptId = printerService.getByDept(deptId);
+        return ResponseEntity.ok(printerByDeptId);
     }
 
     @PostMapping("/add")

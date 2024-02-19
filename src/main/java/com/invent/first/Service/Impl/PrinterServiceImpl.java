@@ -93,6 +93,12 @@ public class PrinterServiceImpl implements PrinterService {
     }
 
     @Override
+    public List<PrinterOutDTO> getByDept(Integer deptId) {
+        List<Printers> printers = printerRepository.findByDept(deptId);
+        return mapToDTOs(printers);
+    }
+
+    @Override
     public PrinterDTO addPrinter(PrinterDTO printerDTO) {
         Printers printer = mapToEntity(printerDTO);
         Printers savedPrinter = printerRepository.save(printer);

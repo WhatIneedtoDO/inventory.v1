@@ -3,6 +3,7 @@ package com.invent.first.Service.Impl;
 
 import com.invent.first.DTO.*;
 import com.invent.first.DTO.OutDTO.MonitorOutDTO;
+import com.invent.first.Entity.Computer;
 import com.invent.first.Entity.Monitor;
 import com.invent.first.Repository.*;
 import com.invent.first.Service.MonitorService;
@@ -74,6 +75,12 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<MonitorOutDTO> getAllMonitorsWithDetails() {
         List<Monitor> monitors = monitorRepository.findAllMonitorsWithDetails();
+        return mapToDTOs(monitors);
+    }
+
+    @Override
+    public List<MonitorOutDTO> getByDept(Integer deptId) {
+        List<Monitor> monitors = monitorRepository.findMonitorsByDept(deptId);
         return mapToDTOs(monitors);
     }
 

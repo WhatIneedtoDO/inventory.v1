@@ -57,7 +57,14 @@ public class ComputerController {
     public ResponseEntity<List<ComputerOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
         Optional<UserDTO> user = userService.getUserByUsername(username);
-        List<ComputerOutDTO> computerByDeptId = computerService.getComputersByDept(user.get().getDepartment().getId());
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<ComputerOutDTO> computerByDeptId = computerService.getComputersByDept(deptId);
         return ResponseEntity.ok(computerByDeptId);
     }
     @PreAuthorize("hasAnyAuthority('boss:read','admin:read','manager:read','user:read')")

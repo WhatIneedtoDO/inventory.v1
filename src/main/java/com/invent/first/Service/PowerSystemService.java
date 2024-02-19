@@ -1,5 +1,6 @@
 package com.invent.first.Service;
 
+import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.PowerSystemOutDTO;
 import com.invent.first.DTO.PowerSystemDTO;
 import com.invent.first.Entity.PowerSystem;
@@ -13,6 +14,7 @@ public interface PowerSystemService {
     PowerSystemOutDTO getPSOutById(Integer psId);
     PowerSystem updatePS(Integer psId, PowerSystemDTO powerSystemDTO);
     PowerSystemDTO addPowerSystem(PowerSystemDTO powerSystemDTO);
+    List<PowerSystemOutDTO> getByDept(Integer deptId);
     List<PowerSystemOutDTO> getAllPSWithDetails();
     PowerSystem deleteById(Integer psId);
 }

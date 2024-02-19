@@ -108,6 +108,11 @@ public class TelephoneServiceImpl implements TelephoneService {
         return mapToDTOs(telephones);
     }
 
+    @Override
+    public List<TelephoneOutDTO> getByDept(Integer deptId) {
+        List<Telephones> telephones = telephoneRepository.findByDept(deptId);
+        return mapToDTOs(telephones);
+    }
 
 
     @Override

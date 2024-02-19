@@ -1,5 +1,6 @@
 package com.invent.first.Controller;
 
+import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.TelephoneOutDTO;
 import com.invent.first.DTO.TelephoneDTO;
 import com.invent.first.DTO.UserDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,21 @@ public class TelephoneController {
     public ResponseEntity<TelephoneOutDTO> getTelephoneDetails(@PathVariable Integer telephoneId){
         TelephoneOutDTO telephoneById = telephoneService.getTelephoneOutById(telephoneId);
         return ResponseEntity.ok(telephoneById);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<TelephoneOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<TelephoneOutDTO> telephoneByDeptId = telephoneService.getByDept(deptId);
+        return ResponseEntity.ok(telephoneByDeptId);
     }
     @PostMapping("/add")
     public ResponseEntity<TelephoneDTO> addTelephone (@RequestBody TelephoneDTO telephoneDTO){

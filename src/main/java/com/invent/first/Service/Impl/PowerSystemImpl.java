@@ -93,6 +93,12 @@ public class PowerSystemImpl implements PowerSystemService {
     }
 
     @Override
+    public List<PowerSystemOutDTO> getByDept(Integer deptId) {
+        List<PowerSystem> powerSystems = powerSysRepository.findByDept(deptId);
+        return mapToDTOs(powerSystems);
+    }
+
+    @Override
     public List<PowerSystemOutDTO> getAllPSWithDetails() {
         List<PowerSystem> powerSystems = powerSysRepository.findAllWithDetails();
         return mapToDTOs(powerSystems);

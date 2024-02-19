@@ -1,5 +1,6 @@
 package com.invent.first.Repository;
 
+import com.invent.first.Entity.Computer;
 import com.invent.first.Entity.Monitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,7 +32,15 @@ public interface MonitorRepository extends JpaRepository<Monitor,Integer> {
             "JOIN FETCH m.user u " +
             "WHERE l.ekp = :ekp")
     List<Monitor>findByEkp(@Param("ekp")Integer ekp);
-
+    @Query(value = "SELECT m , u.id, u.username, u.firstname, u.lastname,u.dept FROM Monitor m " +
+            "JOIN FETCH m.production " +
+            "JOIN FETCH m.model " +
+            "JOIN FETCH m.itemType " +
+            "JOIN FETCH m.city " +
+            "JOIN FETCH m.location l " +
+            "JOIN FETCH m.user u " +
+            "WHERE u.dept.id = :deptId")
+    List<Monitor> findMonitorsByDept(@Param("deptId")Integer deptId);
     @Query(value = "SELECT m.id FROM Monitor m INNER JOIN Computer c ON m.i_number = c.i_number")
     @Modifying
     @Transactional

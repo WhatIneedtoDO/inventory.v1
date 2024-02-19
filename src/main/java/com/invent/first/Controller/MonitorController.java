@@ -1,6 +1,7 @@
 package com.invent.first.Controller;
 
 import com.invent.first.DTO.MonitorDTO;
+import com.invent.first.DTO.OutDTO.ComputerOutDTO;
 import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.UserDTO;
@@ -12,6 +13,7 @@ import lombok.SneakyThrows;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,21 @@ public class MonitorController {
     public ResponseEntity<MonitorOutDTO> getMonitorDetails(@PathVariable Integer monitorId) {
         MonitorOutDTO monitorById = monitorService.getMonitorOutById(monitorId);
         return ResponseEntity.ok(monitorById);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<MonitorOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<MonitorOutDTO> monitorByDeptId = monitorService.getByDept(deptId);
+        return ResponseEntity.ok(monitorByDeptId);
     }
 
     @PostMapping("/add")

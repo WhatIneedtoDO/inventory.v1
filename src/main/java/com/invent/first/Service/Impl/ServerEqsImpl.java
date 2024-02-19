@@ -92,6 +92,12 @@ public class ServerEqsImpl implements ServerEqsService {
     }
 
     @Override
+    public List<ServerEqsOutDTO> getByDept(Integer deptId) {
+        List<ServerEqs> serverEqs = serverEqsRepository.findByDept(deptId);
+        return mapToDTOs(serverEqs);
+    }
+
+    @Override
     public ServerEqsDTO addServerEqs(ServerEqsDTO serverEqsDTO) {
         ServerEqs serverEqs = mapToEntity(serverEqsDTO);
         ServerEqs savedServerEqs = serverEqsRepository.save(serverEqs);

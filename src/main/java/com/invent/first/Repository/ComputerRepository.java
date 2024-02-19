@@ -48,6 +48,6 @@ public interface ComputerRepository extends JpaRepository<Computer,Integer> {
             "JOIN FETCH c.city " +
             "JOIN FETCH c.location l " +
             "JOIN FETCH c.user u " +
-            "WHERE u.dept = :deptId")
-    List<Computer> findComputersByDept(@Param("dept")Integer deptId);
+            "WHERE u.dept.id = :deptId")
+    List<Computer> findComputersByDept(@Param("deptId")Integer deptId);
 }

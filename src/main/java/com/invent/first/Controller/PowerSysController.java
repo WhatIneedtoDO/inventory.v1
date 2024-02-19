@@ -1,5 +1,6 @@
 package com.invent.first.Controller;
 
+import com.invent.first.DTO.OutDTO.MonitorOutDTO;
 import com.invent.first.DTO.OutDTO.PowerSystemOutDTO;
 import com.invent.first.DTO.OutDTO.ServerEqsOutDTO;
 import com.invent.first.DTO.PowerSystemDTO;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,21 @@ public class PowerSysController {
     public ResponseEntity<PowerSystemOutDTO> getPowerSysDetails(@PathVariable Integer psId){
         PowerSystemOutDTO powerSystemById = powerSystemService.getPSOutById(psId);
         return ResponseEntity.ok(powerSystemById);
+    }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @GetMapping("/Departments")
+    public ResponseEntity<List<PowerSystemOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
+        var username = userDetails.getUsername();
+        Optional<UserDTO> user = userService.getUserByUsername(username);
+        Integer deptId = null;
+        if (user.isPresent() && user.get().getDepartment() != null) {
+            deptId = user.get().getDepartment().getId();
+        } else {
+            // В случае, если id отдела равен null, вернуть ResponseEntity с соответствующим кодом состояния
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<PowerSystemOutDTO> psByDeptId = powerSystemService.getByDept(deptId);
+        return ResponseEntity.ok(psByDeptId);
     }
     @PostMapping("/add")
     public ResponseEntity<PowerSystemDTO> addPowerSys(@RequestBody PowerSystemDTO powerSystemDTO){
