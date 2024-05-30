@@ -20,7 +20,9 @@ public class Telephones {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer i_card;
+    @Column(unique = true)
     private String serialnumber;
+    @Column(unique = true)
     private String i_number;
     @ManyToOne
     @JoinColumn(name ="productions_id")

@@ -22,7 +22,7 @@ public class ServerEqs {
     private Integer id;
 
     private Integer i_card;
-
+    @Column(unique = true)
     private String serialnumber;
     @Column(unique = true)
     private String i_number;
