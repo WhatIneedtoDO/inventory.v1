@@ -9,6 +9,7 @@ import com.invent.first.Service.*;
 import com.invent.first.response.FilteredJsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,17 +26,19 @@ public class PublicController {
     private final CpuModelService cpuModelService;
     private final HistoryService historyService;
     private final FilterService filterService;
+    private final DynamicQueryService dynamicQueryService;
 
     @Autowired
     public PublicController(MotherBProdService motherBProdService, MotherBModelService motherBModelService,
                             CpuProdService cpuProdService, CpuModelService cpuModelService, HistoryService historyService,
-                            FilterService filterService){
+                            FilterService filterService,DynamicQueryService dynamicQueryService){
         this.motherBProdService = motherBProdService ;
         this.motherBModelService = motherBModelService;
         this.cpuProdService = cpuProdService;
         this.cpuModelService = cpuModelService;
         this.historyService = historyService;
         this.filterService = filterService;
+        this.dynamicQueryService = dynamicQueryService;
 
     }
     @GetMapping("/MotherBoard/Productions")
@@ -70,6 +73,22 @@ public class PublicController {
         HistoryOutDTO history = historyService.getLastHistory(equipmentId, itemtypeId);
         return ResponseEntity.ok(history);
     }
+
+    @GetMapping("/Count/Not-worked")
+    public ResponseEntity<Integer> getCountNotWorked(@RequestParam String tableName) {
+        try {
+            int count = dynamicQueryService.countNotWorked(tableName);
+            return ResponseEntity.ok(count);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+        }
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleException(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
     @GetMapping("/GlobalFilter")
     public ResponseEntity<List<FilteredJsonResponse>> getFilteredEqs(@RequestParam(defaultValue = "",required = false)String itemType, @RequestParam(defaultValue = "",required = false)List<String> iNumbers,
                                                                      @RequestParam(defaultValue = "",required = false)Integer iCard, @RequestParam(defaultValue = "",required = false)String serialNumber,

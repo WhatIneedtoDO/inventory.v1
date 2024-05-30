@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SSD {
-    VALUENOTINSTALL(0),
+    VALUE0(0),
     VALUE128(128),
     VALUE256(256),
     VALUE512(512),

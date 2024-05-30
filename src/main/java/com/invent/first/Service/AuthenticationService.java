@@ -1,5 +1,6 @@
 package com.invent.first.Service;
 
+import com.invent.first.Repository.DepsRepository;
 import com.invent.first.request.AuthenticationRequest;
 import com.invent.first.response.AuthenticationResponse;
 import com.invent.first.request.RegisterRequest;
@@ -28,14 +29,18 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final DepsRepository depsRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
+    var department = depsRepository.findById(request.getDepartmentId())
+            .orElseThrow(() -> new IllegalArgumentException("Invalid department ID"));
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .username(request.getUsername())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(request.getRole())
+        .dept(department)
         .build();
     var savedUser = repository.save(user);
     var jwtToken = jwtService.generateToken(user);

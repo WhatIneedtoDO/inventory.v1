@@ -1,5 +1,7 @@
 package com.invent.first.request;
 
+import com.invent.first.DTO.DepartmentsDTO;
+import com.invent.first.Entity.Department;
 import com.invent.first.Entity.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +19,5 @@ public class RegisterRequest {
   private String username;
   private String password;
   private Role role;
+  private Integer departmentId;
 }

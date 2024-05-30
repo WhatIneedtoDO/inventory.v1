@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PrinterRepository extends JpaRepository<Printers,Integer>  {
-    @Query(value = "SELECT p ,u.id, u.username, u.firstname, u.lastname FROM Printers p " +
+    @Query(value = "SELECT p ,u.id, u.username, u.firstname, u.lastname,u.dept  FROM Printers p " +
             "JOIN FETCH p.production " +
             "JOIN FETCH p.model " +
             "JOIN FETCH p.itemType " +

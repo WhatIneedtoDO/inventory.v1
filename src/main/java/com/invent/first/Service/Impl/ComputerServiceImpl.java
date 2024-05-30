@@ -71,6 +71,7 @@ public class ComputerServiceImpl implements ComputerService {
                 .orElseThrow(() -> new EntityNotFoundException("Computer not found"));
         return mapToDTO(computer);
     }
+
     //заполняет массив id компьютеров у которых одинаковые инвентарные номера с мониторами
     public List<ComputerOutDTO> getAllComputerPairs(){
         List<Integer> computerIds = computerRepository.findPairsToMonitor();
@@ -166,6 +167,7 @@ public class ComputerServiceImpl implements ComputerService {
         List<Computer> computers = computerRepository.findComputersByEkp(ekp);
         return mapToDTOs(computers);
     }
+
 
 
 

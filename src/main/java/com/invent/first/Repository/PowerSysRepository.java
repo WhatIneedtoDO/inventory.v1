@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PowerSysRepository extends JpaRepository<PowerSystem,Integer> {
-    @Query(value = "SELECT ps ,u.id, u.username, u.firstname, u.lastname FROM PowerSystem ps " +
+    @Query(value = "SELECT ps ,u.id, u.username, u.firstname, u.lastname,u.dept  FROM PowerSystem ps " +
             "JOIN FETCH ps.production " +
             "JOIN FETCH ps.model " +
             "JOIN FETCH ps.itemType " +

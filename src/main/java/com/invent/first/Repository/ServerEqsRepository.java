@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ServerEqsRepository extends JpaRepository<ServerEqs,Integer> {
-    @Query(value = "SELECT s , u.id, u.username, u.firstname, u.lastname FROM ServerEqs s " +
+    @Query(value = "SELECT s , u.id, u.username, u.firstname, u.lastname,u.dept  FROM ServerEqs s " +
             "JOIN FETCH s.production " +
             "JOIN FETCH s.model " +
             "JOIN FETCH s.itemType " +
