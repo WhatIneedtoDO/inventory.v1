@@ -8,6 +8,7 @@ import com.invent.first.Entity.Trash;
 import com.invent.first.Repository.ItemTypeRepository;
 import com.invent.first.Repository.TrashRepository;
 import com.invent.first.Service.TrashService;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Tuple;
@@ -73,6 +74,17 @@ public class TrashServiceImpl implements TrashService {
 
     @Override
     public TrashDTO add(TrashDTO trashDTO) {
+        Integer equipmentId = trashDTO.getEquipmentId();
+        Integer itemTypeId = trashDTO.getItemtypeId();
+        // Проверка на существование записи
+        Optional<Trash> existingTrash = trashRepository.findByEquipmentIdAndItemTypeId(equipmentId, itemTypeId);
+        if (existingTrash.isPresent()) {
+            // Если запись существует, выбросим исключение или вернем уже существующую запись
+            throw new EntityExistsException("Trash with given equipmentId and itemTypeId already exists");
+            // Либо вернуть существующую запись, если это приемлемо:
+            // return mapFromDTO(existingTrash.get());
+        }
+
         Trash trash = mapToEntity(trashDTO);
         Trash newTrash = trashRepository.save(trash);
         return mapFromDTO(newTrash);

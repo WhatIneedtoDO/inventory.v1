@@ -49,6 +49,10 @@ public class LocationServiceImpl implements LocationService {
         }
         return ekpJsonResponseList;
     }
+    @Override
+    public int countNotWorkedEquipmentByEkp(Integer ekp) {
+        return locationRepository.countNotWorkedEquipmentByEkp(ekp);
+    }
 
     private List<LocationDTO> mapToDTOs(List<Location> locations){
         return locations.stream()

@@ -10,4 +10,5 @@ public interface LocationService {
     List<LocationDTO> getAllLocations();
     LocationDTO getLocationById(Integer id);
     List<EkpJsonResponse> getByEkp(Integer ekp);
+    int countNotWorkedEquipmentByEkp(Integer ekp);
 }

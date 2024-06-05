@@ -4,6 +4,7 @@ import com.invent.first.Entity.Location;
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,4 +78,14 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
             WHERE l.ekp = :ekp
             """,nativeQuery = true)
     List<Tuple> getByEkp(Integer ekp);
+    @Query(value = """
+        SELECT 
+            (SELECT COUNT(*) FROM invent.computers c WHERE c.serv = 'HAVEPROBLEM' AND c.location_id = :ekp) +
+            (SELECT COUNT(*) FROM invent.monitors m WHERE m.serv = 'HAVEPROBLEM' AND m.location_id = :ekp) +
+            (SELECT COUNT(*) FROM invent.servereqs seq WHERE seq.serv = 'HAVEPROBLEM' AND seq.location_id = :ekp) +
+            (SELECT COUNT(*) FROM invent.powersystems ps WHERE ps.serv = 'HAVEPROBLEM' AND ps.location_id = :ekp) +
+            (SELECT COUNT(*) FROM invent.printers p WHERE p.serv = 'HAVEPROBLEM' AND p.location_id = :ekp) +
+            (SELECT COUNT(*) FROM invent.telephones tel WHERE tel.serv = 'HAVEPROBLEM' AND tel.location_id = :ekp)
+        """, nativeQuery = true)
+    int countNotWorkedEquipmentByEkp(@Param("ekp") Integer ekp);
 }

@@ -27,11 +27,12 @@ public class PublicController {
     private final HistoryService historyService;
     private final FilterService filterService;
     private final DynamicQueryService dynamicQueryService;
+    private final LocationService locationService;
 
     @Autowired
     public PublicController(MotherBProdService motherBProdService, MotherBModelService motherBModelService,
                             CpuProdService cpuProdService, CpuModelService cpuModelService, HistoryService historyService,
-                            FilterService filterService,DynamicQueryService dynamicQueryService){
+                            FilterService filterService,DynamicQueryService dynamicQueryService,LocationService locationService){
         this.motherBProdService = motherBProdService ;
         this.motherBModelService = motherBModelService;
         this.cpuProdService = cpuProdService;
@@ -39,6 +40,7 @@ public class PublicController {
         this.historyService = historyService;
         this.filterService = filterService;
         this.dynamicQueryService = dynamicQueryService;
+        this.locationService = locationService;
 
     }
     @GetMapping("/MotherBoard/Productions")
@@ -87,6 +89,12 @@ public class PublicController {
     @ExceptionHandler
     public ResponseEntity<String> handleException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @GetMapping("/Count/Not-worked-ekp")
+    public ResponseEntity<Integer> countNotWorkedEquipmentByEkp(@RequestParam Integer ekp) {
+        int count = locationService.countNotWorkedEquipmentByEkp(ekp);
+        return ResponseEntity.ok(count);
     }
 
     @GetMapping("/GlobalFilter")
