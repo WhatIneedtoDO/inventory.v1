@@ -30,6 +30,19 @@ public class UserDetailsServiceImpl implements UserService {
     public User saveUser(User user) {
         return repository.save(user);
     }
+    @Override
+    public User createUserFromLdap(String username, String password) {
+        if (!repository.findByUsername(username).isPresent()) {
+            User user = User.builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .role(Role.USER) // Default role
+                    .build();
+            return repository.save(user);
+        }
+        return repository.findByUsername(username).get();
+    }
+
 
     @Override
     public User deleteById(Integer userId) {

@@ -18,5 +18,5 @@ public interface UserService {
  boolean changeRole(Integer id, Role newRole);
  boolean changeCurrentUserPassword(String currentPassword,String newPassword);
  void updatePassword(Integer userId, String newPassword);
-
+ User createUserFromLdap(String username, String password);
 }
