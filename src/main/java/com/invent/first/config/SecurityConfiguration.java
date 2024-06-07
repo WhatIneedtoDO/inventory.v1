@@ -47,7 +47,8 @@ public class SecurityConfiguration {
 
   @Autowired
   private LdapTemplate ldapTemplate;
-
+  @Autowired
+  private Dotenv dotenv;
 
   @Bean
   public WebMvcConfigurer CorsConfig(){
@@ -137,8 +138,8 @@ public class SecurityConfiguration {
             .userDetailsService(userDetailsService)
             .and()
             .ldapAuthentication()
-            .userDnPatterns("uid={0},ou=people")
-            .groupSearchBase("ou=groups")
+            .userDnPatterns(dotenv.get("LDAP_USER_DN_PATTERNS"))
+            .groupSearchBase(dotenv.get("LDAP_GROUP_SEARCH_BASE"))
             .contextSource((BaseLdapPathContextSource) ldapTemplate.getContextSource());
   }
 
