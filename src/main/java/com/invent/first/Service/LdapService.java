@@ -13,6 +13,6 @@ public class LdapService {
 
     public boolean authenticate(String username, String password) {
         // Add LDAP authentication logic here
-        return ldapTemplate.authenticate("", "(uid=" + username + ")", password);
+        return ldapTemplate.authenticate("", "(sAMAccountName=" + username + ")", password);
     }
 }

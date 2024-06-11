@@ -3,11 +3,17 @@ package com.invent.first.config;
 import com.invent.first.Entity.Enum.Permission;
 import com.invent.first.Entity.Enum.Role;
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpHeaders;
+import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.BaseLdapPathContextSource;
 import org.springframework.ldap.core.support.LdapContextSource;
@@ -29,6 +35,9 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.naming.directory.SearchControls;
+import java.util.List;
+
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -49,6 +58,8 @@ public class SecurityConfiguration {
   private LdapTemplate ldapTemplate;
   @Autowired
   private Dotenv dotenv;
+
+  private static final Logger logger = LoggerFactory.getLogger(EnvConfig.class);
 
   @Bean
   public WebMvcConfigurer CorsConfig(){
@@ -138,9 +149,32 @@ public class SecurityConfiguration {
             .userDetailsService(userDetailsService)
             .and()
             .ldapAuthentication()
-            .userDnPatterns(dotenv.get("LDAP_USER_DN_PATTERNS"))
+            .userSearchBase(dotenv.get("LDAP_USER_SEARCH_BASE"))
+            .userSearchFilter("(sAMAccountName={0})")
             .groupSearchBase(dotenv.get("LDAP_GROUP_SEARCH_BASE"))
             .contextSource((BaseLdapPathContextSource) ldapTemplate.getContextSource());
   }
 
+  @EventListener
+  public void logLdapUsers(ContextRefreshedEvent event) {
+    try {
+      logger.debug("Searching for LDAP users with base DN: {}", dotenv.get("LDAP_BASE"));
+      SearchControls searchControls = new SearchControls();
+      searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+      searchControls.setReturningObjFlag(true); // Установка флага для ContextMapper
+      // Create SearchControls with custom time limit
+      searchControls.setTimeLimit(120000); // 30 seconds
+
+      List<String> users = ldapTemplate.search(
+              dotenv.get("LDAP_BASE"),                   // Base DN
+              "(objectClass=person)",                    // Фильтр                   // Фильтр
+              SearchControls.SUBTREE_SCOPE,              // Область поиска
+              new String[]{"sAMAccountName"},                       // Атрибуты для получения
+              (AttributesMapper<String>) attributes -> attributes.get("sAMAccountName").get().toString() // Маппер
+      );
+      users.forEach(user -> logger.info("Found LDAP user: {}", user));
+    } catch (Exception e) {
+      logger.error("Error searching for LDAP users", e + "\n EventContext : " + event.getApplicationContext() + "\n ContextSource : " + ldapTemplate.getContextSource() + "\n LdapTemplate : " + ldapTemplate);
+    }
+  }
 }

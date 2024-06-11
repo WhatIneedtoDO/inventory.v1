@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.invent</groupId>
-	<artifactId>first</artifactId>
-	<version>0.0.2</version>
+	<artifactId>stocktacking</artifactId>
+	<version>1.0.0</version>
 	<name>Inventory</name>
 	<description>Spring Inventory</description>
 	<properties>
