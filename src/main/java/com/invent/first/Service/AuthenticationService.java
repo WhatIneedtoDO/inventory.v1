@@ -1,7 +1,7 @@
 package com.invent.first.Service;
 
-import com.invent.first.Entity.Enum.Role;
 import com.invent.first.Repository.DepsRepository;
+import com.invent.first.Service.Impl.LdapServiceImpl;
 import com.invent.first.request.AuthenticationRequest;
 import com.invent.first.response.AuthenticationResponse;
 import com.invent.first.request.RegisterRequest;
@@ -31,7 +31,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final DepsRepository depsRepository;
-  private final LdapService ldapService;
+  private final LdapServiceImpl ldapServiceImpl;
   private final UserService userService;
 
   public AuthenticationResponse register(RegisterRequest request) {
@@ -66,7 +66,7 @@ public class AuthenticationService {
       );
       isAuthenticated = true;
     } catch (Exception ex) {
-      isAuthenticated = ldapService.authenticate(request.getUsername(), request.getPassword());
+      isAuthenticated = ldapServiceImpl.authenticate(request.getUsername(), request.getPassword());
       if (isAuthenticated) {
         userService.createUserFromLdap(request.getUsername(), request.getPassword());
       } else {

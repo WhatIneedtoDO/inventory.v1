@@ -1,18 +1,9 @@
 package com.invent.first.Service;
 
-import org.springframework.ldap.core.LdapTemplate;
+import com.invent.first.Service.Impl.LdapServiceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LdapService {
-    private final LdapTemplate ldapTemplate;
-
-    public LdapService(LdapTemplate ldapTemplate) {
-        this.ldapTemplate = ldapTemplate;
-    }
-
-    public boolean authenticate(String username, String password) {
-        // Add LDAP authentication logic here
-        return ldapTemplate.authenticate("", "(sAMAccountName=" + username + ")", password);
-    }
+public interface LdapService {
+    LdapServiceImpl.LdapUser getLdapUserDetails(String username);
 }

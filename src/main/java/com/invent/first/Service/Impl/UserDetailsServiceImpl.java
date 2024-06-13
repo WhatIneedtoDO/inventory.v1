@@ -7,6 +7,11 @@ import com.invent.first.Entity.User;
 import com.invent.first.Repository.UserRepository;
 import com.invent.first.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,27 +25,45 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class UserDetailsServiceImpl implements UserService {
+
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    public UserDetailsServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+    private final LdapServiceImpl ldapServiceImpl;
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    @Autowired
+    public UserDetailsServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, LdapServiceImpl ldapServiceImpl) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.ldapServiceImpl = ldapServiceImpl;
     }
+
     @Override
     public User saveUser(User user) {
         return repository.save(user);
     }
     @Override
     public User createUserFromLdap(String username, String password) {
-        if (!repository.findByUsername(username).isPresent()) {
+        Optional<User> existingUser = repository.findByUsername(username);
+        if (existingUser.isPresent()) {
+            return existingUser.get();
+        }
+
+        LdapServiceImpl.LdapUser ldapUser = ldapServiceImpl.getLdapUserDetails(username);
+        if (ldapUser == null) {
+            throw new RuntimeException("LDAP user details not found");
+        }
+        {
             User user = User.builder()
                     .username(username)
-                    .password(passwordEncoder.encode(password))
+                    .firstname(ldapUser.getGivenName())
+                    .lastname(ldapUser.getSn())
+                    //.password(passwordEncoder.encode(password))
                     .role(Role.USER) // Default role
                     .build();
+            logger.info("Saving user: {}", user);
             return repository.save(user);
+
         }
-        return repository.findByUsername(username).get();
     }
 
 
