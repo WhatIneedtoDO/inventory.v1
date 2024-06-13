@@ -4,6 +4,7 @@ import com.invent.first.Service.TrashService;
 import com.invent.first.response.TrashJsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@PreAuthorize("hasAnyAuthority('admin:read','management:read')")
 @RequestMapping("/api/v1/Trash")
 public class TrashController {
     private final TrashService trashService;
@@ -20,7 +22,7 @@ public class TrashController {
     public TrashController(TrashService trashService){
         this.trashService = trashService;
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<TrashJsonResponse>> getAllTrash(){
         List<TrashJsonResponse> trashList = trashService.getList();

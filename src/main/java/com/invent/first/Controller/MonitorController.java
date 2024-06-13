@@ -41,19 +41,19 @@ public class MonitorController {
         this.trashService = trashService;
         this.excelExportService = excelExportService;
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<MonitorOutDTO>> getAllMonitors() {
         List<MonitorOutDTO> monitors = monitorService.getAllMonitorsWithDetails();
         return ResponseEntity.ok(monitors);
     }
-
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','manager:read','user:read')")
     @GetMapping("/Details/{monitorId}")
     public ResponseEntity<MonitorOutDTO> getMonitorDetails(@PathVariable Integer monitorId) {
         MonitorOutDTO monitorById = monitorService.getMonitorOutById(monitorId);
         return ResponseEntity.ok(monitorById);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<MonitorOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -68,13 +68,13 @@ public class MonitorController {
         List<MonitorOutDTO> monitorByDeptId = monitorService.getByDept(deptId);
         return ResponseEntity.ok(monitorByDeptId);
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<MonitorDTO> addMonitor(@RequestBody MonitorDTO monitorDTO) {
         MonitorDTO addedMonitor = monitorService.addMonitor(monitorDTO);
         return new ResponseEntity<>(addedMonitor, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{monitorId}")
     public ResponseEntity<MonitorOutDTO> updateMonitor(@PathVariable Integer monitorId, @AuthenticationPrincipal UserDetails userDetails,
                                                        @RequestBody MonitorDTO monitorDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
@@ -107,7 +107,7 @@ public class MonitorController {
         }
         return ResponseEntity.ok(monitorService.getMonitorOutById(monitorId));
     }
-
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{monitorId}")
     public ResponseEntity<Void> deleteMonitor(@PathVariable Integer monitorId) {
         Monitor deletedMonitor = monitorService.deleteById(monitorId);
@@ -118,6 +118,7 @@ public class MonitorController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<MonitorOutDTO> monitors = monitorService.getAllMonitorsWithDetails();

@@ -41,17 +41,19 @@ public class PowerSysController {
         this.trashService = trashService;
         this.excelExportService = excelExportService;
     }
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<PowerSystemOutDTO>> getAllPowerSys(){
         List<PowerSystemOutDTO> powerSys = powerSystemService.getAllPSWithDetails();
         return ResponseEntity.ok(powerSys);
     }
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Details/{psId}")
     public ResponseEntity<PowerSystemOutDTO> getPowerSysDetails(@PathVariable Integer psId){
         PowerSystemOutDTO powerSystemById = powerSystemService.getPSOutById(psId);
         return ResponseEntity.ok(powerSystemById);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<PowerSystemOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -66,11 +68,13 @@ public class PowerSysController {
         List<PowerSystemOutDTO> psByDeptId = powerSystemService.getByDept(deptId);
         return ResponseEntity.ok(psByDeptId);
     }
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<PowerSystemDTO> addPowerSys(@RequestBody PowerSystemDTO powerSystemDTO){
         PowerSystemDTO addedPowerSys = powerSystemService.addPowerSystem(powerSystemDTO);
         return new ResponseEntity<>(addedPowerSys, HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{psId}")
     public ResponseEntity<PowerSystemOutDTO> updatePowerSys(@PathVariable Integer psId, @AuthenticationPrincipal UserDetails userDetails,
                                                             @RequestBody PowerSystemDTO powerSystemDTO, @RequestParam(value = "trashdate", required = false)
@@ -104,6 +108,7 @@ public class PowerSysController {
         }
         return ResponseEntity.ok(powerSystemService.getPSOutById(psId));
     }
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{psId}")
     public ResponseEntity<Void> deletePowerSys(@PathVariable Integer psId){
         PowerSystem deletedPowerSys = powerSystemService.deleteById(psId);
@@ -114,6 +119,7 @@ public class PowerSysController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<PowerSystemOutDTO> powerSystems = powerSystemService.getAllPSWithDetails();

@@ -41,19 +41,19 @@ public class ServerEqsController {
         this.trashService = trashService;
         this.excelExportService = excelExportService;
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<ServerEqsOutDTO>> getAllServerEqs() {
         List<ServerEqsOutDTO> serverEqs = serverEqsService.getAllServerEqsWithDetails();
         return ResponseEntity.ok(serverEqs);
     }
-
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Details/{eqsId}")
     public ResponseEntity<ServerEqsOutDTO> getServerEqsDetails(@PathVariable Integer eqsId) {
         ServerEqsOutDTO serverEqsById = serverEqsService.getServerEqsOutById(eqsId);
         return ResponseEntity.ok(serverEqsById);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<ServerEqsOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -68,13 +68,13 @@ public class ServerEqsController {
         List<ServerEqsOutDTO> serverEqsByDeptId = serverEqsService.getByDept(deptId);
         return ResponseEntity.ok(serverEqsByDeptId);
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<ServerEqsDTO> addServerEqs(@RequestBody ServerEqsDTO serverEqsDTO) {
         ServerEqsDTO addedServerEqs = serverEqsService.addServerEqs(serverEqsDTO);
         return new ResponseEntity<>(addedServerEqs, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{eqsId}")
     public ResponseEntity<ServerEqsOutDTO> updateServerEqs(@PathVariable Integer eqsId, @AuthenticationPrincipal UserDetails userDetails,
                                                            @RequestBody ServerEqsDTO serverEqsDTO, @RequestParam(value = "trashdate", required = false)
@@ -108,6 +108,7 @@ public class ServerEqsController {
         }
         return ResponseEntity.ok(serverEqsService.getServerEqsOutById(eqsId));
     }
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{eqsId}")
     public ResponseEntity<Void> deleteServerEqs(@PathVariable Integer eqsId){
         ServerEqs deletedServerEqs = serverEqsService.deleteById(eqsId);
@@ -118,6 +119,7 @@ public class ServerEqsController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<ServerEqsOutDTO> serverEqs = serverEqsService.getAllServerEqsWithDetails();

@@ -41,19 +41,19 @@ public class TelephoneController {
         this.trashService = trashService;
         this.excelExportService = excelExportService;
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<TelephoneOutDTO>> getAllTelephones(){
         List<TelephoneOutDTO> telephones = telephoneService.getAllTelephonesWithDetails();
         return ResponseEntity.ok(telephones);
     }
-
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Details/{telephoneId}")
     public ResponseEntity<TelephoneOutDTO> getTelephoneDetails(@PathVariable Integer telephoneId){
         TelephoneOutDTO telephoneById = telephoneService.getTelephoneOutById(telephoneId);
         return ResponseEntity.ok(telephoneById);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<TelephoneOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -68,11 +68,13 @@ public class TelephoneController {
         List<TelephoneOutDTO> telephoneByDeptId = telephoneService.getByDept(deptId);
         return ResponseEntity.ok(telephoneByDeptId);
     }
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<TelephoneDTO> addTelephone (@RequestBody TelephoneDTO telephoneDTO){
         TelephoneDTO addedTelephone = telephoneService.addTelephone(telephoneDTO);
         return new ResponseEntity<>(addedTelephone, HttpStatus.CREATED);
     }
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{telephoneId}")
     public ResponseEntity<TelephoneOutDTO> updateTelephone(@PathVariable Integer telephoneId, @AuthenticationPrincipal UserDetails userDetails,
                                                            @RequestBody TelephoneDTO telephoneDTO,@RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate){
@@ -106,6 +108,7 @@ public class TelephoneController {
         }
         return ResponseEntity.ok(telephoneService.getTelephoneOutById(telephoneId));
     }
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{telephoneId}")
     public ResponseEntity<Void> delete(@PathVariable Integer telephoneId){
         Telephones deletedTelephone = telephoneService.deleteById(telephoneId);
@@ -116,6 +119,7 @@ public class TelephoneController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<TelephoneOutDTO> telephones = telephoneService.getAllTelephonesWithDetails();

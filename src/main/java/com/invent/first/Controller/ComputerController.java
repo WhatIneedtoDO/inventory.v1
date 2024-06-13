@@ -46,13 +46,13 @@ public class ComputerController {
         this.excelExportService = excelExportService;
     }
 
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<ComputerOutDTO>> getAllComputers() {
         List<ComputerOutDTO> computers = computerService.getAllComputersWithDetails();
         return ResponseEntity.ok(computers);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<ComputerOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -74,13 +74,13 @@ public class ComputerController {
         return ResponseEntity.ok(computerById);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<ComputerDTO> addComputer(@RequestBody ComputerDTO computerDTO) {
         ComputerDTO addedComputer = computerService.addComputer(computerDTO);
         return new ResponseEntity<>(addedComputer, HttpStatus.CREATED);
     }
-    @PreAuthorize("hasAuthority('admin:update')")
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{computerId}")
     public ResponseEntity<ComputerOutDTO> updateComputer(@PathVariable Integer computerId, @AuthenticationPrincipal UserDetails userDetails,
                                                          @RequestBody ComputerDTO computerDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
@@ -128,6 +128,7 @@ public class ComputerController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<ComputerOutDTO> computers = computerService.getAllComputersWithDetails();

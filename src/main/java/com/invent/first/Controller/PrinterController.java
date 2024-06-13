@@ -42,19 +42,19 @@ public class PrinterController {
         this.trashService = trashService;
         this.excelExportService = excelExportService;
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/all")
     public ResponseEntity<List<PrinterOutDTO>> getAllPrinters() {
         List<PrinterOutDTO> printers = printerService.getAllPrintersWithDetails();
         return ResponseEntity.ok(printers);
     }
-
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Details/{printerId}")
     public ResponseEntity<PrinterOutDTO> getPrinterDetails(@PathVariable Integer printerId) {
         PrinterOutDTO printerById = printerService.getPrinterOutById(printerId);
         return ResponseEntity.ok(printerById);
     }
-    @PreAuthorize("hasAnyAuthority('boss:read','admin:read')")
+    @PreAuthorize("hasAnyAuthority('boss:read','admin:read','user:read','management:read')")
     @GetMapping("/Departments")
     public ResponseEntity<List<PrinterOutDTO>> getByDepartments(@AuthenticationPrincipal UserDetails userDetails) {
         var username = userDetails.getUsername();
@@ -69,13 +69,14 @@ public class PrinterController {
         List<PrinterOutDTO> printerByDeptId = printerService.getByDept(deptId);
         return ResponseEntity.ok(printerByDeptId);
     }
-
+    @PreAuthorize("hasAnyAuthority('admin:create','management:create')")
     @PostMapping("/add")
     public ResponseEntity<PrinterDTO> addPrinter(@RequestBody PrinterDTO printerDTO) {
         PrinterDTO addedPrinter = printerService.addPrinter(printerDTO);
         return new ResponseEntity<>(addedPrinter, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('admin:update','management:update')")
     @PutMapping("/Update/{printerId}")
     public ResponseEntity<PrinterOutDTO> updatePrinter(@PathVariable Integer printerId, @AuthenticationPrincipal UserDetails userDetails,
                                                        @RequestBody PrinterDTO printerDTO, @RequestParam(value = "trashdate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date trashdate) {
@@ -110,7 +111,7 @@ public class PrinterController {
         }
         return ResponseEntity.ok(printerService.getPrinterOutById(printerId));
     }
-
+    @PreAuthorize("hasAuthority('admin:delete')")
     @DeleteMapping("/Delete/{printerId}")
     public ResponseEntity<Void> deletePrinter(@PathVariable Integer printerId) {
         Printers deletedPrinter = printerService.deleteById(printerId);
@@ -121,6 +122,7 @@ public class PrinterController {
         return ResponseEntity.noContent().build();
     }
     @SneakyThrows
+    @PreAuthorize("hasAnyAuthority('admin:read','management:read')")
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) {
         List<PrinterOutDTO> printers = printerService.getAllPrintersWithDetails();
