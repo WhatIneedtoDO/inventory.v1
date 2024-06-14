@@ -41,4 +41,20 @@ public class WorkStationService {
         return workstations;
     }
 
+    public List<Object> getWorkstationsByDept (Integer deptId){
+        List<ComputerOutDTO> computersByDept = computerService.getComputersByDept(deptId);
+        List<MonitorOutDTO> monitorsByDept = monitorService.getByDept(deptId);
+        if (computersByDept.isEmpty() || monitorsByDept.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Object> workstations = new ArrayList<>();
+        Iterator<ComputerOutDTO> computerDeptIterator = computersByDept.iterator();
+        Iterator<MonitorOutDTO> monitorDeptIterator = monitorsByDept.iterator();
+        while (computerDeptIterator.hasNext() && monitorDeptIterator.hasNext()) {
+            workstations.add(computerDeptIterator.next());
+            workstations.add(monitorDeptIterator.next());
+        }
+        return workstations;
+    }
+
 }
